@@ -1,0 +1,25 @@
+title: "UNIX AIK"
+description: "UNIX Automated Installation Kit."
+
+author:
+  name: "Yu Dunaev"
+  email: "dun43v@gmail.com"
+  github: "dun43v"
+  twitter: "dun43v"
+
+twitter:
+  username: "dun43v"
+  card: summary
+
+social:
+  name: "Yu Dunaev"
+  links:
+    - https://dunaev.dev
+    - https://twitter.com/dun43v
+    - https://linkedin.com/in/dun43v
+    - https://github.com/dun43v
+    - https://gitlab.com/dun43v
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
