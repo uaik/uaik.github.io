@@ -1,3 +1,3 @@
-# Information / Информация
+# Information
 
 UNIX Automation Installation Kit.
