@@ -1,1 +1,3 @@
-# uaik.github.io
+# Information / Информация
+
+UNIX Automation Installation Kit.
