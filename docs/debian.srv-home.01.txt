@@ -83,7 +83,7 @@ d-i partman-md/device_remove_md boolean true
 d-i partman-md/confirm_nooverwrite boolean true
 
 d-i partman-auto/method string regular
-d-i partman-auto/disk string disk/by-id/wwn-0x50025388a08be76b
+d-i partman-auto/disk string /dev/disk/by-id/wwn-0x50025388a08be76b
 d-i partman-auto/choose_recipe select storage
 
 d-i partman-auto/expert_recipe string     \
@@ -154,7 +154,7 @@ popularity-contest popularity-contest/participate boolean false
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
-d-i grub-installer/bootdev string disk/by-id/wwn-0x50025388a08be76b
+d-i grub-installer/bootdev string /dev/disk/by-id/wwn-0x50025388a08be76b
 
 # ----------------------------------------- #
 # Finish.
