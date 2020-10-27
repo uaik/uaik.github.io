@@ -15,7 +15,7 @@
 mediacheck
 
 # Use network installation.
-url --url="https://ftp.acc.umu.se/fedora/linux/releases/$releasever/Everything/$basearch/os/"
+url --url="https://ftp.acc.umu.se/mirror/fedora/linux/releases/$releasever/Everything/$basearch/os/"
 
 # Use text mode install.
 text
