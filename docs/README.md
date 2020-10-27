@@ -25,10 +25,10 @@ url=https://uaik.github.io/os.id.txt
   - [CentOS Server](centos.01.txt)
   - [Fedora Server](fedora.01.txt)
   - [Fedora Workstation](fedora.02.txt)
-  - [Fedora Workstation MINI](fedora.03.txt)
-  - [Fedora Workstation MINI EFI](fedora.04.txt)
+  - [Fedora Workstation SSD](fedora.03.txt)
+  - [Fedora Workstation SSD EFI](fedora.04.txt)
   - [Oracle Server](oracle.01.txt)
 
 ## Authors
 
-- [Yu Dunaev](https://dunaev.dev)
+- [Kitsune Solar](https://kitsune.solar/)

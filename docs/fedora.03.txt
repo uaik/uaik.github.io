@@ -1,6 +1,6 @@
 # ----------------------------------------- #
 # OS:               Fedora
-# Type:             Workstation (MINI)
+# Type:             Workstation (SSD)
 # ----------------------------------------- #
 # $releasever       OS version (28 / 29 / 30)
 # $basearch         x86_64
