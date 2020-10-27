@@ -1,6 +1,6 @@
 # ----------------------------------------- #
 # OS:               Fedora
-# Type:             Workstation
+# Type:             Workstation (MINI-EFI)
 # ----------------------------------------- #
 # $releasever       OS version (28 / 29 / 30)
 # $basearch         x86_64
