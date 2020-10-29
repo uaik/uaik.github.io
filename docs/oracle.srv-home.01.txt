@@ -42,7 +42,7 @@ repo --name="ks-oel-appstream" --baseurl="https://yum.oracle.com/repo/OracleLinu
 repo --name="ks-oel-uek" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/$basearch/"
 
 # REPO: Oracle Linux UEK RDMA.
-repo --name="ks-oel-uek" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/RDMA/$basearch/"
+repo --name="ks-oel-uek-rdma" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/RDMA/$basearch/"
 
 # ----------------------------------------- #
 # Configuration.
