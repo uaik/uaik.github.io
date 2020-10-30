@@ -29,6 +29,7 @@ url=https://uaik.github.io/os.id.txt
   - [Fedora Workstation SSD EFI](fedora.04.txt)
   - [Oracle Server](oracle.01.txt)
   - [Oracle Server SSD](oracle.02.txt)
+  - [Oracle Server SSD EFI](oracle.03.txt)
 
 ## Authors
 
