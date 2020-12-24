@@ -1,6 +1,6 @@
 # ----------------------------------------- #
 # OS:               Fedora
-# Type:             Workstation (SSD-EFI)
+# Type:             Workstation (SSD-EFI) (AOESP-IT27)
 # ----------------------------------------- #
 # $releasever       OS version (28 / 29 / 30)
 # $basearch         x86_64
