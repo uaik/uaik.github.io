@@ -1,6 +1,6 @@
 # ----------------------------------------- #
 # OS:               Fedora
-# Type:             Server
+# Type:             Workstation (01) (EFI)
 # ----------------------------------------- #
 # $releasever       OS version (28 / 29 / 30)
 # $basearch         x86_64
@@ -20,9 +20,6 @@ url --url="https://ftp.acc.umu.se/mirror/fedora/linux/releases/$releasever/Every
 # Use text mode install.
 text
 
-# Do not configure the X Window System.
-skipx
-
 # License agreement.
 eula --agreed
 
@@ -39,12 +36,24 @@ repo --name="ks-fedora-base" --mirrorlist="https://mirrors.fedoraproject.org/mir
 # REPO: Fedora Updates.
 repo --name="ks-fedora-updates" --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f$releasever&arch=$basearch" --cost=0
 
+# REPO: RPMFusion Free.
+repo --name="ks-rpmfusion-free" --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=free-fedora-$releasever&arch=$basearch" --includepkgs="rpmfusion-free-release"
+
+# REPO: RPMFusion Free Updates.
+repo --name="ks-rpmfusion-free-updates" --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=free-fedora-updates-released-$releasever&arch=$basearch" --cost=0
+
+# REPO: RPMFusion Non-free.
+repo --name="ks-rpmfusion-nonfree" --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=nonfree-fedora-$releasever&arch=$basearch" --includepkgs="rpmfusion-nonfree-release"
+
+# REPO: RPMFusion Non-free Updates.
+repo --name="ks-rpmfusion-nonfree-updates" --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch" --cost=0
+
 # ----------------------------------------- #
 # Configuration.
 # ----------------------------------------- #
 
 # Run the Setup Agent on first boot.
-firstboot --disable
+firstboot --enable
 
 # System language.
 lang en_US.UTF-8
@@ -88,12 +97,10 @@ zerombr
 clearpart --all --drives="sda" --initlabel --disklabel="gpt"
 
 # Disk partitioning information.
-part biosboot --fstype="biosboot" --ondisk="sda" --size=1 --label="id_bios"
+part /boot/efi --fstype="efi" --ondisk="sda" --size="200" --label="id_efi"
 part /boot --fstype="xfs" --ondisk="sda" --size="4096" --label="id_boot"
-part / --fstype="xfs" --ondisk="sda" --size="131072" --label="id_root"
+part / --fstype="xfs" --ondisk="sda" --size="65536" --label="id_root"
 part swap --fstype="swap" --ondisk="sda" --size="32768"
-part /var/log --fstype="xfs" --ondisk="sda" --size="16384" --label="id_log"
-part /var/log/audit --fstype="xfs" --ondisk="sda" --size="4096" --label="id_audit"
 part /tmp --fstype="xfs" --ondisk="sda" --size="16384" --label="id_tmp"
 part /home --fstype="xfs" --ondisk="sda" --size=1 --grow --label="id_home"
 
@@ -103,4 +110,27 @@ part /home --fstype="xfs" --ondisk="sda" --size=1 --grow --label="id_home"
 
 %packages
 @core
+@base-x
+@gnome-desktop
+firefox
+gnome-tweak-tool
+google-noto-emoji-fonts
+google-noto-sans-fonts
+google-noto-serif-fonts
+htop
+hunspell-ru
+kernel-modules-extra
+mc
+mlocate
+mpv
+nmap
+p7zip
+rtorrent
+tar
+util-linux-user
+vim
+wget
+xdg-utils
+youtube-dl
+zsh
 %end

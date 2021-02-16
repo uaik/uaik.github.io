@@ -19,17 +19,14 @@ url=https://uaik.github.io/os.id.txt
 ## Files
 
 - Debian
-  - [Debian VM](debian.vm.txt)
-  - [Debian Server](debian.01.txt)
+  - [Debian Server](srv.debian.00.txt)
+  - [Debian VM](vm.debian.00.txt)
 - Red Hat
-  - [CentOS Server](centos.01.txt)
-  - [Fedora Server](fedora.01.txt)
-  - [Fedora Workstation](fedora.02.txt)
-  - [Fedora Workstation SSD](fedora.03.txt)
-  - [Fedora Workstation SSD EFI](fedora.04.txt)
-  - [Oracle Server](oracle.01.txt)
-  - [Oracle Server SSD](oracle.02.txt)
-  - [Oracle Server SSD EFI](oracle.03.txt)
+  - [Fedora Server](srv.fedora.00.txt)
+  - [Fedora Workstation](pc.fedora.00.txt)
+  - [Fedora Workstation EFI](pc.fedora.01.txt)
+  - [Oracle Server](srv.oel.00.txt)
+  - [Oracle Server EFI](srv.oel.01.txt)
 
 ## Authors
 

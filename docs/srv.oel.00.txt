@@ -1,8 +1,7 @@
 # ----------------------------------------- #
-# OS:               Fedora
-# Type:             Server (SRV-HOME.01)
+# OS:               Oracle Linux
+# Type:             Server (00)
 # ----------------------------------------- #
-# $releasever       OS version (28 / 29 / 30)
 # $basearch         x86_64
 # ----------------------------------------- #
 
@@ -11,11 +10,11 @@
 # ----------------------------------------- #
 
 # Install OS.
-# install
+install
 mediacheck
 
 # Use network installation.
-url --url="https://ftp.acc.umu.se/mirror/fedora/linux/releases/$releasever/Everything/$basearch/os/"
+url --url="https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/$basearch/"
 
 # Use text mode install.
 text
@@ -33,11 +32,17 @@ shutdown
 # Additional repositories.
 # ----------------------------------------- #
 
-# REPO: Fedora.
-repo --name="ks-fedora-base" --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=$basearch"
+# REPO: Oracle Linux Base.
+repo --name="ks-oel-base" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/$basearch/"
 
-# REPO: Fedora Updates.
-repo --name="ks-fedora-updates" --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f$releasever&arch=$basearch" --cost=0
+# REPO: Oracle Linux AppStream.
+repo --name="ks-oel-appstream" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/appstream/$basearch/"
+
+# REPO: Oracle Linux UEK.
+repo --name="ks-oel-uek" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/$basearch/"
+
+# REPO: Oracle Linux UEK RDMA.
+repo --name="ks-oel-uek-rdma" --baseurl="https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/RDMA/$basearch/"
 
 # ----------------------------------------- #
 # Configuration.
@@ -55,12 +60,6 @@ keyboard --vckeymap="us" --xlayouts="us"
 # System timezone.
 timezone --utc --ntpservers="0.pool.ntp.org,1.pool.ntp.org,2.pool.ntp.org,3.pool.ntp.org" Etc/UTC
 
-# SELinux configuration.
-# selinux --disabled
-
-# Firewall configuration.
-# firewall --disabled
-
 # Network information.
 network --bootproto="dhcp" --device="link" --hostname="localhost.localdomain" --activate
 
@@ -76,26 +75,26 @@ user --iscrypted --name="user-0000" --password="$6$wHsDgAvq3XOUumwh$qL5OTBQTiODc
 # ----------------------------------------- #
 
 # Ignore other disks, use only current disk.
-ignoredisk --only-use=disk/by-id/wwn-0x50025388a08be76b
+ignoredisk --only-use="sda"
 
 # System bootloader configuration.
-bootloader --location="mbr" --boot-drive=disk/by-id/wwn-0x50025388a08be76b
+bootloader --location="mbr" --boot-drive="sda"
 
 # Clear the Master Boot Record.
 zerombr
 
 # Partition clearing information.
-clearpart --all --drives=disk/by-id/wwn-0x50025388a08be76b --initlabel --disklabel="gpt"
+clearpart --all --drives="sda" --initlabel --disklabel="gpt"
 
 # Disk partitioning information.
-part biosboot --fstype="biosboot" --size=1
-part /boot --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="4096" --label="id_boot"
-part / --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="131072" --label="id_root"
-part swap --fstype="swap" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="32768"
-part /var/log --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="16384" --label="id_log"
-part /var/log/audit --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="4096" --label="id_audit"
-part /tmp --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size="16384" --label="id_tmp"
-part /home --fstype="xfs" --ondisk=disk/by-id/wwn-0x50025388a08be76b --size=1 --grow --label="id_home"
+part biosboot --fstype="biosboot" --ondisk="sda" --size=1 --label="id_bios"
+part /boot --fstype="xfs" --ondisk="sda" --size="4096" --label="id_boot"
+part / --fstype="xfs" --ondisk="sda" --size="65536" --label="id_root"
+part swap --fstype="swap" --ondisk="sda" --size="32768"
+part /var/log --fstype="xfs" --ondisk="sda" --size="16384" --label="id_log"
+part /var/log/audit --fstype="xfs" --ondisk="sda" --size="4096" --label="id_audit"
+part /tmp --fstype="xfs" --ondisk="sda" --size="16384" --label="id_tmp"
+part /home --fstype="xfs" --ondisk="sda" --size=1 --grow --label="id_home"
 
 # ----------------------------------------- #
 # Packages.
