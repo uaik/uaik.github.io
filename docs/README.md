@@ -23,8 +23,8 @@ url=https://uaik.github.io/type.os.id.txt
   - [Debian VM](vm.debian.00.txt)
 - Red Hat
   - [Fedora Server](srv.fedora.00.txt)
-  - [Fedora Workstation](pc.fedora.00.txt)
-  - [Fedora Workstation EFI](pc.fedora.01.txt)
+  - [Fedora Workstation](ws.fedora.00.txt)
+  - [Fedora Workstation EFI](ws.fedora.01.txt)
   - [Oracle Server](srv.oel.00.txt)
   - [Oracle Server EFI](srv.oel.01.txt)
 
