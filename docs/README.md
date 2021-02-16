@@ -7,13 +7,13 @@ Automatic installation is done by setting a command in installation menu.
 #### CentOS / Fedora
 
 ```
-inst.ks=https://uaik.github.io/os.id.txt
+inst.ks=https://uaik.github.io/type.os.id.txt
 ```
 
 #### Debian / Ubuntu
 
 ```
-url=https://uaik.github.io/os.id.txt
+url=https://uaik.github.io/type.os.id.txt
 ```
 
 ## Files
