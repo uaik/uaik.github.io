@@ -4,7 +4,7 @@ GNU/Linux auto installation files.
 
 Automatic installation is done by setting a command in installation menu.
 
-#### CentOS / Fedora
+#### RHEL / Fedora
 
 ```
 inst.ks=https://uaik.github.io/type.os.id.txt
