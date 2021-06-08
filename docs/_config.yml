@@ -1,6 +1,12 @@
 title: "UNIX AIK"
 description: "UNIX Automated Installation Kit."
 
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: ""
+
 author:
   name: "Kitsune Solar"
   email: "kitsune.solar@gmail.com"
@@ -14,12 +20,23 @@ twitter:
 social:
   name: "Kitsune Solar"
   links:
-    - https://kitsune.solar/
-    - https://twitter.com/KitsuneSolar
-    - https://linkedin.com/in/KitsuneSolar
+    - https://kitsune.solar
+    - https://facebook.com/KitsuneSolar
     - https://github.com/KitsuneSolar
     - https://gitlab.com/KitsuneSolar
+    - https://instagram.com/KitsuneSolar
+    - https://linkedin.com/in/KitsuneSolar
+    - https://t.me/KitsuneSolar
+    - https://twitch.tv/KitsuneSolar
+    - https://twitter.com/KitsuneSolar
+    - https://vk.com/KitsuneSolar
+    - https://youtube.com/KitsuneSolar
+
+webmaster_verifications:
+  google: ""
+  yandex: ""
 
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jemoji
