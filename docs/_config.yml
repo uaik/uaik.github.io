@@ -1,0 +1,17 @@
+title: "Universal AIK"
+description: "Universal Automated Installation Kit (UAIK)."
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: ""
+
+webmaster_verifications:
+  google: ""
+  yandex: ""
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jemoji
