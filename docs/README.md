@@ -48,24 +48,4 @@ $ curl -sL 'https://uaik.github.io/unix.setup.sh' | bash -
 
 ## Scripts
 
-- Alma Linux
-  - Server
-    - [BIOS](os/alma.srv.bios.ini)
-    - [UEFI](os/alma.srv.uefi.ini)
-- Debian
-  - Server
-    - [BIOS](os/debian.srv.bios.ini)
-    - [UEFI](os/debian.srv.uefi.ini)
-- Fedora
-  - Server
-    - [BIOS](os/fedora.srv.bios.ini)
-    - [UEFI](os/fedora.srv.uefi.ini)
-- Oracle Linux
-  - Server
-    - [BIOS](os/oracle.srv.bios.ini)
-    - [UEFI](os/oracle.srv.uefi.ini)
-- Rocky Linux
-  - Server
-    - [BIOS](os/rocky.srv.bios.ini)
-    - [UEFI](os/rocky.srv.uefi.ini)
-- [All scripts](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
+- [OS](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
