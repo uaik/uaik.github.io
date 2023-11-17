@@ -1,4 +1,4 @@
-(UNIX / Linux / Windows) automated installation kit.
+Universal automated installation kit.
 
 ## Installation
 
@@ -6,14 +6,23 @@ An unattended installation is performed by specifying a command in installation 
 
 ### RHEL / Fedora
 
-```ini
-inst.ks=https://uaik.github.io/install/os/type/id.ini
+```
+inst.ks=https://uaik.github.io/os/[os.type.id.ini]
 ```
 
 ### Debian / Ubuntu
 
-```ini
-url=https://uaik.github.io/install/os/type/id.ini
+```
+url=https://uaik.github.io/os/[os.type.id.ini]
+```
+
+### MikroTik RouterOS
+
+```
+/tool fetch url="https://uaik.github.io/os/[os.type.id.rsc]" dst-path="[os.type.id.rsc]"
+/tool fetch url="https://curl.se/ca/cacert.pem" dst-path="ros.cacert.pem"
+/system reset-configuration no-defaults=yes skip-backup=yes run-after-reset="[os.type.id.rsc]"
+/certificate import file-name="ros.cacert.pem" passphrase="" name="ROS"
 ```
 
 ## Users / Passwords
@@ -41,29 +50,22 @@ $ curl -sL 'https://uaik.github.io/unix.setup.sh' | bash -
 
 - Alma Linux
   - Server
-    - [BIOS](install/linux/alma/srv.bios.ini)
-    - [UEFI](install/linux/alma/srv.uefi.ini)
+    - [BIOS](os/alma.srv.bios.ini)
+    - [UEFI](os/alma.srv.uefi.ini)
 - Debian
   - Server
-    - [BIOS](install/linux/debian/srv.bios.ini)
-    - [UEFI](install/linux/debian/srv.uefi.ini)
-  - Workstation
-    - [BIOS](install/linux/debian/ws.bios.ini)
-    - [UEFI](install/linux/debian/ws.uefi.ini)
+    - [BIOS](os/debian.srv.bios.ini)
+    - [UEFI](os/debian.srv.uefi.ini)
 - Fedora
   - Server
-    - [BIOS](install/linux/fedora/srv.bios.ini)
-    - [UEFI](install/linux/fedora/srv.uefi.ini)
-  - Workstation
-    - [BIOS](install/linux/fedora/ws.bios.ini)
-    - [UEFI](install/linux/fedora/ws.uefi.ini)
+    - [BIOS](os/fedora.srv.bios.ini)
+    - [UEFI](os/fedora.srv.uefi.ini)
 - Oracle Linux
   - Server
-    - [BIOS](install/linux/oracle/srv.bios.ini)
-    - [UEFI](install/linux/oracle/srv.uefi.ini)
+    - [BIOS](os/oracle.srv.bios.ini)
+    - [UEFI](os/oracle.srv.uefi.ini)
 - Rocky Linux
   - Server
-    - [BIOS](install/linux/rocky/srv.bios.ini)
-    - [UEFI](install/linux/rocky/srv.uefi.ini)
-- [MS Windows](https://github.com/uaik/uaik.github.io/tree/main/docs/install/windows)
-- [All scripts](https://github.com/uaik/uaik.github.io/tree/main/docs/install)
+    - [BIOS](os/rocky.srv.bios.ini)
+    - [UEFI](os/rocky.srv.uefi.ini)
+- [All scripts](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
