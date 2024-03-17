@@ -6,7 +6,7 @@
 # @link
 # -------------------------------------------------------------------------------------------------------------------- #
 
-:local bridge "bridge1"
+:local bridgeName "bridge1"
 :local adminPassword "cDFymu2aML"
 :local routerName "GW01"
 :local dnsRouter "gw01.lan"
@@ -14,7 +14,7 @@
 :local netBase 10.2
 
 /interface bridge
-add name=$bridge
+add name=$bridgeName
 
 /interface list
 add name=WAN
@@ -22,24 +22,24 @@ add name=LAN
 
 /interface bridge port
 :for i from=2 to=5 do={
-  add bridge=$bridge interface=("ether" . $i)
+  add bridge=$bridgeName interface=("ether" . $i)
 }
 
 /interface list member
 add interface=ether1 list=WAN
-add interface=$bridge list=LAN
+add interface=$bridgeName list=LAN
 
 /ip pool
 add name=dhcp ranges=$netBase.200.1-$netBase.200.254
 
 /ip dhcp-server
-add address-pool=dhcp interface=$bridge name=dhcp1
+add address-pool=dhcp interface=$bridgeName name=dhcp1
 
 /ip neighbor discovery-settings
 set discover-interface-list=LAN
 
 /ip address
-add address=$netBase.0.1/16 interface=$bridge network=$netBase.0.0
+add address=$netBase.0.1/16 interface=$bridgeName network=$netBase.0.0
 
 /ip dhcp-client
 add interface=ether1
