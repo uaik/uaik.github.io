@@ -9,6 +9,8 @@
 :local bridge "bridge1"
 :local adminPassword "cDFymu2aML"
 :local routerName "GW01"
+:local routerDomain "gw01.lan"
+:local networkDomain "home01.lan"
 
 /interface bridge
 add name=$bridge
@@ -27,7 +29,7 @@ add interface=ether1 list=WAN
 add interface=$bridge list=LAN
 
 /ip pool
-add name=dhcp ranges=10.1.100.1-10.1.200.254
+add name=dhcp ranges=10.1.200.1-10.1.200.254
 
 /ip dhcp-server
 add address-pool=dhcp interface=$bridge name=dhcp1
@@ -45,13 +47,13 @@ add interface=ether1
 # add address=10.1.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
 
 /ip dhcp-server network
-add address=10.1.0.0/8 dns-server=10.1.0.1 domain=home.lan00 gateway=10.1.0.1 ntp-server=10.1.0.1
+add address=10.1.0.0/8 dns-server=10.1.0.1 domain=$networkDomain gateway=10.1.0.1 ntp-server=10.1.0.1
 
 /ip dns
-set allow-remote-requests=yes servers=1.1.1.1,1.0.0.1
+set allow-remote-requests=yes servers=1.1.1.1,8.8.8.8,77.88.8.8
 
 /ip dns static
-add address=10.1.0.1 name=gw01.lan
+add address=10.1.0.1 name=$routerDomain
 
 /ip firewall filter
 add action=accept chain=input connection-state=established,related,untracked comment="[ACCEPT] Established, Related, Untracked"
@@ -59,15 +61,15 @@ add action=drop chain=input connection-state=invalid comment="[DROP] Invalid"
 add action=accept chain=input protocol=icmp comment="[ACCEPT] ICMP"
 add action=accept chain=input dst-port=9090,22022 protocol=tcp comment="[ROS] WinBox and SSH"
 add action=drop chain=input in-interface-list=!LAN comment="[DROP] All not coming from LAN"
-# add action=accept chain=forward ipsec-policy=in,ipsec comment="[ACCEPT] In IPsec policy"
-# add action=accept chain=forward ipsec-policy=out,ipsec comment="[ACCEPT] Out IPsec policy"
+add action=accept chain=forward ipsec-policy=in,ipsec comment="[ACCEPT] In IPsec policy"
+add action=accept chain=forward ipsec-policy=out,ipsec comment="[ACCEPT] Out IPsec policy"
 add action=fasttrack-connection chain=forward connection-state=established,related comment="[ROS] FastTrack"
 add action=accept chain=forward connection-state=established,related,untracked comment="[ROS] FastTrack"
 add action=drop chain=forward connection-state=invalid comment="[DROP] Invalid"
 add action=drop chain=forward connection-nat-state=!dstnat connection-state=new in-interface-list=WAN comment="[DROP] All from WAN not DSTNATed"
 
 /ip firewall nat
-add action=masquerade chain=srcnat out-interface-list=WAN
+add action=masquerade chain=srcnat ipsec-policy=out,none out-interface-list=WAN comment="Masquerade"
 
 /ip service
 set telnet disabled=yes
@@ -91,7 +93,8 @@ set enabled=yes
 set enabled=yes manycast=yes multicast=yes
 
 /system ntp client servers
-add address=time.cloudflare.com
+add address=0.ru.pool.ntp.org
+add address=1.ru.pool.ntp.org
 
 /tool bandwidth-server
 set enabled=no
