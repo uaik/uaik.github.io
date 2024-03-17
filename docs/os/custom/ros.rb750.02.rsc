@@ -9,8 +9,9 @@
 :local bridge "bridge1"
 :local adminPassword "cDFymu2aML"
 :local routerName "GW01"
-:local routerDomain "gw01.lan"
-:local networkDomain "home.lan"
+:local dnsRouter "gw01.lan"
+:local dhcpDomain "home.lan"
+:local netBase 10.2
 
 /interface bridge
 add name=$bridge
@@ -29,7 +30,7 @@ add interface=ether1 list=WAN
 add interface=$bridge list=LAN
 
 /ip pool
-add name=dhcp ranges=10.2.200.1-10.2.200.254
+add name=dhcp ranges=$netBase.200.1-$netBase.200.254
 
 /ip dhcp-server
 add address-pool=dhcp interface=$bridge name=dhcp1
@@ -38,22 +39,22 @@ add address-pool=dhcp interface=$bridge name=dhcp1
 set discover-interface-list=LAN
 
 /ip address
-add address=10.2.0.1/16 interface=$bridge network=10.2.0.0
+add address=$netBase.0.1/16 interface=$bridge network=$netBase.0.0
 
 /ip dhcp-client
 add interface=ether1
 
 /ip dhcp-server lease
-# add address=10.2.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
+# add address=$netBase.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
 
 /ip dhcp-server network
-add address=10.2.0.0/16 dns-server=10.2.0.1 domain=$networkDomain gateway=10.2.0.1 ntp-server=10.2.0.1
+add address=$netBase.0.0/16 dns-server=$netBase.0.1 domain=$dhcpDomain gateway=$netBase.0.1 ntp-server=$netBase.0.1
 
 /ip dns
 set allow-remote-requests=yes servers=1.1.1.1,8.8.8.8,77.88.8.8
 
 /ip dns static
-add address=10.2.0.1 name=$routerDomain
+add address=$netBase.0.1 name=$dnsRouter
 
 /ip firewall filter
 add action=accept chain=input connection-state=established,related,untracked comment="[ACCEPT] Established, Related, Untracked"
