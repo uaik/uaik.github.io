@@ -45,7 +45,7 @@ add interface=ether1
 # add address=10.1.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
 
 /ip dhcp-server network
-add address=10.1.0.0/16 dns-server=10.1.0.1 domain=home.lan00 gateway=10.1.0.1 ntp-server=10.1.0.1
+add address=10.1.0.0/16 dns-server=10.1.0.1 domain=home.lan gateway=10.1.0.1 ntp-server=10.1.0.1
 
 /ip dns
 set allow-remote-requests=yes servers=1.1.1.1,1.0.0.1

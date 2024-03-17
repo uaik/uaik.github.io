@@ -10,7 +10,7 @@
 :local adminPassword "cDFymu2aML"
 :local routerName "GW01"
 :local routerDomain "gw01.lan"
-:local networkDomain "home01.lan"
+:local networkDomain "home.lan"
 
 /interface bridge
 add name=$bridge
@@ -95,6 +95,8 @@ set enabled=yes manycast=yes multicast=yes
 /system ntp client servers
 add address=0.ru.pool.ntp.org
 add address=1.ru.pool.ntp.org
+add address=time.google.com
+add address=time.cloudflare.com
 
 /tool bandwidth-server
 set enabled=no
