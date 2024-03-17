@@ -21,9 +21,7 @@ add name=WAN
 add name=LAN
 
 /interface bridge port
-:for i from=2 to=5 do={
-  add bridge=$bridgeName interface=("ether" . $i)
-}
+:for i from=2 to=5 do={ add bridge=$bridgeName interface=("ether" . $i) }
 
 /interface list member
 add interface=ether1 list=WAN
