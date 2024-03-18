@@ -12,6 +12,7 @@
 :local dnsRouter "gw01.lan"
 :local dhcpDomain "home.lan"
 :local netBase 10.1
+:local icmpKnockSize 100
 
 /interface bridge
 add name=$bridgeName
@@ -57,8 +58,9 @@ add address=$netBase.0.1 name=$dnsRouter
 /ip firewall filter
 add action=accept chain=input connection-state=established,related,untracked comment="[ACCEPT] Established, Related, Untracked"
 add action=drop chain=input connection-state=invalid comment="[DROP] Invalid"
+add action=add-src-to-address-list address-list="AdminCP" address-list-timeout=30m chain=input in-interface-list=WAN packet-size=($icmpKnockSize + 28) protocol=icmp comment="ICMP port knocking to AdminCP"
 add action=accept chain=input protocol=icmp comment="[ACCEPT] ICMP"
-add action=accept chain=input dst-port=9090,22022 protocol=tcp comment="[ROS] WinBox and SSH"
+add action=accept chain=input dst-port=9090,22022 protocol=tcp src-address-list="AdminCP" comment="[ROS] WinBox and SSH"
 add action=drop chain=input in-interface-list=!LAN comment="[DROP] All not coming from LAN"
 add action=accept chain=forward ipsec-policy=in,ipsec comment="[ACCEPT] In IPsec policy"
 add action=accept chain=forward ipsec-policy=out,ipsec comment="[ACCEPT] Out IPsec policy"
