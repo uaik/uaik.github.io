@@ -11,9 +11,7 @@
 :local routerName "GW01"
 :local dnsRouter "gw01.lan"
 :local dhcpDomain "home.lan"
-:local netBase 10.1
 :local icmpKnockSize 100
-:local macAddress "11:11:11:11:11:11"
 
 /interface bridge
 add name=$bridgeName
@@ -29,11 +27,8 @@ add name=LAN
 add interface=ether1 list=WAN
 add interface=$bridgeName list=LAN
 
-/interface ethernet
-set [ find default-name=ether1 ] mac-address=$macAddress
-
 /ip pool
-add name=dhcp ranges=$netBase.200.1-$netBase.200.254
+add name=dhcp ranges=10.1.200.1-10.1.200.254
 
 /ip dhcp-server
 add address-pool=dhcp interface=$bridgeName name=dhcp1
@@ -42,31 +37,31 @@ add address-pool=dhcp interface=$bridgeName name=dhcp1
 set discover-interface-list=LAN
 
 /ip address
-add address=$netBase.0.1/16 interface=$bridgeName network=$netBase.0.0
+add address=10.1.0.1/16 interface=$bridgeName network=10.1.0.0
 
 /ip dhcp-client
 add interface=ether1
 
 /ip dhcp-server lease
-add address=$netBase.10.1 mac-address=14:EB:B6:B3:28:90 comment="TL-SG1024DE-01"
-add address=$netBase.10.2 mac-address=14:EB:B6:63:C6:09 comment="TL-SG108E-01"
-add address=$netBase.10.3 mac-address=B4:B0:24:92:E4:60 comment="TL-SG108E-02"
-add address=$netBase.20.1 mac-address=14:DA:E9:B3:A6:F5 comment="PVE-CRAFT"
-add address=$netBase.30.1 mac-address=AA:0D:0D:85:9A:A3 comment="PVE-CRAFT-01"
-add address=$netBase.30.2 mac-address=BC:24:11:AA:D5:07 comment="PVE-CRAFT-02"
-add address=$netBase.30.3 mac-address=BC:24:11:C2:47:8C comment="PVE-PGP"
-add address=$netBase.30.4 mac-address=BC:24:11:C5:04:C4 comment="PVE-CLOUD"
-add address=$netBase.40.1 mac-address=50:FF:20:79:B6:38 comment="KN-3510-01"
-add address=$netBase.100.1 mac-address=60:A4:B7:B2:C1:17 comment="PC-01"
+add address=10.1.10.1 mac-address=14:EB:B6:B3:28:90 comment="TL-SG1024DE-01"
+add address=10.1.10.2 mac-address=14:EB:B6:63:C6:09 comment="TL-SG108E-01"
+add address=10.1.10.3 mac-address=B4:B0:24:92:E4:60 comment="TL-SG108E-02"
+add address=10.1.20.1 mac-address=14:DA:E9:B3:A6:F5 comment="PVE-CRAFT"
+add address=10.1.30.1 mac-address=AA:0D:0D:85:9A:A3 comment="PVE-CRAFT-01"
+add address=10.1.30.2 mac-address=BC:24:11:AA:D5:07 comment="PVE-CRAFT-02"
+add address=10.1.30.3 mac-address=BC:24:11:C2:47:8C comment="PVE-PGP"
+add address=10.1.30.4 mac-address=BC:24:11:C5:04:C4 comment="PVE-CLOUD"
+add address=10.1.40.1 mac-address=50:FF:20:79:B6:38 comment="KN-3510-01"
+add address=10.1.100.1 mac-address=60:A4:B7:B2:C1:17 comment="PC-01"
 
 /ip dhcp-server network
-add address=$netBase.0.0/16 dns-server=$netBase.0.1 domain=$dhcpDomain gateway=$netBase.0.1 ntp-server=$netBase.0.1
+add address=10.1.0.0/16 dns-server=10.1.0.1 domain=$dhcpDomain gateway=10.1.0.1 ntp-server=10.1.0.1
 
 /ip dns
 set allow-remote-requests=yes servers=1.1.1.1,8.8.8.8,77.88.8.8
 
 /ip dns static
-add address=$netBase.0.1 name=$dnsRouter
+add address=10.1.0.1 name=$dnsRouter
 
 /ip firewall address-list
 add address=127.0.0.1 list="RDP"
@@ -87,8 +82,8 @@ add action=drop chain=forward connection-nat-state=!dstnat connection-state=new 
 
 /ip firewall nat
 add action=masquerade chain=srcnat ipsec-policy=out,none out-interface-list=WAN comment="Masquerade"
-add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=udp src-address-list="RDP" to-addresses=$netBase.100.1 to-ports=3389 comment="[RDP] PC-01"
-add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=tcp src-address-list="RDP" to-addresses=$netBase.100.1 to-ports=3389 comment="[RDP] PC-01"
+add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=udp src-address-list="RDP" to-addresses=10.1.100.1 to-ports=3389 comment="[RDP] PC-01"
+add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=tcp src-address-list="RDP" to-addresses=10.1.100.1 to-ports=3389 comment="[RDP] PC-01"
 
 /ip service
 set telnet disabled=yes
