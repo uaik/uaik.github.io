@@ -13,6 +13,7 @@
 :local dhcpDomain "home.lan"
 :local netBase 10.1
 :local icmpKnockSize 100
+:local macAddress "11:11:11:11:11:11"
 
 /interface bridge
 add name=$bridgeName
@@ -27,6 +28,9 @@ add name=LAN
 /interface list member
 add interface=ether1 list=WAN
 add interface=$bridgeName list=LAN
+
+/interface ethernet
+set [ find default-name=ether1 ] mac-address=$macAddress
 
 /ip pool
 add name=dhcp ranges=$netBase.200.1-$netBase.200.254
@@ -53,6 +57,7 @@ add address=$netBase.30.2 mac-address=BC:24:11:AA:D5:07 comment="PVE-CRAFT-02"
 add address=$netBase.30.3 mac-address=BC:24:11:C2:47:8C comment="PVE-PGP"
 add address=$netBase.30.4 mac-address=BC:24:11:C5:04:C4 comment="PVE-CLOUD"
 add address=$netBase.40.1 mac-address=50:FF:20:79:B6:38 comment="KN-3510-01"
+add address=$netBase.100.1 mac-address=60:A4:B7:B2:C1:17 comment="PC-01"
 
 /ip dhcp-server network
 add address=$netBase.0.0/16 dns-server=$netBase.0.1 domain=$dhcpDomain gateway=$netBase.0.1 ntp-server=$netBase.0.1
@@ -62,6 +67,9 @@ set allow-remote-requests=yes servers=1.1.1.1,8.8.8.8,77.88.8.8
 
 /ip dns static
 add address=$netBase.0.1 name=$dnsRouter
+
+/ip firewall address-list
+add address=127.0.0.1 list="RDP"
 
 /ip firewall filter
 add action=accept chain=input connection-state=established,related,untracked comment="[ACCEPT] Established, Related, Untracked"
@@ -79,6 +87,8 @@ add action=drop chain=forward connection-nat-state=!dstnat connection-state=new 
 
 /ip firewall nat
 add action=masquerade chain=srcnat ipsec-policy=out,none out-interface-list=WAN comment="Masquerade"
+add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=udp src-address-list="RDP" to-addresses=$netBase.100.1 to-ports=3389 comment="[RDP] PC-01"
+add action=dst-nat chain=dstnat dst-port=33891 in-interface-list=WAN protocol=tcp src-address-list="RDP" to-addresses=$netBase.100.1 to-ports=3389 comment="[RDP] PC-01"
 
 /ip service
 set telnet disabled=yes

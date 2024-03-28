@@ -13,6 +13,7 @@
 :local dhcpDomain "home.lan"
 :local netBase 10.2
 :local icmpKnockSize 100
+:local macAddress "11:11:11:11:11:11"
 
 /interface bridge
 add name=$bridgeName
@@ -27,6 +28,9 @@ add name=LAN
 /interface list member
 add interface=ether1 list=WAN
 add interface=$bridgeName list=LAN
+
+/interface ethernet
+set [ find default-name=ether1 ] mac-address=$macAddress
 
 /ip pool
 add name=dhcp ranges=$netBase.200.1-$netBase.200.254
