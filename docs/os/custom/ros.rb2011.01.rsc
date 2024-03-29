@@ -8,8 +8,6 @@
 
 /interface bridge
 add name=bridge1
-/interface ethernet
-set [ find default-name=ether1 ] mac-address=3C:97:0E:42:21:ED
 /interface list
 add name=WAN
 add name=LAN

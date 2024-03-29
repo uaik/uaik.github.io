@@ -5,6 +5,9 @@
 # @version    0.1.0
 # @link
 # -------------------------------------------------------------------------------------------------------------------- #
+# Set MAC:
+# /interface ethernet set [ find default-name="ether1" ] mac-address="00:00:00:00:00:00"
+# -------------------------------------------------------------------------------------------------------------------- #
 
 :local bridgeName "bridge1"
 :local adminPassword "cDFymu2aML"
@@ -43,7 +46,7 @@ add address=10.2.0.1/16 interface=$bridgeName network=10.2.0.0
 add interface=ether1
 
 /ip dhcp-server lease
-# add address=10.2.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
+# add address=10.2.1.1 mac-address=00:00:00:00:00:00 comment="SERVER01"
 
 /ip dhcp-server network
 add address=10.2.0.0/16 dns-server=10.2.0.1 domain=$dhcpDomain gateway=10.2.0.1 ntp-server=10.2.0.1
