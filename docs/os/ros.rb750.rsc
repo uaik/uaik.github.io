@@ -5,55 +5,59 @@
 # @version    0.1.0
 # @link
 # -------------------------------------------------------------------------------------------------------------------- #
+# Set MAC:
+# /interface ethernet set [ find default-name="ether1" ] mac-address="00:00:00:00:00:00"
+# -------------------------------------------------------------------------------------------------------------------- #
 
 :local bridgeName "bridge1"
 :local adminPassword "cDFymu2aML"
 :local routerName "GW01"
 :local dnsRouter "gw01.lan"
 :local dhcpDomain "home.lan"
-:local netBase 10.1
 :local icmpKnockSize 100
 
+# -------------------------------------------------------------------------------------------------------------------- #
+
 /interface bridge
-add name=$bridgeName
+add name="$bridgeName"
 
 /interface list
 add name=WAN
 add name=LAN
 
 /interface bridge port
-:for i from=2 to=5 do={ add bridge=$bridgeName interface=("ether" . $i) }
+:for i from=2 to=5 do={ add bridge="$bridgeName" interface=("ether" . $i) }
 
 /interface list member
 add interface=ether1 list=WAN
-add interface=$bridgeName list=LAN
+add interface="$bridgeName" list=LAN
 
 /ip pool
-add name=dhcp ranges=$netBase.200.1-$netBase.200.254
+add name=dhcp ranges=10.1.200.1-10.1.200.254
 
 /ip dhcp-server
-add address-pool=dhcp interface=$bridgeName name=dhcp1
+add address-pool=dhcp interface="$bridgeName" name=dhcp1
 
 /ip neighbor discovery-settings
 set discover-interface-list=LAN
 
 /ip address
-add address=$netBase.0.1/16 interface=$bridgeName network=$netBase.0.0
+add address=10.1.0.1/16 interface="$bridgeName" network=10.1.0.0
 
 /ip dhcp-client
 add interface=ether1
 
 /ip dhcp-server lease
-# add address=$netBase.1.1 mac-address=11:11:11:11:11:11 comment="SERVER01"
+# add address=10.1.0.40 mac-address=00:00:00:00:00:00 comment="SERVER01"
 
 /ip dhcp-server network
-add address=$netBase.0.0/16 dns-server=$netBase.0.1 domain=$dhcpDomain gateway=$netBase.0.1 ntp-server=$netBase.0.1
+add address=10.1.0.0/16 dns-server=10.1.0.1 domain="$dhcpDomain" gateway=10.1.0.1 ntp-server=10.1.0.1
 
 /ip dns
 set allow-remote-requests=yes servers=1.1.1.1,8.8.8.8,77.88.8.8
 
 /ip dns static
-add address=$netBase.0.1 name=$dnsRouter
+add address=10.1.0.1 name="$dnsRouter"
 
 /ip firewall filter
 add action=accept chain=input connection-state=established,related,untracked comment="[ACCEPT] Established, Related, Untracked"
@@ -62,8 +66,8 @@ add action=add-src-to-address-list address-list="AdminCP" address-list-timeout=3
 add action=accept chain=input protocol=icmp comment="[ACCEPT] ICMP"
 add action=accept chain=input dst-port=9090,22022 protocol=tcp src-address-list="AdminCP" comment="[ROS] WinBox and SSH"
 add action=drop chain=input in-interface-list=!LAN comment="[DROP] All not coming from LAN"
-add action=accept chain=forward ipsec-policy=in,ipsec comment="[ACCEPT] In IPsec policy"
-add action=accept chain=forward ipsec-policy=out,ipsec comment="[ACCEPT] Out IPsec policy"
+add action=accept chain=forward ipsec-policy=in,ipsec comment="[ROS] In IPsec policy"
+add action=accept chain=forward ipsec-policy=out,ipsec comment="[ROS] Out IPsec policy"
 add action=fasttrack-connection chain=forward connection-state=established,related comment="[ROS] FastTrack"
 add action=accept chain=forward connection-state=established,related,untracked comment="[ROS] FastTrack"
 add action=drop chain=forward connection-state=invalid comment="[DROP] Invalid"
@@ -85,7 +89,7 @@ set api-ssl disabled=yes
 set time-zone-name=Europe/Moscow
 
 /system identity
-set name=$routerName
+set name="$routerName"
 
 /system ntp client
 set enabled=yes
@@ -109,4 +113,4 @@ set allowed-interface-list=none
 set enabled=no
 
 /user
-set [find name="admin"] password=$adminPassword
+set [find name="admin"] password="$adminPassword"
