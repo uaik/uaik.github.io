@@ -57,7 +57,7 @@ add address=10.1.0.1/16 interface="$rosBridgeName" network=10.1.0.0
 add interface=ether1
 
 /ip dhcp-server lease
-# add address=10.2.0.40 mac-address=00:00:00:00:00:00 comment="SERVER01"
+# add address=10.1.0.40 mac-address=00:00:00:00:00:00 comment="SERVER01"
 
 /ip dhcp-server network
 add address=10.1.0.0/16 dns-server=10.1.0.1 domain="$rosNwDomain" gateway=10.1.0.1 ntp-server=10.1.0.1
