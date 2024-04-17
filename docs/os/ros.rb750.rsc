@@ -3,16 +3,16 @@
 # @copyright  2023 Library Online
 # @license    MIT
 # @version    0.1.0
-# @link
+# @link       https://lib.onl/ru/articles/2023/12/0f3478b3-9fde-59aa-a424-ff160431fa35/
 # -------------------------------------------------------------------------------------------------------------------- #
 # Set MAC:
 # /interface ethernet set [ find default-name="ether1" ] mac-address="00:00:00:00:00:00"
 # -------------------------------------------------------------------------------------------------------------------- #
 
-:local rosAdminPassword "pa$$word"
+:local rosAdminPassword "cDFymu2aML"
 :local rosBridgeName "bridge1"
-:local rosRouterName "GW"
-:local rosGwDomain "gw.lan"
+:local rosRouterName "GW1"
+:local rosGwDomain "gw1.lan"
 :local rosNwDomain "home.lan"
 :local rosIcmpKnockSize 100
 
@@ -32,6 +32,15 @@ add name=LAN
 add interface=ether1 list=WAN
 add interface="$rosBridgeName" list=LAN
 
+/ipv6 settings
+set disable-ipv6=yes
+
+/ip ipsec profile
+set [ find default=yes ] dh-group=ecp384 enc-algorithm=aes-256 hash-algorithm=sha256
+
+/ip ipsec proposal
+set [ find default=yes ] auth-algorithms=sha256 enc-algorithms=aes-256-cbc pfs-group=ecp384
+
 /ip pool
 add name=dhcp ranges=10.1.200.1-10.1.200.254
 
@@ -48,7 +57,7 @@ add address=10.1.0.1/16 interface="$rosBridgeName" network=10.1.0.0
 add interface=ether1
 
 /ip dhcp-server lease
-# add address=10.1.0.40 mac-address=00:00:00:00:00:00 comment="SERVER01"
+# add address=10.2.0.40 mac-address=00:00:00:00:00:00 comment="SERVER01"
 
 /ip dhcp-server network
 add address=10.1.0.0/16 dns-server=10.1.0.1 domain="$rosNwDomain" gateway=10.1.0.1 ntp-server=10.1.0.1
@@ -69,13 +78,15 @@ add action=add-src-to-address-list address-list="AdminCP" address-list-timeout=3
   comment="[ROS] ICMP port knocking for AdminCP"
 add action=accept chain=input protocol=icmp \
   comment="[ROS] ICMP"
+add action=accept chain=input protocol=ospf disabled=yes \
+  comment="[ROS] OSPF"
 add action=accept chain=input dst-port=9090,22022 protocol=tcp src-address-list="AdminCP" \
   comment="[ROS] WinBox and SSH"
 add action=drop chain=input in-interface-list=!LAN \
   comment="[ROS] All not coming from LAN"
-add action=accept chain=forward ipsec-policy=in,ipsec \
+add action=accept chain=forward ipsec-policy=in,ipsec disabled=yes \
   comment="[ROS] In IPsec policy"
-add action=accept chain=forward ipsec-policy=out,ipsec \
+add action=accept chain=forward ipsec-policy=out,ipsec disabled=yes \
   comment="[ROS] Out IPsec policy"
 add action=fasttrack-connection chain=forward connection-state=established,related \
   comment="[ROS] FastTrack"
@@ -116,6 +127,12 @@ add address="0.ru.pool.ntp.org"
 add address="1.ru.pool.ntp.org"
 add address="time.google.com"
 add address="time.cloudflare.com"
+
+/system routerboard settings
+set silent-boot=yes
+
+/system watchdog
+set automatic-supout=no
 
 /tool bandwidth-server
 set enabled=no
