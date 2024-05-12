@@ -16,15 +16,6 @@ inst.ks=https://uaik.github.io/os/[os.type.id.ini]
 url=https://uaik.github.io/os/[os.type.id.ini]
 ```
 
-### MikroTik RouterOS
-
-```
-/tool fetch url="https://uaik.github.io/os/[os.type.id.rsc]" dst-path="[os.type.id.rsc]"
-/tool fetch url="https://curl.se/ca/cacert.pem" dst-path="ros.cacert.pem"
-/system reset-configuration no-defaults=yes skip-backup=yes run-after-reset="[os.type.id.rsc]"
-/certificate import file-name="ros.cacert.pem" passphrase="" name="ROS"
-```
-
 ## Users / Passwords
 
 - User: `root`  
