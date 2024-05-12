@@ -3,7 +3,7 @@
 # "First steps" setup script.
 #
 # @package    Bash
-# @author     Kitsune Solar <mail@kitsune.solar>
+# @author     Kai Kimera <mail@kai.kim>
 # @copyright  2023 Library Online
 # @license    MIT
 # @version    0.1.0
