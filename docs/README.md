@@ -20,7 +20,7 @@ url=https://uaik.github.io/os/[os.type.id.ini]
 
 - User: `root`  
   Password: `cDFy mu2a ML`
-- User: `user-0000`  
+- User: `u0000`  
   Password: `7Jxs 6PKV Ak`
 
 **Passwords typed without spaces! Change passwords after installation!**
@@ -29,7 +29,7 @@ url=https://uaik.github.io/os/[os.type.id.ini]
 
 1. Change `root` password.
 2. Add new user.
-3. Lock default user `user-0000`.
+3. Lock default user `u0000`.
 
 ### Download & run "First steps" setup script
 
