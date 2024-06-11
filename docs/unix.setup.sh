@@ -24,7 +24,7 @@ init() {
   usermod="$( command -v usermod )"
 
   # Run.
-  root && u0002
+  root && u0001 && u0002
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -37,6 +37,25 @@ root() {
 
   echo "--- [${name^^}] Changing password for '${name^^}'..."
   read -rp 'Password: ' password </dev/tty
+  echo "${name}:${password}" | ${chpasswd}
+
+  echo "--- [${name^^}] Changing shell for '${name^^}'..."
+  ${chsh} -s '/bin/zsh' "${name}"
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# USER / 0001.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+u0001() {
+  local name='u0001'
+  local password
+
+  echo "--- [${name^^}] Adding user '${name^^}'..."
+  ${useradd} -mc "${name^^}" "${name}"
+
+  echo "--- [${name^^}] Changing password for '${name^^}'..."
+  read -rp "Password: " password </dev/tty
   echo "${name}:${password}" | ${chpasswd}
 
   echo "--- [${name^^}] Changing shell for '${name^^}'..."
