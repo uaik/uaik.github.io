@@ -1,7 +1,5 @@
 #!/usr/bin/env -S bash -e
 
-cat="$( command -v cat )"
-
 echo 'APT::Install-Suggests "false";' \
   > '/etc/apt/apt.conf.d/00InstallSuggests'
 
