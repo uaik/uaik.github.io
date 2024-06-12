@@ -2,6 +2,8 @@
 
 cat="$( command -v cat )"
 
+[[ ! -d '/etc/sysctl.d' ]] && { exit 1; }
+
 ${cat} > '/etc/sysctl.d/00-sysctl.local.conf' <<EOF
 # NET:Core.
 net.core.somaxconn                      = 65536

@@ -2,6 +2,8 @@
 
 cat="$( command -v cat )"
 
+[[ ! -d '/etc/ssh/sshd_config.d' ]] && { exit 1; }
+
 ${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
 Port 8022
 IgnoreRhosts yes

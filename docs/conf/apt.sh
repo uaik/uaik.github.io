@@ -1,5 +1,7 @@
 #!/usr/bin/env -S bash -e
 
+[[ ! -d '/etc/apt' ]] && { exit 1; }
+
 echo 'APT::Install-Suggests "false";' \
   > '/etc/apt/apt.conf.d/00InstallSuggests'
 

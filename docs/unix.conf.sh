@@ -63,7 +63,7 @@ u0000() {
   local u='u0000'
 
   # Locking user.
-  echo "--- [${u^^}] Locking user."
+  echo "--- [${u^^}] Locking user..."
   ${usermod} -L "${u}"
 }
 
@@ -76,7 +76,7 @@ u0001() {
   local p; p=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
 
   # Creating user.
-  echo "--- [${u^^}] Adding user."
+  echo "--- [${u^^}] Adding user..."
   ${useradd} -m -p "${p}" -c "${u^^}" "${u}"
 
   # Generating password.
@@ -85,11 +85,11 @@ u0001() {
   ${chown} ${u}:${u} "${d}/.password"
 
   # Changing shell.
-  echo "--- [${u^^}] Changing shell."
+  echo "--- [${u^^}] Changing shell..."
   ${chsh} -s '/bin/zsh' "${u}"
 
   # Locking user.
-  echo "--- [${u^^}] Locking user."
+  echo "--- [${u^^}] Locking user..."
   ${usermod} -L "${u}"
 }
 
@@ -102,16 +102,16 @@ u0002() {
   local p
 
   # Creating user.
-  echo "--- [${u^^}] Adding user."
+  echo "--- [${u^^}] Adding user..."
   ${useradd} -m -c "${u^^}" "${u}"
 
   # Changing password.
-  echo "--- [${u^^}] Changing password."
+  echo "--- [${u^^}] Changing password..."
   read -rp 'Password: ' p </dev/tty
   echo "${u}:${p}" | ${chpasswd}
 
   # Changing shell.
-  echo "--- [${u^^}] Changing shell."
+  echo "--- [${u^^}] Changing shell..."
   ${chsh} -s '/bin/zsh' "${u}"
 
   # GRML Zsh.
@@ -130,7 +130,7 @@ conf() {
   )
 
   for i in "${conf[@]}"; do
-    echo "--- [${i^^}] Getting configuration."
+    echo "--- [${i^^}] Installing a configuration..."
     curl -sL "https://uaik.github.io/conf/${i}.sh" | bash -
   done
 }

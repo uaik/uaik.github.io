@@ -2,6 +2,8 @@
 
 cat="$( command -v cat )"
 
+[[ ! -d '/etc/vim' ]] && { exit 1; }
+
 ${cat} > '/etc/vim/vimrc.local' <<EOF
 filetype plugin on
 syntax on
