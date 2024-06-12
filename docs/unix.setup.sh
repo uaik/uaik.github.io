@@ -18,13 +18,20 @@
 
 init() {
   # Apps.
-  chsh="$( command -v chsh )"
+  awk="$( command -v awk )"
+  cat="$( command -v cat )"
+  chown="$( command -v chown )"
   chpasswd="$( command -v chpasswd )"
+  chsh="$( command -v chsh )"
+  head="$( command -v head )"
+  tr="$( command -v tr )"
   useradd="$( command -v useradd )"
   usermod="$( command -v usermod )"
+  wget="$( command -v wget )"
+  mv="$( command -v mv )"
 
   # Run.
-  root && u0001 && u0002
+  root && u0001 && u0002 && u0000
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -32,15 +39,32 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 root() {
-  local name='root'
-  local password
+  local u='root'
+  local p
 
-  echo "--- [${name^^}] Changing password for '${name^^}'..."
-  read -rp 'Password: ' password </dev/tty
-  echo "${name}:${password}" | ${chpasswd}
+  # Changing password.
+  echo "--- [${u^^}] Changing password for '${u^^}'..."
+  read -rp 'Password: ' p </dev/tty
+  echo "${u}:${p}" | ${chpasswd}
 
-  echo "--- [${name^^}] Changing shell for '${name^^}'..."
-  ${chsh} -s '/bin/zsh' "${name}"
+  # Changing shell.
+  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  ${chsh} -s '/bin/zsh' "${u}"
+
+  # GRML Zsh.
+  grml "${u}"
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# USER / 0000.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+u0000() {
+  local u='u0000'
+
+  # Locking user.
+  echo "--- [${u^^}] Locking user '${u^^}'..."
+  ${usermod} -L "${u}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -48,18 +72,25 @@ root() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 u0001() {
-  local name='u0001'
-  local password
+  local u='u0001'
+  local p; p=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
 
-  echo "--- [${name^^}] Adding user '${name^^}'..."
-  ${useradd} -mc "${name^^}" "${name}"
+  # Creating user.
+  echo "--- [${u^^}] Adding user '${u^^}'..."
+  ${useradd} -m -p "${p}" -c "${u^^}" "${u}"
 
-  echo "--- [${name^^}] Changing password for '${name^^}'..."
-  read -rp "Password: " password </dev/tty
-  echo "${name}:${password}" | ${chpasswd}
+  # Generating password.
+  local d; d=$( home "${u}" )
+  echo "${p}" > "${d}/.password"
+  ${chown} ${u}:${u} "${d}/.password"
 
-  echo "--- [${name^^}] Changing shell for '${name^^}'..."
-  ${chsh} -s '/bin/zsh' "${name}"
+  # Changing shell.
+  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  ${chsh} -s '/bin/zsh' "${u}"
+
+  # Locking user.
+  echo "--- [${u^^}] Locking user '${u^^}'..."
+  ${usermod} -L "${u}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -67,18 +98,52 @@ u0001() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 u0002() {
-  local name='u0002'
-  local password
+  local u='u0002'
+  local p
 
-  echo "--- [${name^^}] Adding user '${name^^}'..."
-  ${useradd} -mc "${name^^}" "${name}"
+  # Creating user.
+  echo "--- [${u^^}] Adding user '${u^^}'..."
+  ${useradd} -m -c "${u^^}" "${u}"
 
-  echo "--- [${name^^}] Changing password for '${name^^}'..."
-  read -rp "Password: " password </dev/tty
-  echo "${name}:${password}" | ${chpasswd}
+  # Changing password.
+  echo "--- [${u^^}] Changing password for '${u^^}'..."
+  read -rp 'Password: ' p </dev/tty
+  echo "${u}:${p}" | ${chpasswd}
 
-  echo "--- [${name^^}] Changing shell for '${name^^}'..."
-  ${chsh} -s '/bin/zsh' "${name}"
+  # Changing shell.
+  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  ${chsh} -s '/bin/zsh' "${u}"
+
+  # GRML Zsh.
+  grml "${u}"
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# USER HOME DIRECTORY.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+home() {
+  local u="${1}"
+  local d; d=$( ${awk} -F ':' -v u="${u}" '{if ($1==u) print $6}' '/etc/passwd' )
+
+  echo "${d}"
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# GRML.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+grml() {
+  local u="${1}"
+  echo "--- [${u^^}] Download 'grml-zsh-config' for '${u^^}'..."
+  local d; d=$( home "${u}" )
+  [[ -f "${d}/.zshrc" ]] && ${mv} "${d}/.zshrc" "${d}/.zshrc.orig"
+  ${wget} -O "${d}/.zshrc.grml" 'https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
+  ${cat} > "${d}/.zshrc" <<EOF
+. "\${HOME}/.zshrc.grml"
+export GPG_TTY=\$(tty)
+EOF
+  for i in '.zshrc' '.zshrc.grml'; do ${chown} ${u}:${u} "${d}/${i}"; done
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
