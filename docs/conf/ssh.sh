@@ -2,7 +2,7 @@
 
 cat="$( command -v cat )"
 
-${cat} > '/etc/ssh/sshd_config.d/sshd.local.conf' <<EOF
+${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
 Port 8022
 IgnoreRhosts yes
 MaxAuthTries 2
