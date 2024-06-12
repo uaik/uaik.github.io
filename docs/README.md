@@ -28,13 +28,13 @@ url=https://uaik.github.io/os/[os.type.id.ini]
 ## First steps
 
 1. Change `root` password.
-2. Add new user.
-3. Lock default user `u0001`.
+2. Add new users.
+3. Lock default user `u0000`.
 
-### Download & run "First steps" setup script
+### Download & run configuration script
 
 ```sh
-$ curl -sL 'https://uaik.github.io/unix.setup.sh' | bash -
+$ curl -sL 'https://uaik.github.io/unix.conf.sh' | bash -
 ```
 
 ## Scripts
