@@ -128,6 +128,7 @@ conf() {
     'ssh'
     'sysctl'
     'vim'
+    'zfs'
   )
 
   for i in "${conf[@]}"; do
@@ -142,7 +143,7 @@ conf() {
 
 _home() {
   local u="${1}"
-  local d; d=$( ${awk} -F ':' -v u="${u}" '{if ($1==u) print $6}' '/etc/passwd' )
+  local d; d=$( ${awk} -F ':' -v u="${u}" '{ if ($1==u) print $6 }' '/etc/passwd' )
 
   echo "${d}"
 }

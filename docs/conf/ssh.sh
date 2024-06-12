@@ -2,7 +2,7 @@
 
 cat="$( command -v cat )"
 
-[[ ! -d '/etc/ssh/sshd_config.d' ]] && { exit 1; }
+[[ ! -d '/etc/ssh/sshd_config.d' ]] && { echo "Directory '/etc/ssh/sshd_config.d' not found!"; exit 1; }
 
 ${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
 Port 8022
@@ -12,3 +12,5 @@ PermitEmptyPasswords no
 PermitRootLogin no
 X11Forwarding no
 EOF
+
+exit 0

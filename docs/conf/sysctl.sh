@@ -2,7 +2,7 @@
 
 cat="$( command -v cat )"
 
-[[ ! -d '/etc/sysctl.d' ]] && { exit 1; }
+[[ ! -d '/etc/sysctl.d' ]] && { echo "Directory '/etc/sysctl.d' not found!"; exit 1; }
 
 ${cat} > '/etc/sysctl.d/00-sysctl.local.conf' <<EOF
 # NET:Core.
@@ -29,3 +29,5 @@ net.ipv4.tcp_congestion_control         = bbr
 fs.file-max                             = 500000
 fs.inotify.max_user_watches             = 524288
 EOF
+
+exit 0

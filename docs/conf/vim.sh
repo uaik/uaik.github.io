@@ -2,7 +2,7 @@
 
 cat="$( command -v cat )"
 
-[[ ! -d '/etc/vim' ]] && { exit 1; }
+[[ ! -d '/etc/vim' ]] && { echo "Directory '/etc/vim' not found!"; exit 1; }
 
 ${cat} > '/etc/vim/vimrc.local' <<EOF
 filetype plugin on
@@ -16,3 +16,5 @@ set ruler
 set mouse-=a
 set paste
 EOF
+
+exit 0
