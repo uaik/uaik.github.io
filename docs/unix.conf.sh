@@ -1,6 +1,6 @@
 #!/usr/bin/env -S bash -e
 #
-# "First steps" setup script.
+# Configuration script.
 #
 # @package    Bash
 # @author     Kai Kimera <mail@kai.kim>
@@ -24,11 +24,11 @@ init() {
   chpasswd="$( command -v chpasswd )"
   chsh="$( command -v chsh )"
   head="$( command -v head )"
+  mv="$( command -v mv )"
   tr="$( command -v tr )"
   useradd="$( command -v useradd )"
   usermod="$( command -v usermod )"
   wget="$( command -v wget )"
-  mv="$( command -v mv )"
 
   # Run.
   root && u0001 && u0002 && u0000 && conf
