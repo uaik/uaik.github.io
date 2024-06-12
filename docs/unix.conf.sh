@@ -43,12 +43,12 @@ root() {
   local p
 
   # Changing password.
-  echo "--- [${u^^}] Changing password for '${u^^}'..."
+  echo "--- [${u^^}] Changing password."
   read -rp 'Password: ' p </dev/tty
   echo "${u}:${p}" | ${chpasswd}
 
   # Changing shell.
-  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  echo "--- [${u^^}] Changing shell."
   ${chsh} -s '/bin/zsh' "${u}"
 
   # GRML Zsh.
@@ -63,7 +63,7 @@ u0000() {
   local u='u0000'
 
   # Locking user.
-  echo "--- [${u^^}] Locking user '${u^^}'..."
+  echo "--- [${u^^}] Locking user."
   ${usermod} -L "${u}"
 }
 
@@ -76,7 +76,7 @@ u0001() {
   local p; p=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
 
   # Creating user.
-  echo "--- [${u^^}] Adding user '${u^^}'..."
+  echo "--- [${u^^}] Adding user."
   ${useradd} -m -p "${p}" -c "${u^^}" "${u}"
 
   # Generating password.
@@ -85,11 +85,11 @@ u0001() {
   ${chown} ${u}:${u} "${d}/.password"
 
   # Changing shell.
-  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  echo "--- [${u^^}] Changing shell."
   ${chsh} -s '/bin/zsh' "${u}"
 
   # Locking user.
-  echo "--- [${u^^}] Locking user '${u^^}'..."
+  echo "--- [${u^^}] Locking user."
   ${usermod} -L "${u}"
 }
 
@@ -102,16 +102,16 @@ u0002() {
   local p
 
   # Creating user.
-  echo "--- [${u^^}] Adding user '${u^^}'..."
+  echo "--- [${u^^}] Adding user."
   ${useradd} -m -c "${u^^}" "${u}"
 
   # Changing password.
-  echo "--- [${u^^}] Changing password for '${u^^}'..."
+  echo "--- [${u^^}] Changing password."
   read -rp 'Password: ' p </dev/tty
   echo "${u}:${p}" | ${chpasswd}
 
   # Changing shell.
-  echo "--- [${u^^}] Changing shell for '${u^^}'..."
+  echo "--- [${u^^}] Changing shell."
   ${chsh} -s '/bin/zsh' "${u}"
 
   # GRML Zsh.
@@ -123,7 +123,14 @@ u0002() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 conf() {
-  for i in 'ssh' 'sysctl'; do
+  local conf=(
+    'apt'
+    'ssh'
+    'sysctl'
+  )
+
+  for i in "${conf[@]}"; do
+    echo "--- [${i^^}] Getting configuration."
     curl -sL "https://uaik.github.io/conf/${i}.sh" | bash -
   done
 }
@@ -153,7 +160,9 @@ _grml() {
 . "\${HOME}/.zshrc.grml"
 export GPG_TTY=\$(tty)
 EOF
-  for i in '.zshrc' '.zshrc.grml'; do ${chown} ${u}:${u} "${d}/${i}"; done
+  for i in '.zshrc' '.zshrc.grml'; do
+    ${chown} ${u}:${u} "${d}/${i}"
+  done
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
