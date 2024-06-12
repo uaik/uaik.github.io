@@ -1,10 +1,17 @@
 #!/usr/bin/env -S bash -e
 
-cat="$( command -v cat )"
+init() {
+  # Apps.
+  cat="$( command -v cat )"
 
-[[ ! -d '/etc/ssh/sshd_config.d' ]] && { echo "Directory '/etc/ssh/sshd_config.d' not found!"; exit 1; }
+  # Run.
+  ssh
+}
 
-${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
+ssh() {
+  [[ ! -d '/etc/ssh/sshd_config.d' ]] && { echo "Directory '/etc/ssh/sshd_config.d' not found!"; exit 1; }
+
+  ${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
 Port 8022
 IgnoreRhosts yes
 MaxAuthTries 2
@@ -12,5 +19,6 @@ PermitEmptyPasswords no
 PermitRootLogin no
 X11Forwarding no
 EOF
+}
 
-exit 0
+init "$@"; exit 0

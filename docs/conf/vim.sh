@@ -1,10 +1,17 @@
 #!/usr/bin/env -S bash -e
 
-cat="$( command -v cat )"
+init() {
+  # Apps.
+  cat="$( command -v cat )"
 
-[[ ! -d '/etc/vim' ]] && { echo "Directory '/etc/vim' not found!"; exit 1; }
+  # Run.
+  vim
+}
 
-${cat} > '/etc/vim/vimrc.local' <<EOF
+vim() {
+  [[ ! -d '/etc/vim' ]] && { echo "Directory '/etc/vim' not found!"; exit 1; }
+
+  ${cat} > '/etc/vim/vimrc.local' <<EOF
 filetype plugin on
 syntax on
 set nobackup
@@ -16,5 +23,6 @@ set ruler
 set mouse-=a
 set paste
 EOF
+}
 
-exit 0
+init "$@"; exit 0

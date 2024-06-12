@@ -1,18 +1,25 @@
 #!/usr/bin/env -S bash -e
 
-osId=$( awk -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-osCodeName=$( awk -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+init() {
+  # Run.
+  apt
+}
 
-if [[ "${osId}" != 'debian' ]] && [[ ! -d '/etc/apt' ]]; then
-  echo "It's not Debian!"
-  echo "Directory '/etc/apt' not found!"
-  exit 1
-fi
+apt() {
+  local osId; osId=$( awk -F '=' '$1=="ID" { print $2 }' /etc/os-release )
+  local osCodeName; osCodeName=$( awk -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
-echo 'APT::Install-Suggests "false";' \
-  > '/etc/apt/apt.conf.d/00InstallSuggests'
+  if [[ "${osId}" != 'debian' ]] && [[ ! -d '/etc/apt' ]]; then
+    echo "It's not Debian!"
+    echo "Directory '/etc/apt' not found!"
+    exit 1
+  fi
 
-echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
-  > /etc/apt/sources.list.d/debian.backports.list
+  echo 'APT::Install-Suggests "false";' \
+    > '/etc/apt/apt.conf.d/00InstallSuggests'
 
-exit 0
+  echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
+    > /etc/apt/sources.list.d/debian.backports.list
+}
+
+init "$@"; exit 0
