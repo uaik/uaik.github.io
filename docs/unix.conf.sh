@@ -127,6 +127,7 @@ conf() {
     'apt'
     'ssh'
     'sysctl'
+    'vim'
   )
 
   for i in "${conf[@]}"; do
