@@ -2,13 +2,15 @@
 
 init() {
   # Apps.
+  apt="$( command -v apt )"
   awk="$( command -v awk )"
   cat="$( command -v cat )"
   mv="$( command -v mv )"
   systemctl="$( command -v systemctl )"
 
   # Run.
-  systemd-networkd
+  systemd-networkd \
+    && systemd-resolved
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -30,6 +32,14 @@ EOF
 
   ${systemctl} enable systemd-networkd \
     && ${mv} '/etc/network/interfaces' '/etc/network/interfaces.save'
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# SYSTEMD-RESOLVED.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+systemd-resolved() {
+  ${apt} install --yes systemd-resolved
 }
 
 init "$@"; exit 0
