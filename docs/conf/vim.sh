@@ -1,17 +1,15 @@
 #!/usr/bin/env -S bash -e
 
 init() {
-  # Apps.
   cat="$( command -v cat )"
-
-  # Run.
   vim
 }
 
 vim() {
-  [[ ! -d '/etc/vim' ]] && { echo "Directory '/etc/vim' not found!"; exit 1; }
+  local d; local f
+  [[ -d '/etc/vim' ]] && { d='/etc/vim'; f='vimrc.local'; } || exit 1
 
-  ${cat} > '/etc/vim/vimrc.local' <<EOF
+  ${cat} > "${d}/${f}" <<EOF
 filetype plugin on
 syntax on
 set nobackup

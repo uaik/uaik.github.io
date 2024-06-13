@@ -34,7 +34,7 @@ url=https://uaik.github.io/os/[os.type.id.ini]
 ### Download & run configuration script
 
 ```sh
-$ curl -sL 'https://uaik.github.io/unix.conf.sh' | bash -
+$ curl -sL 'https://uaik.github.io/conf.sh' | bash -
 ```
 
 ## Scripts

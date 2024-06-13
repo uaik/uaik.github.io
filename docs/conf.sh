@@ -124,7 +124,7 @@ u0002() {
 
 conf() {
   local conf=(
-    'apt'
+    'pkg_m'
     'ssh'
     'sysctl'
     'systemd'
@@ -154,9 +154,10 @@ _home() {
 
 _grml() {
   local u="${1}"
+
   echo "--- [${u^^}] Download 'grml-zsh-config' for '${u^^}'..."
   local d; d=$( _home "${u}" )
-  [[ -f "${d}/.zshrc" ]] && ${mv} "${d}/.zshrc" "${d}/.zshrc.orig"
+  [[ -f "${d}/.zshrc" ]] && { ${mv} "${d}/.zshrc" "${d}/.zshrc.orig"; }
   ${wget} -O "${d}/.zshrc.grml" 'https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   ${cat} > "${d}/.zshrc" <<EOF
 . "\${HOME}/.zshrc.grml"

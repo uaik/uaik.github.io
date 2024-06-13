@@ -1,16 +1,12 @@
 #!/usr/bin/env -S bash -e
 
 init() {
-  # Apps.
   apt="$( command -v apt )"
   awk="$( command -v awk )"
   cat="$( command -v cat )"
   mv="$( command -v mv )"
   systemctl="$( command -v systemctl )"
-
-  # Run.
-  systemd-networkd \
-    && systemd-resolved
+  systemd-networkd && systemd-resolved
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -18,10 +14,14 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 systemd-networkd() {
-  local eth; mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
+  local d
+  [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || exit 1
+
+  local eth
+  mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
 
   for i in "${eth[@]}"; do
-    ${cat} > "/etc/systemd/network/${i}.network" <<EOF
+    ${cat} > "${d}/${i}.network" <<EOF
 [Match]
 Name=${i}
 
@@ -31,7 +31,7 @@ EOF
   done
 
   ${systemctl} enable systemd-networkd \
-    && ${mv} '/etc/network/interfaces' '/etc/network/interfaces.save'
+    && ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

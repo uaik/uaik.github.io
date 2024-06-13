@@ -1,17 +1,15 @@
 #!/usr/bin/env -S bash -e
 
 init() {
-  # Apps.
   cat="$( command -v cat )"
-
-  # Run.
-  ssh
+  sshd
 }
 
-ssh() {
-  [[ ! -d '/etc/ssh/sshd_config.d' ]] && { echo "Directory '/etc/ssh/sshd_config.d' not found!"; exit 1; }
+sshd() {
+  local d; local f
+  [[ -d '/etc/ssh/sshd_config.d' ]] && { d='/etc/ssh/sshd_config.d'; f='00-sshd.local.conf'; } || exit 1
 
-  ${cat} > '/etc/ssh/sshd_config.d/00-sshd.local.conf' <<EOF
+  ${cat} > "${d}/${f}" <<EOF
 Port 8022
 IgnoreRhosts yes
 MaxAuthTries 2
