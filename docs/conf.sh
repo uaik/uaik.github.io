@@ -124,7 +124,7 @@ u0002() {
 
 conf() {
   local conf=(
-    'pkg_m'
+    'pm'
     'ssh'
     'sysctl'
     'systemd'
