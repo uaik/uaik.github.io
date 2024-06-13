@@ -1,8 +1,10 @@
 #!/usr/bin/env -S bash -e
 
 init() {
-  osId=$( awk -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-  osCodeName=$( awk -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+  awk="$( command -v awk )"
+  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
+  osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+
   [[ "${osId}" == 'debian' ]] && { debianAptConf && debianAptSources; }
 }
 
