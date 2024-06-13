@@ -1,4 +1,16 @@
 #!/usr/bin/env -S bash -e
+#
+# Configuration script.
+#
+# @package    Bash
+# @author     Kai Kimera <mail@kai.kim>
+# @copyright  2023 Library Online
+# @license    MIT
+# @version    0.1.0
+# @link
+# -------------------------------------------------------------------------------------------------------------------- #
+
+(( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -6,30 +18,24 @@
 
 init() {
   # Apps.
-  awk="$( command -v awk )"
+  bash="$( command -v bash )"
   curl="$( command -v curl )"
 
-  # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-  osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
-
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianPhp; }
+  conf "${1}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# DEBIAN / PHP.
+# CONFIGURATION SCRIPTS.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianPhp() {
-  local gpg_d; local gpg_f; local list_d; local list_f
+conf() {
+  local conf; conf="${1}"; IFS=';' read -ra conf <<< "${conf}"
 
-  [[ -d '/etc/apt/trusted.gpg.d' ]] && { gpg_d='/etc/apt/trusted.gpg.d'; gpg_f='php.gpg'; } || exit 1
-  [[ -d '/etc/apt/sources.list.d' ]] && { list_d='/etc/apt/sources.list.d'; list_f='php.list'; } || exit 1
-
-  ${curl} -sSLo "${gpg_d}/${gpg_f}" 'https://packages.sury.org/php/apt.gpg'
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] https://packages.sury.org/php/ ${osCodeName} main" \
-    > "${list_d}/${list_f}"
+  for i in "${conf[@]}"; do
+    echo "--- [${i^^}] Installing a configuration..."
+    ${curl} -sSL "https://uaik.github.io/conf/${i}.sh" | ${bash} -
+  done
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
