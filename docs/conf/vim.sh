@@ -17,8 +17,8 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 vim() {
-  local d; local f
-  [[ -d '/etc/vim' ]] && { d='/etc/vim'; f='vimrc.local'; } || exit 1
+  local d='/etc/vim'; [[ ! -d "${d}" ]] && exit 1
+  local f='vimrc.local'
 
   ${cat} > "${d}/${f}" <<EOF
 filetype plugin on

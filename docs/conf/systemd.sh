@@ -22,7 +22,7 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 systemd-networkd() {
-  local d; [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || exit 1
+  local d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
   local eth; mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
 
   for i in "${eth[@]}"; do

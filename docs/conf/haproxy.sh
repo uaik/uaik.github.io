@@ -1,5 +1,9 @@
 #!/usr/bin/env -S bash -e
 
+# -------------------------------------------------------------------------------------------------------------------- #
+# INITIALIZATION.
+# -------------------------------------------------------------------------------------------------------------------- #
+
 init() {
   # Apps.
   awk="$( command -v awk )"
@@ -14,10 +18,13 @@ init() {
   [[ "${osId}" == 'debian' ]] && { debianHAProxy; }
 }
 
+# -------------------------------------------------------------------------------------------------------------------- #
+# DEBIAN / HAPROXY.
+# -------------------------------------------------------------------------------------------------------------------- #
+
 debianHAProxy() {
-  local gpg_d; local gpg_f; local list_d; local list_f
-  [[ -d '/etc/apt/keyrings' ]] && { gpg_d='/etc/apt/keyrings'; gpg_f='haproxy.gpg'; } || exit 1
-  [[ -d '/etc/apt/sources.list.d' ]] && { list_d='/etc/apt/sources.list.d'; list_f='haproxy.list'; } || exit 1
+  local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+  local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.list'; [[ ! -d "${list_d}" ]] && exit 1
 
   ${curl} -sSL 'https://haproxy.debian.net/bernat.debian.org.gpg' \
     | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
