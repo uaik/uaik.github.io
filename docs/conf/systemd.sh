@@ -10,8 +10,8 @@ init() {
   awk="$( command -v awk )"
   cat="$( command -v cat )"
   mv="$( command -v mv )"
-  systemctl="$( command -v systemctl )"
   shutdown="$( command -v shutdown )"
+  systemctl="$( command -v systemctl )"
 
   # Run.
   systemd-networkd && systemd-resolved && reboot
