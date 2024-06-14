@@ -26,7 +26,7 @@ debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.list'; [[ ! -d "${list_d}" ]] && exit 1
 
-  ${curl} -sSL 'https://haproxy.debian.net/bernat.debian.org.gpg' \
+  ${curl} -fsSL 'https://haproxy.debian.net/bernat.debian.org.gpg' \
     | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
   echo "deb [signed-by=${gpg_d}/${gpg_f}] http://haproxy.debian.net ${osCodeName}-backports-${1} main" \
     > "${list_d}/${list_f}"

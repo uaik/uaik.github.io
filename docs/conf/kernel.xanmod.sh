@@ -22,10 +22,10 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  local gpg_d='/etc/apt/keyrings'; local gpg_f='xanmod.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-  local list_d='/etc/apt/sources.list.d'; local list_f='xanmod.list'; [[ ! -d "${list_d}" ]] && exit 1
+  local gpg_d='/etc/apt/keyrings'; local gpg_f='kernel.xanmod.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+  local list_d='/etc/apt/sources.list.d'; local list_f='kernel.xanmod.list'; [[ ! -d "${list_d}" ]] && exit 1
 
-  ${curl} -sSL 'https://dl.xanmod.org/archive.key' \
+  ${curl} -fsSL 'https://dl.xanmod.org/archive.key' \
     | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
   echo "deb [signed-by=${gpg_d}/${gpg_f}] http://deb.xanmod.org releases main" \
     > "${list_d}/${list_f}"
