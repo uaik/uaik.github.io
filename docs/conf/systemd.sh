@@ -23,7 +23,7 @@ init() {
 
 systemd-networkd() {
   local d
-  [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || { exit 1; }
+  [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || exit 1
 
   local eth
   mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
@@ -38,8 +38,8 @@ DHCP=ipv4
 EOF
   done
 
-  ${systemctl} enable systemd-networkd \
-    && ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'
+  ${systemctl} enable systemd-networkd
+  [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

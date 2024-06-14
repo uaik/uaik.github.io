@@ -18,7 +18,7 @@ init() {
 
 sysctl() {
   local d; local f
-  [[ -d '/etc/sysctl.d' ]] && { d='/etc/sysctl.d'; f='00-sysctl.local.conf'; } || { exit 1; }
+  [[ -d '/etc/sysctl.d' ]] && { d='/etc/sysctl.d'; f='00-sysctl.local.conf'; } || exit 1
 
   ${cat} > "${d}/${f}" <<EOF
 # -------------------------------------------------------------------------------------------------------------------- #
