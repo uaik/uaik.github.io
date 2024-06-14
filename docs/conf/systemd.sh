@@ -14,7 +14,7 @@ init() {
   systemctl="$( command -v systemctl )"
 
   # Run.
-  systemd-networkd && systemd-resolved && reboot
+  systemd-networkd && systemd-resolved
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
