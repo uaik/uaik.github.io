@@ -33,10 +33,9 @@ conf() {
   local conf; conf="${1}"; IFS=';' read -ra conf <<< "${conf}"
 
   for i in "${conf[@]}"; do
-    local url="https://uaik.github.io/conf/${i}.sh"
-    if ${curl} -sSLf "${url}"; then
+    if local script; script=$( ${curl} --fail -sL "https://uaik.github.io/conf/${i}.sh" ); then
       echo "--- [${i^^}] Installing a configuration..."
-      ${curl} -sSL "${url}" | ${bash} -
+      ${bash} -s <<< "${script}"
     else
       echo "--- [${i^^}] Configuration not found!"
       exit 1
