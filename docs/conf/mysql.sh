@@ -26,9 +26,6 @@ debianMySQL() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='mysql.list'; [[ ! -d "${list_d}" ]] && exit 1
 
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://repo.mysql.com/apt/${osId} ${osCodeName} mysql-8.4-lts" \
-    > "${list_d}/${list_f}"
-
   ${cat} > "${gpg_d}/${gpg_f}" <<EOF
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: SKS 1.1.6
@@ -82,6 +79,8 @@ cAZUlaj3id3TxquAlud4lWDz
 EOF
 
   ${cat} "${gpg_d}/${gpg_f}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
+  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://repo.mysql.com/apt/${osId} ${osCodeName} mysql-8.4-lts" \
+    > "${list_d}/${list_f}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
