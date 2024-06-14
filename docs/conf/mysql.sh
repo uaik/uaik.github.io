@@ -15,14 +15,14 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianMySQL '8.4-lts'; }
+  [[ "${osId}" == 'debian' ]] && { debian '8.4-lts'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DEBIAN / MYSQL.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianMySQL() {
+debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='mysql.list'; [[ ! -d "${list_d}" ]] && exit 1
 

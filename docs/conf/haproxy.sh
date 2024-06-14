@@ -15,14 +15,14 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianHAProxy '3.0'; }
+  [[ "${osId}" == 'debian' ]] && { debian '3.0'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DEBIAN / HAPROXY.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianHAProxy() {
+debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.list'; [[ ! -d "${list_d}" ]] && exit 1
 

@@ -14,14 +14,14 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianPhp; }
+  [[ "${osId}" == 'debian' ]] && { debian; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DEBIAN / PHP.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianPhp() {
+debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='php.list'; [[ ! -d "${list_d}" ]] && exit 1
 

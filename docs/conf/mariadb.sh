@@ -14,14 +14,14 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianMariaDB '11.4'; }
+  [[ "${osId}" == 'debian' ]] && { debian '11.4'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DEBIAN / MARIADB.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianMariaDB() {
+debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.list'; [[ ! -d "${list_d}" ]] && exit 1
 

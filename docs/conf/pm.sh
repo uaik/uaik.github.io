@@ -13,29 +13,29 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianAptConf && debianAptSources; }
+  [[ "${osId}" == 'debian' ]] && { debian; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DEBIAN / APT / CONF.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-debianAptConf() {
-  local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
+debian() {
+  aptConf() {
+    local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
 
-  echo 'APT::Install-Suggests "false";' \
-    > "${d}/00InstallSuggests"
-}
+    echo 'APT::Install-Suggests "false";' \
+      > "${d}/00InstallSuggests"
+  }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# DEBIAN / APT / SOURCES.
-# -------------------------------------------------------------------------------------------------------------------- #
+  aptSources() {
+    local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
 
-debianAptSources() {
-  local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
+    echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
+      > "${d}/debian.backports.list"
+  }
 
-  echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
-    > "${d}/debian.backports.list"
+  aptConf && aptSources
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
