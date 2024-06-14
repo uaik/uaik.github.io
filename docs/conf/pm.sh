@@ -31,7 +31,7 @@ debian() {
   aptSources() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
 
-    ${cat} > "${d}/debian.backports.list" <<EOF
+    ${cat} > "${d}/debian.backports.sources" <<EOF
 Enabled:        yes
 Types:          deb
 URIs:           http://deb.debian.org/${osId}

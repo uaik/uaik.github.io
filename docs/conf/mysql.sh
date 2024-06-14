@@ -23,7 +23,7 @@ init() {
 
 debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-  local list_d='/etc/apt/sources.list.d'; local list_f='mysql.list'; [[ ! -d "${list_d}" ]] && exit 1
+  local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
 
   ${cat} > "${gpg_d}/${gpg_f}" <<EOF
 -----BEGIN PGP PUBLIC KEY BLOCK-----
