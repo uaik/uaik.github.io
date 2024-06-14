@@ -6,12 +6,12 @@
 
 init() {
   # Apps.
-  awk="$( command -v awk )"
+  cat="$( command -v cat )"
   curl="$( command -v curl )"
 
   # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-  osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+  osId=$(. '/etc/os-release' && echo "${ID}")
+  osCodeName=$(. '/etc/os-release' && echo "${VERSION_CODENAME}")
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian '11.4'; }
@@ -26,8 +26,15 @@ debian() {
   local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.list'; [[ ! -d "${list_d}" ]] && exit 1
 
   ${curl} -fsSLo "${gpg_d}/${gpg_f}" 'https://mariadb.org/mariadb_release_signing_key.pgp'
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] https://mirror.netcologne.de/mariadb/repo/${1}/${osId} ${osCodeName} main" \
-    > "${list_d}/${list_f}"
+  ${cat} > "${list_d}/${list_f}" <<EOF
+Enabled:        yes
+Types:          deb
+URIs:           https://mirror.netcologne.de/mariadb/repo/${1}/${osId}
+Suites:         ${osCodeName}
+Components:     main
+Architectures:  $( dpkg --print-architecture )
+Signed-By:      ${gpg_d}/${gpg_f}
+EOF
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

@@ -5,11 +5,8 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 
 init() {
-  # Apps.
-  awk="$( command -v awk )"
-
   # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
+  osId=$(. '/etc/os-release' && echo "${ID}")
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }

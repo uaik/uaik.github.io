@@ -6,8 +6,8 @@
 
 init() {
   # Apps.
-  curl="$( command -v curl )"
   cat="$( command -v cat )"
+  curl="$( command -v curl )"
 
   # OS.
   osId=$(. '/etc/os-release' && echo "${ID}")

@@ -6,13 +6,12 @@
 
 init() {
   # Apps.
-  awk="$( command -v awk )"
   cat="$( command -v cat )"
   gpg="$( command -v gpg )"
 
   # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-  osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+  osId=$(. '/etc/os-release' && echo "${ID}")
+  osCodeName=$(. '/etc/os-release' && echo "${VERSION_CODENAME}")
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian '8.4-lts'; }
@@ -79,8 +78,15 @@ cAZUlaj3id3TxquAlud4lWDz
 EOF
 
   ${cat} "${gpg_d}/${gpg_f}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://repo.mysql.com/apt/${osId} ${osCodeName} mysql-${1}" \
-    > "${list_d}/${list_f}"
+  ${cat} > "${list_d}/${list_f}" <<EOF
+Enabled:        yes
+Types:          deb
+URIs:           http://repo.mysql.com/apt/${osId}
+Suites:         ${osCodeName}
+Components:     mysql-${1}
+Architectures:  $( dpkg --print-architecture )
+Signed-By:      ${gpg_d}/${gpg_f}
+EOF
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

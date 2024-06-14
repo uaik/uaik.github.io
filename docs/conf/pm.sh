@@ -6,11 +6,11 @@
 
 init() {
   # Apps.
-  awk="$( command -v awk )"
+  cat="$( command -v cat )"
 
   # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
-  osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
+  osId=$(. '/etc/os-release' && echo "${ID}")
+  osCodeName=$(. '/etc/os-release' && echo "${VERSION_CODENAME}")
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }
@@ -31,8 +31,14 @@ debian() {
   aptSources() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
 
-    echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
-      > "${d}/debian.backports.list"
+    ${cat} > "${d}/debian.backports.list" <<EOF
+Enabled:        yes
+Types:          deb
+URIs:           http://deb.debian.org/${osId}
+Suites:         ${osCodeName}-backports
+Components:     main contrib non-free
+Architectures:  $( dpkg --print-architecture )
+EOF
   }
 
   aptConf && aptSources

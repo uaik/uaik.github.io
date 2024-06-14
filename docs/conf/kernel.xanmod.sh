@@ -6,12 +6,12 @@
 
 init() {
   # Apps.
-  awk="$( command -v awk )"
+  cat="$( command -v cat )"
   curl="$( command -v curl )"
   gpg="$( command -v gpg )"
 
   # OS.
-  osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
+  osId=$(. '/etc/os-release' && echo "${ID}")
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }
@@ -25,10 +25,16 @@ debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='kernel.xanmod.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='kernel.xanmod.list'; [[ ! -d "${list_d}" ]] && exit 1
 
-  ${curl} -fsSL 'https://dl.xanmod.org/archive.key' \
-    | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://deb.xanmod.org releases main" \
-    > "${list_d}/${list_f}"
+  ${curl} -fsSL 'https://dl.xanmod.org/archive.key' | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
+  ${cat} > "${list_d}/${list_f}" <<EOF
+Enabled:        yes
+Types:          deb
+URIs:           http://deb.xanmod.org
+Suites:         releases
+Components:     main
+Architectures:  $( dpkg --print-architecture )
+Signed-By:      ${gpg_d}/${gpg_f}
+EOF
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
