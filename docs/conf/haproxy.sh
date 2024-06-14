@@ -15,7 +15,7 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianHAProxy; }
+  [[ "${osId}" == 'debian' ]] && { debianHAProxy '3.0'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -28,7 +28,7 @@ debianHAProxy() {
 
   ${curl} -sSL 'https://haproxy.debian.net/bernat.debian.org.gpg' \
     | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://haproxy.debian.net ${osCodeName}-backports-3.0 main" \
+  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://haproxy.debian.net ${osCodeName}-backports-${1} main" \
     > "${list_d}/${list_f}"
 }
 

@@ -15,7 +15,7 @@ init() {
   osCodeName=$( ${awk} -F '=' '$1=="VERSION_CODENAME" { print $2 }' /etc/os-release )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debianMySQL; }
+  [[ "${osId}" == 'debian' ]] && { debianMySQL '8.4-lts'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -79,7 +79,7 @@ cAZUlaj3id3TxquAlud4lWDz
 EOF
 
   ${cat} "${gpg_d}/${gpg_f}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
-  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://repo.mysql.com/apt/${osId} ${osCodeName} mysql-8.4-lts" \
+  echo "deb [signed-by=${gpg_d}/${gpg_f}] http://repo.mysql.com/apt/${osId} ${osCodeName} mysql-${1}" \
     > "${list_d}/${list_f}"
 }
 
