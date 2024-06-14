@@ -279,9 +279,9 @@ net.ipv4.tcp_wmem = 4096 87380 8388608
 # -------------------------------------------------------------------------------------------------------------------- #
 
 # Disable IPv6.
-net.ipv6.conf.all.disable_ipv6          = 1
-net.ipv6.conf.default.disable_ipv6      = 1
-net.ipv6.conf.lo.disable_ipv6           = 1
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
 
 # Disallow IPv6 packet forwarding.
 net.ipv6.conf.default.forwarding = 0
