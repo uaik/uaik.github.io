@@ -11,9 +11,10 @@ init() {
   cat="$( command -v cat )"
   mv="$( command -v mv )"
   systemctl="$( command -v systemctl )"
+  shutdown="$( command -v shutdown )"
 
   # Run.
-  systemd-networkd && systemd-resolved
+  systemd-networkd && systemd-resolved && reboot
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -22,7 +23,7 @@ init() {
 
 systemd-networkd() {
   local d
-  [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || exit 1
+  [[ -d '/etc/systemd/network' ]] && { d='/etc/systemd/network'; } || { exit 1; }
 
   local eth
   mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
@@ -47,6 +48,14 @@ EOF
 
 systemd-resolved() {
   ${apt} install --yes systemd-resolved
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# REBOOT.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+reboot() {
+  ${shutdown} -r now
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

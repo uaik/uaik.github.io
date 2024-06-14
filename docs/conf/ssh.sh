@@ -18,7 +18,7 @@ init() {
 
 sshd() {
   local d; local f
-  [[ -d '/etc/ssh/sshd_config.d' ]] && { d='/etc/ssh/sshd_config.d'; f='00-sshd.local.conf'; } || exit 1
+  [[ -d '/etc/ssh/sshd_config.d' ]] && { d='/etc/ssh/sshd_config.d'; f='00-sshd.local.conf'; } || { exit 1; }
 
   ${cat} > "${d}/${f}" <<EOF
 Port 8022
