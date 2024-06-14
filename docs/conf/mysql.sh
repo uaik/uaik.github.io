@@ -8,6 +8,7 @@ init() {
   # Apps.
   awk="$( command -v awk )"
   cat="$( command -v cat )"
+  gpg="$( command -v gpg )"
 
   # OS.
   osId=$( ${awk} -F '=' '$1=="ID" { print $2 }' /etc/os-release )
@@ -79,6 +80,8 @@ cAZUlaj3id3TxquAlud4lWDz
 =h5nH
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
+
+  ${cat} "${gpg_d}/${gpg_f}" | ${gpg} -o "${gpg_d}/${gpg_f}" --dearmor
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
