@@ -81,7 +81,7 @@ cAZUlaj3id3TxquAlud4lWDz
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
 
-  ${cat} "${gpg_d}/${gpg_f}" | ${gpg} -o "${gpg_d}/${gpg_f}" --dearmor
+  ${cat} "${gpg_d}/${gpg_f}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
