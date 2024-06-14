@@ -23,7 +23,6 @@ init() {
 
 debianPhp() {
   local gpg_d; local gpg_f; local list_d; local list_f
-
   [[ -d '/etc/apt/keyrings' ]] && { gpg_d='/etc/apt/keyrings'; gpg_f='php.gpg'; } || exit 1
   [[ -d '/etc/apt/sources.list.d' ]] && { list_d='/etc/apt/sources.list.d'; list_f='php.list'; } || exit 1
 

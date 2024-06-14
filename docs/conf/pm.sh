@@ -21,8 +21,7 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debianAptConf() {
-  local d
-  [[ -d '/etc/apt/apt.conf.d' ]] && { d='/etc/apt/apt.conf.d'; } || exit 1
+  local d; [[ -d '/etc/apt/apt.conf.d' ]] && { d='/etc/apt/apt.conf.d'; } || exit 1
 
   echo 'APT::Install-Suggests "false";' \
     > "${d}/00InstallSuggests"
@@ -33,8 +32,7 @@ debianAptConf() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debianAptSources() {
-  local d
-  [[ -d '/etc/apt/sources.list.d' ]] && { d='/etc/apt/sources.list.d'; } || exit 1
+  local d; [[ -d '/etc/apt/sources.list.d' ]] && { d='/etc/apt/sources.list.d'; } || exit 1
 
   echo "deb http://deb.debian.org/debian ${osCodeName}-backports main contrib non-free" \
     > "${d}/debian.backports.list"

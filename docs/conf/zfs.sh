@@ -20,8 +20,8 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debianZfs() {
-  apt install --yes linux-headers-amd64
-  apt install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
+  apt install --yes linux-headers-amd64 \
+    && apt install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
