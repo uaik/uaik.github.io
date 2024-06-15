@@ -24,8 +24,9 @@ init() {
 debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
+  local key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
-  ${curl} -fsSLo "${gpg_d}/${gpg_f}" 'https://mariadb.org/mariadb_release_signing_key.pgp'
+  ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
   ${cat} > "${list_d}/${list_f}" <<EOF
 X-Repolib-Name: MariaDB
 Enabled:        yes

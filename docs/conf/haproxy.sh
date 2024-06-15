@@ -25,8 +25,9 @@ init() {
 debian() {
   local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
   local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.sources'; [[ ! -d "${list_d}" ]] && exit 1
+  local key='https://haproxy.debian.net/bernat.debian.org.gpg'
 
-  ${curl} -fsSL 'https://haproxy.debian.net/bernat.debian.org.gpg' | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
+  ${curl} -fsSL "${key}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
   ${cat} > "${list_d}/${list_f}" <<EOF
 Enabled:        yes
 Types:          deb
