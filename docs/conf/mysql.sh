@@ -14,7 +14,7 @@ init() {
   osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debian '8.4-lts'; }
+  [[ "${osId}" == 'debian' ]] && { debian; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -22,10 +22,11 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-  local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
+  aptSources() {
+    local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
 
-  ${cat} <<EOF | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
+    ${cat} <<EOF | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: SKS 1.1.6
 Comment: Hostname: pgp.mit.edu
@@ -77,7 +78,7 @@ cAZUlaj3id3TxquAlud4lWDz
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
 
-  ${cat} > "${list_d}/${list_f}" <<EOF
+    ${cat} > "${list_d}/${list_f}" <<EOF
 X-Repolib-Name: MySQL
 Enabled:        yes
 Types:          deb
@@ -87,6 +88,9 @@ Components:     mysql-${1}
 Architectures:  $( dpkg --print-architecture )
 Signed-By:      ${gpg_d}/${gpg_f}
 EOF
+  }
+
+  aptSources '8.4-lts'
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

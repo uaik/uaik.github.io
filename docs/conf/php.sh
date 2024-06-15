@@ -22,12 +22,13 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-  local list_d='/etc/apt/sources.list.d'; local list_f='php.sources'; [[ ! -d "${list_d}" ]] && exit 1
-  local key='https://packages.sury.org/php/apt.gpg'
+  aptSources() {
+    local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d='/etc/apt/sources.list.d'; local list_f='php.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key='https://packages.sury.org/php/apt.gpg'
 
-  ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
-  ${cat} > "${list_d}/${list_f}" <<EOF
+    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
+    ${cat} > "${list_d}/${list_f}" <<EOF
 X-Repolib-Name: PHP (Sury)
 Enabled:        yes
 Types:          deb
@@ -37,6 +38,9 @@ Components:     main
 Architectures:  $( dpkg --print-architecture )
 Signed-By:      ${gpg_d}/${gpg_f}
 EOF
+  }
+
+  aptSources
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
