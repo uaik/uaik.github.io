@@ -23,14 +23,24 @@ init() {
 debian() {
   local k; k=$( ${uname} -r )
 
-  if [[ "${k}" =~ 'zabbly' ]]; then
-    ${apt} --yes install openzfs-zfsutils openzfs-zfs-dkms openzfs-zfs-initramfs
-  elif [[ "${k}" =~ 'xanmod' ]]; then
+  xanmod() {
     echo "Zfs is not compatible with this kernel version (${k})!"; exit 1
-  else
+  }
+
+  zabbly() {
+    ${apt} --yes install openzfs-zfsutils openzfs-zfs-dkms openzfs-zfs-initramfs
+  }
+
+  default() {
     ${apt} install --yes linux-headers-amd64 \
       && ${apt} install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
-  fi
+  }
+
+  case "${k}" in
+    *'xanmod'*) xanmod ;;
+    *'zabbly'*) zabbly ;;
+    *) default ;;
+  esac
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
