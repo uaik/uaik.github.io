@@ -6,7 +6,7 @@
 
 init() {
   # Apps.
-  cat="$( command -v cat )"
+  cat=$( command -v cat )
 
   # Run.
   vim

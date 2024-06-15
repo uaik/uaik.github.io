@@ -6,11 +6,11 @@
 
 init() {
   # Apps.
-  cat="$( command -v cat )"
+  cat=$( command -v cat )
 
   # OS.
-  osId=$(. '/etc/os-release' && echo "${ID}")
-  osCodeName=$(. '/etc/os-release' && echo "${VERSION_CODENAME}")
+  osId=$( . '/etc/os-release' && echo "${ID}" )
+  osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }

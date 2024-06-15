@@ -6,12 +6,12 @@
 
 init() {
   # Apps.
-  cat="$( command -v cat )"
-  curl="$( command -v curl )"
-  gpg="$( command -v gpg )"
+  cat=$( command -v cat )
+  curl=$( command -v curl )
+  gpg=$( command -v gpg )
 
   # OS.
-  osId=$(. '/etc/os-release' && echo "${ID}")
+  osId=$( . '/etc/os-release' && echo "${ID}" )
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }

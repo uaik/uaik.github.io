@@ -5,8 +5,12 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 
 init() {
+  # Apps.
+  apt=$( command -v apt )
+  uname=$( command -v uname )
+
   # OS.
-  osId=$(. '/etc/os-release' && echo "${ID}")
+  osId=$( . '/etc/os-release' && echo "${ID}" )
 
   # Run.
   [[ "${osId}" == 'debian' ]] && { debian; }
@@ -17,8 +21,16 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  apt install --yes linux-headers-amd64 \
-    && apt install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
+  local k; k=$( ${uname} -r )
+
+  if [[ "${k}" =~ 'zabbly' ]]; then
+    ${apt} --yes install openzfs-zfsutils openzfs-zfs-dkms openzfs-zfs-initramfs
+  elif [[ "${k}" =~ 'xanmod' ]]; then
+    echo "Zfs is not compatible with this kernel version (${k})!"; exit 1
+  else
+    ${apt} install --yes linux-headers-amd64 \
+      && ${apt} install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
+  fi
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
