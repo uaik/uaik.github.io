@@ -23,6 +23,10 @@ init() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
+  init() {
+    aptSources
+  }
+
   aptSources() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='kernel.zabbly.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
     local list_d='/etc/apt/sources.list.d'; local list_f='kernel.zabbly.sources'; [[ ! -d "${list_d}" ]] && exit 1
@@ -41,7 +45,7 @@ Signed-By:      ${gpg_d}/${gpg_f}
 EOF
   }
 
-  aptSources
+  init
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
