@@ -27,6 +27,7 @@ debian() {
 
   ${curl} -fsSLo "${gpg_d}/${gpg_f}" 'https://mariadb.org/mariadb_release_signing_key.pgp'
   ${cat} > "${list_d}/${list_f}" <<EOF
+X-Repolib-Name: MariaDB
 Enabled:        yes
 Types:          deb
 URIs:           https://mirror.netcologne.de/mariadb/repo/${1}/${osId}

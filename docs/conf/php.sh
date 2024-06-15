@@ -27,6 +27,7 @@ debian() {
 
   ${curl} -fsSLo "${gpg_d}/${gpg_f}" 'https://packages.sury.org/php/apt.gpg'
   ${cat} > "${list_d}/${list_f}" <<EOF
+X-Repolib-Name: PHP (Sury)
 Enabled:        yes
 Types:          deb
 URIs:           https://packages.sury.org/php

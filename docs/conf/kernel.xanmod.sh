@@ -27,6 +27,7 @@ debian() {
 
   ${curl} -fsSL 'https://dl.xanmod.org/archive.key' | ${gpg} --dearmor > "${gpg_d}/${gpg_f}"
   ${cat} > "${list_d}/${list_f}" <<EOF
+X-Repolib-Name: Kernel (XanMod)
 Enabled:        yes
 Types:          deb
 URIs:           http://deb.xanmod.org

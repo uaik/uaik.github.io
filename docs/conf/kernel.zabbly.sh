@@ -27,6 +27,7 @@ debian() {
 
   ${curl} -fsSLo "${gpg_d}/${gpg_f}" 'https://pkgs.zabbly.com/key.asc'
   ${cat} > "${list_d}/${list_f}" <<EOF
+X-Repolib-Name: Kernel (Zabbly)
 Enabled:        yes
 Types:          deb deb-src
 URIs:           https://pkgs.zabbly.com/kernel/stable

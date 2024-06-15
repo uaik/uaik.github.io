@@ -79,6 +79,7 @@ EOF
 
   ${cat} "${gpg_d}/${gpg_f}" | ${gpg} --batch --yes --dearmor -o "${gpg_d}/${gpg_f}"
   ${cat} > "${list_d}/${list_f}" <<EOF
+X-Repolib-Name: MySQL
 Enabled:        yes
 Types:          deb
 URIs:           http://repo.mysql.com/apt/${osId}
