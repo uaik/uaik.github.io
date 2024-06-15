@@ -24,7 +24,7 @@ debian() {
   local k; k=$( ${uname} -r )
 
   xanmod() {
-    echo "Zfs is not compatible with this kernel version (${k})!"; exit 1
+    echo "Zfs is not compatible with this kernel version (${k})!" && exit 1
   }
 
   zabbly() {
@@ -37,9 +37,15 @@ debian() {
   }
 
   case "${k}" in
-    *'xanmod'*) xanmod ;;
-    *'zabbly'*) zabbly ;;
-    *) default ;;
+    *'xanmod'*)
+      xanmod
+      ;;
+    *'zabbly'*)
+      zabbly
+      ;;
+    *)
+      default
+      ;;
   esac
 }
 
