@@ -7,7 +7,6 @@
 init() {
   # Apps.
   curl=$( command -v curl )
-  gpg=$( command -v gpg )
   sed=$( command -v sed )
 
   # OS.
