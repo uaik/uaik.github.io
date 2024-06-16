@@ -29,7 +29,7 @@ init() {
 
 debian() {
   init() {
-    repo
+    repo && conf
   }
 
   repo() {
@@ -48,6 +48,14 @@ debian() {
         -e "s|<arch>|$( dpkg --print-architecture )|g" \
         -e "s|<sig>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
+  }
+
+  conf() {
+    local sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
+    local apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
+
+    ${curl} -fsSLo "${sys_d}/syncthing@.service" 'https://uaik.github.io/conf/syncthing/syncthing@.service' \
+      && ${curl} -fsSLo "${apt_d}/syncthing.pref" 'https://uaik.github.io/conf/syncthing/syncthing.pref'
   }
 
   init

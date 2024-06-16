@@ -49,7 +49,7 @@ debian() {
 
   conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    ${curl} -fsSLo "${d}/00InstallSuggests" "https://uaik.github.io/conf/apt/00InstallSuggests"
+    ${curl} -fsSLo "${d}/00InstallSuggests" 'https://uaik.github.io/conf/apt/00InstallSuggests'
   }
 
   init
