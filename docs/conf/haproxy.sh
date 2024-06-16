@@ -40,7 +40,8 @@ debian() {
     local key='https://haproxy.debian.net/bernat.debian.org.gpg'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
-    ${cat} > "${list_d}/${list_f}" <<EOF
+    ${cat} > "${list_d}/${list_f}" \
+<<EOF
 Enabled:        yes
 Types:          deb
 URIs:           http://haproxy.debian.net

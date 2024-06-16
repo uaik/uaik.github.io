@@ -30,7 +30,7 @@ init() {
 
 debian() {
   init() {
-    repo '11.4'
+    repo '11.4' && conf
   }
 
   repo() {
@@ -39,7 +39,8 @@ debian() {
     local key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
-    ${cat} > "${list_d}/${list_f}" <<EOF
+    ${cat} > "${list_d}/${list_f}" \
+<<EOF
 X-Repolib-Name: MariaDB
 Enabled:        yes
 Types:          deb
@@ -49,6 +50,15 @@ Components:     main
 Architectures:  $( dpkg --print-architecture )
 Signed-By:      ${gpg_d}/${gpg_f}
 EOF
+  }
+
+  conf() {
+    if [[ -d '/etc/systemd/system/mariadb.service.d' ]]; then
+      ${curl} -fsSLo '/etc/systemd/system/mariadb.service.d/service.homedir.conf' \
+        'https://uaik.github.io/conf/mariadb/service.homedir.conf'
+      ${curl} -fsSLo '/etc/systemd/system/mariadb.service.d/service.limits.conf' \
+        'https://uaik.github.io/conf/mariadb/service.limits.conf'
+    fi
   }
 
   init

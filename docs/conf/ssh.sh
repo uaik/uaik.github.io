@@ -6,7 +6,7 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
+  curl=$( command -v curl )
 
   # Run.
   sshd
@@ -20,14 +20,7 @@ sshd() {
   local d='/etc/ssh/sshd_config.d'; [[ ! -d "${d}" ]] && exit 1
   local f='00-sshd.local.conf'
 
-  ${cat} > "${d}/${f}" <<EOF
-Port 8022
-IgnoreRhosts yes
-MaxAuthTries 2
-PermitEmptyPasswords no
-PermitRootLogin no
-X11Forwarding no
-EOF
+  ${curl} -fsSLo "${d}/${f}" "https://uaik.github.io/conf/ssh/${f}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

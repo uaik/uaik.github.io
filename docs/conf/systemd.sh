@@ -8,31 +8,27 @@ init() {
   # Apps.
   apt=$( command -v apt )
   awk=$( command -v awk )
-  cat=$( command -v cat )
+  curl=$( command -v curl )
   mv=$( command -v mv )
+  sed=$( command -v sed )
   shutdown=$( command -v shutdown )
   systemctl=$( command -v systemctl )
 
   # Run.
-  systemd-networkd && systemd-resolved && reboot
+  networkd && resolved && reboot
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# SYSTEMD-NETWORKD.
+# SYSTEMD / NETWORKD.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-systemd-networkd() {
+networkd() {
   local d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
   local eth; mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
 
   for i in "${eth[@]}"; do
-    ${cat} > "${d}/${i}.network" <<EOF
-[Match]
-Name=${i}
-
-[Network]
-DHCP=ipv4
-EOF
+    ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network' \
+      && ${sed} -i "s|Name=|Name=${i}|g" "${d}/${i}.network"
   done
 
   ${systemctl} enable systemd-networkd
@@ -40,10 +36,10 @@ EOF
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# SYSTEMD-RESOLVED.
+# SYSTEMD / RESOLVED.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-systemd-resolved() {
+resolved() {
   ${apt} install --yes systemd-resolved
 }
 

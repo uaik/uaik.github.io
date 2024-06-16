@@ -6,7 +6,7 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
+  curl=$( command -v curl )
 
   # Run.
   vim
@@ -20,18 +20,7 @@ vim() {
   local d='/etc/vim'; [[ ! -d "${d}" ]] && exit 1
   local f='vimrc.local'
 
-  ${cat} > "${d}/${f}" <<EOF
-filetype plugin on
-syntax on
-set nobackup
-set nowritebackup
-set noswapfile
-set tabstop=2
-set expandtab
-set ruler
-set mouse-=a
-set paste
-EOF
+  ${curl} -fsSLo "${d}/${f}" "https://uaik.github.io/conf/vim/${f}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

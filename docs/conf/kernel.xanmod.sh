@@ -39,7 +39,8 @@ debian() {
     local key='https://dl.xanmod.org/archive.key'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
-    ${cat} > "${list_d}/${list_f}" <<EOF
+    ${cat} > "${list_d}/${list_f}" \
+<<EOF
 X-Repolib-Name: Kernel (XanMod)
 Enabled:        yes
 Types:          deb

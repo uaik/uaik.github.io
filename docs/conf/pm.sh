@@ -34,15 +34,13 @@ debian() {
 
   conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-
-    echo 'APT::Install-Suggests "false";' \
-      > "${d}/00InstallSuggests"
+    echo 'APT::Install-Suggests "false";' > "${d}/00InstallSuggests"
   }
 
   repo() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-
-    ${cat} > "${d}/debian.backports.sources" <<EOF
+    ${cat} > "${d}/debian.backports.sources" \
+<<EOF
 X-Repolib-Name: Debian Backports
 Enabled:        yes
 Types:          deb

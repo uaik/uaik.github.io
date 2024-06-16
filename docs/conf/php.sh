@@ -30,7 +30,7 @@ init() {
 
 debian() {
   init() {
-    repo
+    repo && conf
   }
 
   repo() {
@@ -39,7 +39,8 @@ debian() {
     local key='https://packages.sury.org/php/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
-    ${cat} > "${list_d}/${list_f}" <<EOF
+    ${cat} > "${list_d}/${list_f}" \
+<<EOF
 X-Repolib-Name: PHP (Sury)
 Enabled:        yes
 Types:          deb
@@ -49,6 +50,12 @@ Components:     main
 Architectures:  $( dpkg --print-architecture )
 Signed-By:      ${gpg_d}/${gpg_f}
 EOF
+  }
+
+  conf() {
+    if [[ -d '/etc/php/8.3/apache2/conf.d' ]]; then
+      ${curl} -fsSLo '/etc/php/8.3/apache2/conf.d/php.local.ini' 'https://uaik.github.io/conf/php/php.local.ini'
+    fi
   }
 
   init
