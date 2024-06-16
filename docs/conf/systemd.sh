@@ -28,7 +28,7 @@ networkd() {
 
   for i in "${eth[@]}"; do
     ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network' \
-      && ${sed} -i "s|Name=|Name=${i}|g" "${d}/${i}.network"
+      && ${sed} -i -e "s|Name=|Name=${i}|g" "${d}/${i}.network"
   done
 
   ${systemctl} enable systemd-networkd

@@ -6,7 +6,8 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
+  curl=$( command -v curl )
+  sed=$( command -v sed )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )
@@ -29,26 +30,26 @@ init() {
 
 debian() {
   init() {
-    conf && repo
-  }
-
-  conf() {
-    local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    echo 'APT::Install-Suggests "false";' > "${d}/00InstallSuggests"
+    repo && conf
   }
 
   repo() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-    ${cat} > "${d}/debian.backports.sources" \
-<<EOF
-X-Repolib-Name: Debian Backports
-Enabled:        yes
-Types:          deb
-URIs:           http://deb.debian.org/${osId}
-Suites:         ${osCodeName}-backports
-Components:     main contrib non-free
-Architectures:  $( dpkg --print-architecture )
-EOF
+    ${curl} -fsSLo "${d}/debian.backports.sources" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${sed} -i \
+        -e "s|<name>|Debian Backports|g" \
+        -e "s|<types>|deb|g" \
+        -e "s|<uri>|http://deb.debian.org/${osId}|g" \
+        -e "s|<suites>|${osCodeName}-backports|g" \
+        -e "s|<components>|main contrib non-free|g" \
+        -e "s|<arch>|$( dpkg --print-architecture )|g" \
+        -e "s|Signed-By:|# Signed-By:|g" \
+        "${d}/debian.backports.sources"
+  }
+
+  conf() {
+    local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
+    ${curl} -fsSLo "${d}/00InstallSuggests" "https://uaik.github.io/conf/apt/00InstallSuggests"
   }
 
   init

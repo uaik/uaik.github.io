@@ -6,9 +6,9 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
   curl=$( command -v curl )
   gpg=$( command -v gpg )
+  sed=$( command -v sed )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )
@@ -39,18 +39,17 @@ debian() {
     local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
     local key='https://uaik.github.io/conf/mysql/mysql.asc'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
-    ${cat} > "${list_d}/${list_f}" \
-<<EOF
-X-Repolib-Name: MySQL
-Enabled:        yes
-Types:          deb
-URIs:           http://repo.mysql.com/apt/${osId}
-Suites:         ${osCodeName}
-Components:     mysql-${1}
-Architectures:  $( dpkg --print-architecture )
-Signed-By:      ${gpg_d}/${gpg_f}
-EOF
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${sed} -i \
+        -e "s|<name>|MySQL|g" \
+        -e "s|<types>|deb|g" \
+        -e "s|<uri>|http://repo.mysql.com/apt/${osId}|g" \
+        -e "s|<suites>|${osCodeName}|g" \
+        -e "s|<components>|mysql-${1}|g" \
+        -e "s|<arch>|$( dpkg --print-architecture )|g" \
+        -e "s|<sig>|${gpg_d}/${gpg_f}|g" \
+        "${list_d}/${list_f}"
   }
 
   conf() {

@@ -6,9 +6,9 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
   curl=$( command -v curl )
   gpg=$( command -v gpg )
+  sed=$( command -v sed )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )
@@ -38,18 +38,17 @@ debian() {
     local list_d='/etc/apt/sources.list.d'; local list_f='kernel.xanmod.sources'; [[ ! -d "${list_d}" ]] && exit 1
     local key='https://dl.xanmod.org/archive.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}"
-    ${cat} > "${list_d}/${list_f}" \
-<<EOF
-X-Repolib-Name: Kernel (XanMod)
-Enabled:        yes
-Types:          deb
-URIs:           http://deb.xanmod.org
-Suites:         releases
-Components:     main
-Architectures:  $( dpkg --print-architecture )
-Signed-By:      ${gpg_d}/${gpg_f}
-EOF
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${sed} -i \
+        -e "s|<name>|Kernel (XanMod)|g" \
+        -e "s|<types>|deb|g" \
+        -e "s|<uri>|http://deb.xanmod.org|g" \
+        -e "s|<suites>|releases|g" \
+        -e "s|<components>|main|g" \
+        -e "s|<arch>|$( dpkg --print-architecture )|g" \
+        -e "s|<sig>|${gpg_d}/${gpg_f}|g" \
+        "${list_d}/${list_f}"
   }
 
   init

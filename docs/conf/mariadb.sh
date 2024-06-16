@@ -6,7 +6,7 @@
 
 init() {
   # Apps.
-  cat=$( command -v cat )
+  sed=$( command -v sed )
   curl=$( command -v curl )
 
   # OS.
@@ -38,18 +38,17 @@ debian() {
     local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
     local key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
-    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}"
-    ${cat} > "${list_d}/${list_f}" \
-<<EOF
-X-Repolib-Name: MariaDB
-Enabled:        yes
-Types:          deb
-URIs:           https://mirror.netcologne.de/mariadb/repo/${1}/${osId}
-Suites:         ${osCodeName}
-Components:     main
-Architectures:  $( dpkg --print-architecture )
-Signed-By:      ${gpg_d}/${gpg_f}
-EOF
+    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${sed} -i \
+        -e "s|<name>|MariaDB|g" \
+        -e "s|<types>|deb|g" \
+        -e "s|<uri>|https://mirror.netcologne.de/mariadb/repo/${1}/${osId}|g" \
+        -e "s|<suites>|${osCodeName}|g" \
+        -e "s|<components>|main|g" \
+        -e "s|<arch>|$( dpkg --print-architecture )|g" \
+        -e "s|<sig>|${gpg_d}/${gpg_f}|g" \
+        "${list_d}/${list_f}"
   }
 
   conf() {
