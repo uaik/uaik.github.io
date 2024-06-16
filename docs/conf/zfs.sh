@@ -13,7 +13,14 @@ init() {
   osId=$( . '/etc/os-release' && echo "${ID}" )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debian; }
+  case "${osId}" in
+    'debian')
+      debian
+      ;;
+    *)
+      echo 'OS is not supported!' && exit 1
+      ;;
+  esac
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

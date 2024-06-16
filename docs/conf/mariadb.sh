@@ -14,7 +14,14 @@ init() {
   osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debian; }
+  case "${osId}" in
+    'debian')
+      debian
+      ;;
+    *)
+      echo 'OS is not supported!' && exit 1
+      ;;
+  esac
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -23,10 +30,10 @@ init() {
 
 debian() {
   init() {
-    aptSources '11.4'
+    repo '11.4'
   }
 
-  aptSources() {
+  repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
     local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
     local key='https://mariadb.org/mariadb_release_signing_key.pgp'

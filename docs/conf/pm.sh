@@ -13,7 +13,14 @@ init() {
   osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debian; }
+  case "${osId}" in
+    'debian')
+      debian
+      ;;
+    *)
+      echo 'OS is not supported!' && exit 1
+      ;;
+  esac
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -22,17 +29,17 @@ init() {
 
 debian() {
   init() {
-    aptConf && aptSources
+    conf && repo
   }
 
-  aptConf() {
+  conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
 
     echo 'APT::Install-Suggests "false";' \
       > "${d}/00InstallSuggests"
   }
 
-  aptSources() {
+  repo() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
 
     ${cat} > "${d}/debian.backports.sources" <<EOF

@@ -15,7 +15,14 @@ init() {
   osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
-  [[ "${osId}" == 'debian' ]] && { debian; }
+  case "${osId}" in
+    'debian')
+      debian
+      ;;
+    *)
+      echo 'OS is not supported!' && exit 1
+      ;;
+  esac
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -24,10 +31,10 @@ init() {
 
 debian() {
   init() {
-    aptSources '3.0'
+    repo '3.0'
   }
 
-  aptSources() {
+  repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
     local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.sources'; [[ ! -d "${list_d}" ]] && exit 1
     local key='https://haproxy.debian.net/bernat.debian.org.gpg'
