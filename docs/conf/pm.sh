@@ -35,7 +35,7 @@ debian() {
 
   repo() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-    ${curl} -fsSLo "${d}/debian.backports.sources" "https://uaik.github.io/conf/apt/example.sources" \
+    ${curl} -fsSLo "${d}/debian.backports.sources" 'https://uaik.github.io/conf/apt/example.sources' \
       && ${sed} -i \
         -e "s|<name>|Debian Backports|g" \
         -e "s|<types>|deb|g" \

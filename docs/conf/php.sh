@@ -39,7 +39,7 @@ debian() {
     local key='https://packages.sury.org/php/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
       && ${sed} -i \
         -e "s|<name>|PHP (Sury)|g" \
         -e "s|<types>|deb|g" \

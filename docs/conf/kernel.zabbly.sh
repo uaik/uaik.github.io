@@ -40,7 +40,7 @@ debian() {
     local key='https://pkgs.zabbly.com/key.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
       && ${sed} -i \
         -e "s|<name>|Kernel (Zabbly)|g" \
         -e "s|<types>|deb deb-src|g" \

@@ -39,7 +39,7 @@ debian() {
     local key='https://dl.xanmod.org/archive.key'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" "https://uaik.github.io/conf/apt/example.sources" \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
       && ${sed} -i \
         -e "s|<name>|Kernel (XanMod)|g" \
         -e "s|<types>|deb|g" \
