@@ -6,6 +6,7 @@
 
 init() {
   # Apps.
+  apt=$( command -v apt )
   curl=$( command -v curl )
   sed=$( command -v sed )
 
@@ -30,7 +31,7 @@ init() {
 
 debian() {
   init() {
-    repo && conf
+    repo && conf && update
   }
 
   repo() {
@@ -50,6 +51,10 @@ debian() {
   conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
     ${curl} -fsSLo "${d}/00InstallSuggests" 'https://uaik.github.io/conf/apt/00InstallSuggests'
+  }
+
+  update() {
+    ${apt} update
   }
 
   init
