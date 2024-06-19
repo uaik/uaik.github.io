@@ -16,19 +16,19 @@
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-init() {
+run() {
   # Apps.
-  awk="$( command -v awk )"
-  cat="$( command -v cat )"
-  chown="$( command -v chown )"
-  chpasswd="$( command -v chpasswd )"
-  chsh="$( command -v chsh )"
-  head="$( command -v head )"
-  mv="$( command -v mv )"
-  tr="$( command -v tr )"
-  useradd="$( command -v useradd )"
-  usermod="$( command -v usermod )"
-  wget="$( command -v wget )"
+  awk="$( command -v 'awk' )"
+  cat="$( command -v 'cat' )"
+  chown="$( command -v 'chown' )"
+  chpasswd="$( command -v 'chpasswd' )"
+  chsh="$( command -v 'chsh' )"
+  head="$( command -v 'head' )"
+  mv="$( command -v 'mv' )"
+  tr="$( command -v 'tr' )"
+  useradd="$( command -v 'useradd' )"
+  usermod="$( command -v 'usermod' )"
+  wget="$( command -v 'wget' )"
 
   # Run.
   root && u0001 && u0002 && u0000
@@ -153,4 +153,4 @@ EOF
 # -------------------------------------------------< RUNNING SCRIPT >------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
 
-init "$@"; exit 0
+run "$@"; exit 0
