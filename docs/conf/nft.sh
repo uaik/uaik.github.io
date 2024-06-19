@@ -35,7 +35,6 @@ debian() {
   conf() {
     local f='/etc/nftables.conf'; [[ -f "${f}" ]] && ${mv} "${f}" "${f}.backup" || exit 1
     ${curl} -fsSLo "${f}" 'https://uaik.github.io/conf/nft/nftables.conf' && ${chmod} +x "${f}"
-
     local s='nftables'; ${systemctl} enable ${s}
   }
 

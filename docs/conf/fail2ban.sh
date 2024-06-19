@@ -32,8 +32,8 @@ debian() {
   conf() {
     local d='/etc/fail2ban/jail.d'; [[ ! -d "${d}" ]] && exit 1
     local f='sshd.local'
-
     ${curl} -fsSLo "${d}/${f}" "https://uaik.github.io/conf/fail2ban/${f}"
+    local s='fail2ban'; ${systemctl} enable ${s}
   }
 
   run
