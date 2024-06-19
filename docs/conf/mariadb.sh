@@ -6,8 +6,8 @@
 
 init() {
   # Apps.
-  sed=$( command -v sed )
-  curl=$( command -v curl )
+  sed=$( command -v 'sed' )
+  curl=$( command -v 'curl' )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )

@@ -6,7 +6,7 @@
 
 init() {
   # Apps.
-  curl=$( command -v curl )
+  curl=$( command -v 'curl' )
 
   # Run.
   vim

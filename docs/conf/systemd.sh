@@ -6,13 +6,13 @@
 
 init() {
   # Apps.
-  apt=$( command -v apt )
-  awk=$( command -v awk )
-  curl=$( command -v curl )
-  mv=$( command -v mv )
-  sed=$( command -v sed )
-  shutdown=$( command -v shutdown )
-  systemctl=$( command -v systemctl )
+  apt=$( command -v 'apt' )
+  awk=$( command -v 'awk' )
+  curl=$( command -v 'curl' )
+  mv=$( command -v 'mv' )
+  sed=$( command -v 'sed' )
+  shutdown=$( command -v 'shutdown' )
+  systemctl=$( command -v 'systemctl' )
 
   # Run.
   networkd && resolved && reboot
@@ -31,7 +31,7 @@ networkd() {
       && ${sed} -i -e "s|Name=|Name=${i}|g" "${d}/${i}.network"
   done
 
-  ${systemctl} enable systemd-networkd
+  local s='systemd-networkd'; ${systemctl} enable ${s}
   [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
@@ -40,7 +40,7 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  ${apt} install --yes systemd-resolved
+  local s='systemd-resolved'; ${apt} install --yes ${s} && ${systemctl} enable ${s}
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

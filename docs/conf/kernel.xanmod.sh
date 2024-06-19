@@ -6,9 +6,9 @@
 
 init() {
   # Apps.
-  curl=$( command -v curl )
-  gpg=$( command -v gpg )
-  sed=$( command -v sed )
+  curl=$( command -v 'curl' )
+  gpg=$( command -v 'gpg' )
+  sed=$( command -v 'sed' )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )

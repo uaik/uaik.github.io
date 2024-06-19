@@ -6,13 +6,13 @@
 
 init() {
   # Apps.
-  apt=$( command -v apt )
-  curl=$( command -v curl )
-  sed=$( command -v sed )
+  curl=$( command -v 'curl' )
+  mv=$( command -v 'mv' )
+  chmod=$( command -v 'chmod' )
+  systemctl=$( command -v 'systemctl' )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )
-  osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
   # Run.
   case "${osId}" in
@@ -31,30 +31,14 @@ init() {
 
 debian() {
   init() {
-    repo && conf && update
-  }
-
-  repo() {
-    local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-    ${curl} -fsSLo "${d}/debian.backports.sources" 'https://uaik.github.io/conf/apt/example.sources' \
-      && ${sed} -i \
-        -e "s|<name>|Debian Backports|g" \
-        -e "s|<types>|deb|g" \
-        -e "s|<uri>|http://deb.debian.org/${osId}|g" \
-        -e "s|<suites>|${osCodeName}-backports|g" \
-        -e "s|<components>|main contrib non-free|g" \
-        -e "s|<arch>|$( dpkg --print-architecture )|g" \
-        -e "s|Signed-By:|# Signed-By:|g" \
-        "${d}/debian.backports.sources"
+    conf
   }
 
   conf() {
-    local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    ${curl} -fsSLo "${d}/00InstallSuggests" 'https://uaik.github.io/conf/apt/00InstallSuggests'
-  }
+    local f='/etc/nftables.conf'; [[ -f "${f}" ]] && ${mv} "${f}" "${f}.backup" || exit 1
+    ${curl} -fsSLo "${f}" 'https://uaik.github.io/conf/nft/nftables.conf' && ${chmod} +x "${f}"
 
-  update() {
-    ${apt} update
+    local s='nftables'; ${systemctl} enable ${s}
   }
 
   init

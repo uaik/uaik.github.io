@@ -6,8 +6,8 @@
 
 init() {
   # Apps.
-  apt=$( command -v apt )
-  uname=$( command -v uname )
+  apt=$( command -v 'apt' )
+  uname=$( command -v 'uname' )
 
   # OS.
   osId=$( . '/etc/os-release' && echo "${ID}" )
