@@ -140,7 +140,6 @@ _grml() {
 
   # Downloading 'grml' config.
   if [[ ! -f '/etc/zsh/zshrc.grml' ]]; then
-    echo "--- [${user^^}] Downloading 'grml-zsh-config' for '${user^^}'..."
     ${mkdir} -p '/etc/zsh' && ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
   fi
 
