@@ -42,15 +42,9 @@ debian() {
   }
 
   case "${k}" in
-    *'xanmod'*)
-      xanmod
-      ;;
-    *'zabbly'*)
-      zabbly
-      ;;
-    *)
-      default
-      ;;
+    *'xanmod'*) xanmod ;;
+    *'zabbly'*) zabbly ;;
+    *) default ;;
   esac
 }
 

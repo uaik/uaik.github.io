@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '11.4' && conf; }
+  run() { repo '11.4' && service; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -47,11 +47,11 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  conf() {
+  service() {
     local d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( 'service.homedir.conf' 'service.limits.conf' )
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/${i}"; done
+    local f=( 'homedir.conf' 'limits.conf' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
   }
 
   run

@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && conf; }
+  run() { repo && conf '8.3'; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -48,7 +48,7 @@ debian() {
   }
 
   conf() {
-    local d='/etc/php/8.3/apache2/conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local d="/etc/php/${1}/apache2/conf.d"; [[ ! -d "${d}" ]] && exit 1
 
     local f=( 'php.local.ini' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"; done

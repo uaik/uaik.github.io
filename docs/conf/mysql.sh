@@ -28,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && conf; }
+  run() { repo '8.4-lts' && service; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -48,11 +48,11 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  conf() {
+  service() {
     local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( 'service.limits.conf' )
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/${i}"; done
+    local f=( 'limits.conf' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"; done
   }
 
   run

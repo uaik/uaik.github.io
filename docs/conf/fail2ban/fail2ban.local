@@ -2,16 +2,17 @@
 
 # Option: loglevel. Default is ERROR
 # Available options: CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG
-loglevel        = INFO
+loglevel = INFO
 
 # Set the log target
-logtarget       = SYSLOG
+# logtarget = SYSLOG
+logtarget = /var/log/fail2ban/fail2ban.log
 
 # Syslog socket. Required on FreeBSD and OpenBSD.
-#syslogsocket   =
+# syslogsocket =
 
 # Fail2ban socket. Required on FreeBSD.
-#socket         = /var/run/fail2ban/fail2ban.sock
+# socket = /var/run/fail2ban/fail2ban.sock
 
 # Allows IPv6 interface.
-allowipv6       = auto
+allowipv6 = auto
