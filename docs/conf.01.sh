@@ -12,26 +12,24 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
+awk=$( command -v 'awk' )
+cat=$( command -v 'cat' )
+chown=$( command -v 'chown' )
+chpasswd=$( command -v 'chpasswd' )
+chsh=$( command -v 'chsh' )
+curl=$( command -v 'curl' )
+head=$( command -v 'head' )
+mkdir=$( command -v 'mkdir' )
+mv=$( command -v 'mv' )
+tr=$( command -v 'tr' )
+useradd=$( command -v 'useradd' )
+usermod=$( command -v 'usermod' )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  # Apps.
-  awk=$( command -v 'awk' )
-  cat=$( command -v 'cat' )
-  chown=$( command -v 'chown' )
-  chpasswd=$( command -v 'chpasswd' )
-  chsh=$( command -v 'chsh' )
-  curl=$( command -v 'curl' )
-  head=$( command -v 'head' )
-  mkdir=$( command -v 'mkdir' )
-  mv=$( command -v 'mv' )
-  tr=$( command -v 'tr' )
-  useradd=$( command -v 'useradd' )
-  usermod=$( command -v 'usermod' )
-
-  # Run.
   root && u0001 && u0002 && u0000
 }
 
