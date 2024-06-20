@@ -23,16 +23,20 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { conf; }
+  run() { conf && jail; }
 
   conf() {
+    local d='/etc/fail2ban'; [[ ! -d "${d}" ]] && exit 1
+
+    local f=( 'fail2ban.local' 'jail.local' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/${i}"; done
+  }
+
+  jail() {
     local d='/etc/fail2ban/jail.d'; [[ ! -d "${d}" ]] && exit 1
 
     local f=( 'sshd.local' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/${i}"; done
-
-    local s=( 'fail2ban' )
-    for i in "${s[@]}"; do ${systemctl} enable --now "${i}"; done
   }
 
   run
