@@ -139,10 +139,9 @@ _grml() {
   local home; home=$( _home "${user}" )
 
   # Downloading 'grml' config.
-  [[ ! -d '/etc/zsh' ]] && ${mkdir} -p '/etc/zsh'
   if [[ ! -f '/etc/zsh/zshrc.grml' ]]; then
     echo "--- [${user^^}] Downloading 'grml-zsh-config' for '${user^^}'..."
-    ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
+    ${mkdir} -p '/etc/zsh' && ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
   fi
 
   # Installing 'grml' config.
