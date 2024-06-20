@@ -12,20 +12,23 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
+# Checking commands.
+cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+
 # Apps.
-awk=$( command -v 'awk' )
-cat=$( command -v 'cat' )
-chown=$( command -v 'chown' )
-chpasswd=$( command -v 'chpasswd' )
-chsh=$( command -v 'chsh' )
-curl=$( command -v 'curl' )
-find=$( command -v 'find' )
-head=$( command -v 'head' )
-mkdir=$( command -v 'mkdir' )
-mv=$( command -v 'mv' )
-tr=$( command -v 'tr' )
-useradd=$( command -v 'useradd' )
-usermod=$( command -v 'usermod' )
+awk=$( command -v 'awk' ); cmd_check 'awk'
+cat=$( command -v 'cat' ); cmd_check 'cat'
+chown=$( command -v 'chown' ); cmd_check 'chown'
+chpasswd=$( command -v 'chpasswd' ); cmd_check 'chpasswd'
+chsh=$( command -v 'chsh' ); cmd_check 'chsh'
+curl=$( command -v 'curl' ); cmd_check 'curl'
+find=$( command -v 'find' ); cmd_check 'find'
+head=$( command -v 'head' ); cmd_check 'head'
+mkdir=$( command -v 'mkdir' ); cmd_check 'mkdir'
+mv=$( command -v 'mv' ); cmd_check 'mv'
+tr=$( command -v 'tr' ); cmd_check 'tr'
+useradd=$( command -v 'useradd' ); cmd_check 'useradd'
+usermod=$( command -v 'usermod' ); cmd_check 'usermod'
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

@@ -12,9 +12,12 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
+# Checking commands.
+cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+
 # Apps.
-bash=$( command -v 'bash' )
-curl=$( command -v 'curl' )
+bash=$( command -v 'bash' ); cmd_check 'bash'
+curl=$( command -v 'curl' ); cmd_check 'curl'
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

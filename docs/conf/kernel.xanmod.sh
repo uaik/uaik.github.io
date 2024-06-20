@@ -1,9 +1,12 @@
 #!/usr/bin/env -S bash -e
 
+# Checking commands.
+cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+
 # Apps.
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-sed=$( command -v 'sed' )
+curl=$( command -v 'curl' ); cmd_check 'curl'
+gpg=$( command -v 'gpg' ); cmd_check 'gpg'
+sed=$( command -v 'sed' ); cmd_check 'sed'
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )

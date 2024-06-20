@@ -1,7 +1,10 @@
 #!/usr/bin/env -S bash -e
 
+# Checking commands.
+cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+
 # Apps.
-curl=$( command -v 'curl' )
+curl=$( command -v 'curl' ); cmd_check 'curl'
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

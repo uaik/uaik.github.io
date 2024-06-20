@@ -1,12 +1,15 @@
 #!/usr/bin/env -S bash -e
 
+# Checking commands.
+cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+
 # Apps.
-curl=$( command -v 'curl' )
-sed=$( command -v 'sed' )
+curl=$( command -v 'curl' ); cmd_check 'curl'
+sed=$( command -v 'sed' ); cmd_check 'sed'
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" || exit 1 )
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
