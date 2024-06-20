@@ -18,8 +18,8 @@
 
 run() {
   # Apps.
-  bash="$( command -v 'bash' )"
-  curl="$( command -v 'curl' )"
+  bash=$( command -v 'bash' )
+  curl=$( command -v 'curl' )
 
   # Run.
   conf "${1}"
