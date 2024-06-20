@@ -2,7 +2,6 @@
 
 # Apps.
 curl=$( command -v 'curl' )
-systemctl=$( command -v 'systemctl' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
