@@ -18,6 +18,7 @@ chown=$( command -v 'chown' )
 chpasswd=$( command -v 'chpasswd' )
 chsh=$( command -v 'chsh' )
 curl=$( command -v 'curl' )
+find=$( command -v 'find' )
 head=$( command -v 'head' )
 mkdir=$( command -v 'mkdir' )
 mv=$( command -v 'mv' )
@@ -135,16 +136,17 @@ _home() {
 _grml() {
   local user="${1}"; local uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   local home; home=$( _home "${user}" )
+  local zshrc='/etc/zsh/zshrc.grml'
 
   # Downloading 'grml' config.
-  if [[ ! -f '/etc/zsh/zshrc.grml' ]]; then
-    ${mkdir} -p '/etc/zsh' && ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
+  if [[ ! -f "${zshrc}" || $( ${find} "${zshrc}" -mmin '+60' ) ]]; then
+    ${mkdir} -p '/etc/zsh' && ${curl} -fsSLo "${zshrc}" "${uri}"
   fi
 
   # Installing 'grml' config.
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { ${mv} "${home}/.zshrc" "${home}/.zshrc.orig"; }
   ${cat} > "${home}/.zshrc" <<EOF
-. '/etc/zsh/zshrc.grml'
+. "${zshrc}"
 export GPG_TTY=\$(tty)
 EOF
 
