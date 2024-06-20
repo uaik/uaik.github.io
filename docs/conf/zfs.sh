@@ -5,7 +5,7 @@ apt=$( command -v 'apt' )
 uname=$( command -v 'uname' )
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
+osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -13,12 +13,8 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 
 run() {
   case "${osId}" in
-    'debian')
-      debian
-      ;;
-    *)
-      echo 'OS is not supported!' && exit 1
-      ;;
+    'debian') debian ;;
+    *) echo 'OS is not supported!' && exit 1 ;;
   esac
 }
 

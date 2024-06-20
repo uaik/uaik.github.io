@@ -6,8 +6,8 @@ gpg=$( command -v 'gpg' )
 sed=$( command -v 'sed' )
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
+osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" || exit 1 )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -15,12 +15,8 @@ osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 run() {
   case "${osId}" in
-    'debian')
-      debian
-      ;;
-    *)
-      echo 'OS is not supported!' && exit 1
-      ;;
+    'debian') debian ;;
+    *) echo 'OS is not supported!' && exit 1 ;;
   esac
 }
 
