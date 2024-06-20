@@ -136,13 +136,14 @@ _home() {
 
 _grml() {
   local user="${1}"; local uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
-
-  echo "--- [${user^^}] Downloading 'grml-zsh-config' for '${user^^}'..."
   local home; home=$( _home "${user}" )
 
   # Downloading 'grml' config.
   [[ ! -d '/etc/zsh' ]] && ${mkdir} -p '/etc/zsh'
-  [[ ! -f '/etc/zsh/zshrc.grml' ]] && ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
+  if [[ ! -f '/etc/zsh/zshrc.grml' ]]; then
+    echo "--- [${user^^}] Downloading 'grml-zsh-config' for '${user^^}'..."
+    ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
+  fi
 
   # Installing 'grml' config.
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { ${mv} "${home}/.zshrc" "${home}/.zshrc.orig"; }
