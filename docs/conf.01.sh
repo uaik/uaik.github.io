@@ -133,7 +133,8 @@ _home() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 _grml() {
-  local user="${1}"; local uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
+  local user="${1}"
+  local uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   local home; home=$( _home "${user}" )
   local zshrc='/etc/zsh/zshrc.grml'
 
