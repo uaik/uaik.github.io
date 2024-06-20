@@ -6,8 +6,8 @@ gpg=$( command -v 'gpg' )
 sed=$( command -v 'sed' )
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" || exit 1 )
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

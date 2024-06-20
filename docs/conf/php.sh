@@ -45,9 +45,10 @@ debian() {
   }
 
   conf() {
-    if [[ -d '/etc/php/8.3/apache2/conf.d' ]]; then
-      ${curl} -fsSLo '/etc/php/8.3/apache2/conf.d/php.local.ini' 'https://uaik.github.io/conf/php/php.local.ini'
-    fi
+    local d='/etc/php/8.3/apache2/conf.d'; [[ ! -d "${d}" ]] && exit 1
+
+    local f=( 'php.local.ini' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"; done
   }
 
   run

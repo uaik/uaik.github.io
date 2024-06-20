@@ -21,9 +21,9 @@ run() { networkd && resolved && reboot; }
 
 networkd() {
   local d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
-  local eth; mapfile -t eth < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
 
-  for i in "${eth[@]}"; do
+  local e; mapfile -t e < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
+  for i in "${e[@]}"; do
     ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network' \
       && ${sed} -i -e "s|Name=|Name=${i}|g" "${d}/${i}.network"
   done
@@ -37,7 +37,8 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  local s='systemd-resolved'; ${apt} install --yes ${s} && ${systemctl} enable ${s}
+  local s='systemd-resolved'
+  ${apt} install --yes ${s} && ${systemctl} enable ${s}
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

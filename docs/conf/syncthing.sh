@@ -45,10 +45,12 @@ debian() {
 
   conf() {
     local sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
-    local apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
+    local sys_f=( 'syncthing@.service' )
+    for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
 
-    ${curl} -fsSLo "${sys_d}/syncthing@.service" 'https://uaik.github.io/conf/syncthing/syncthing@.service' \
-      && ${curl} -fsSLo "${apt_d}/syncthing.pref" 'https://uaik.github.io/conf/syncthing/syncthing.pref'
+    local apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
+    local apt_f=( 'syncthing.pref' )
+    for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
   }
 
   run

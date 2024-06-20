@@ -27,12 +27,12 @@ run() { conf "${1}"; }
 # -------------------------------------------------------------------------------------------------------------------- #
 
 conf() {
-  local conf; conf="${1}"; IFS=';' read -ra conf <<< "${conf}"
+  local c; c="${1}"; IFS=';' read -ra c <<< "${c}"
 
-  for i in "${conf[@]}"; do
-    if local script; script=$( ${curl} --fail -sL "https://uaik.github.io/conf/${i}.sh" ); then
+  for i in "${c[@]}"; do
+    if local s; s=$( ${curl} --fail -sL "https://uaik.github.io/conf/${i}.sh" ); then
       echo "--- [${i^^}] Installing a configuration..."
-      ${bash} -s <<< "${script}"
+      ${bash} -s <<< "${s}"
     else
       echo "--- [${i^^}] Configuration not found!"
       exit 1

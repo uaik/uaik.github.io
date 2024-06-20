@@ -42,7 +42,9 @@ debian() {
 
   conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    ${curl} -fsSLo "${d}/00InstallSuggests" 'https://uaik.github.io/conf/apt/00InstallSuggests'
+
+    local f=( '00InstallSuggests' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/apt/${i}"; done
   }
 
   run

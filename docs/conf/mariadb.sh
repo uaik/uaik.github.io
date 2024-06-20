@@ -5,8 +5,8 @@ sed=$( command -v 'sed' )
 curl=$( command -v 'curl' )
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" || exit 1 )
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -45,12 +45,10 @@ debian() {
   }
 
   conf() {
-    if [[ -d '/etc/systemd/system/mariadb.service.d' ]]; then
-      ${curl} -fsSLo '/etc/systemd/system/mariadb.service.d/service.homedir.conf' \
-        'https://uaik.github.io/conf/mariadb/service.homedir.conf'
-      ${curl} -fsSLo '/etc/systemd/system/mariadb.service.d/service.limits.conf' \
-        'https://uaik.github.io/conf/mariadb/service.limits.conf'
-    fi
+    local d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
+
+    local f=( 'service.homedir.conf' 'service.limits.conf' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/${i}"; done
   }
 
   run

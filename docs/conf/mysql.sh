@@ -46,10 +46,10 @@ debian() {
   }
 
   conf() {
-    if [[ -d '/etc/systemd/system/mysql.service.d' ]]; then
-      ${curl} -fsSLo '/etc/systemd/system/mysql.service.d/service.limits.conf' \
-        'https://uaik.github.io/conf/mysql/service.limits.conf'
-    fi
+    local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
+
+    local f=( 'service.limits.conf' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/${i}"; done
   }
 
   run

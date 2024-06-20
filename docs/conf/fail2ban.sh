@@ -2,9 +2,10 @@
 
 # Apps.
 curl=$( command -v 'curl' )
+systemctl=$( command -v 'systemctl' )
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" || exit 1 )
+osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -26,9 +27,12 @@ debian() {
 
   conf() {
     local d='/etc/fail2ban/jail.d'; [[ ! -d "${d}" ]] && exit 1
-    local f='sshd.local'
-    ${curl} -fsSLo "${d}/${f}" "https://uaik.github.io/conf/fail2ban/${f}"
-    local s='fail2ban'; ${systemctl} enable ${s}
+
+    local f=( 'sshd.local' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/${i}"; done
+
+    local s=( 'fail2ban' )
+    for i in "${s[@]}"; do ${systemctl} enable --now "${i}"; done
   }
 
   run
