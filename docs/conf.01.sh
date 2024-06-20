@@ -145,7 +145,7 @@ _grml() {
   [[ ! -f '/etc/zsh/zshrc.grml' ]] && ${curl} -fsSLo '/etc/zsh/zshrc.grml' "${uri}"
 
   # Installing 'grml' config.
-  [[ -f "${home}/.zshrc" ]] && { ${mv} "${home}/.zshrc" "${home}/.zshrc.orig"; }
+  [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { ${mv} "${home}/.zshrc" "${home}/.zshrc.orig"; }
   ${cat} > "${home}/.zshrc" <<EOF
 . '/etc/zsh/zshrc.grml'
 export GPG_TTY=\$(tty)
