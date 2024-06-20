@@ -1,20 +1,19 @@
 #!/usr/bin/env -S bash -e
 
+# Apps.
+curl=$( command -v 'curl' )
+mv=$( command -v 'mv' )
+chmod=$( command -v 'chmod' )
+systemctl=$( command -v 'systemctl' )
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  # Apps.
-  curl=$( command -v 'curl' )
-  mv=$( command -v 'mv' )
-  chmod=$( command -v 'chmod' )
-  systemctl=$( command -v 'systemctl' )
-
-  # OS.
-  osId=$( . '/etc/os-release' && echo "${ID}" )
-
-  # Run.
   case "${osId}" in
     'debian')
       debian

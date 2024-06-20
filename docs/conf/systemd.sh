@@ -1,22 +1,19 @@
 #!/usr/bin/env -S bash -e
 
+# Apps.
+apt=$( command -v 'apt' )
+awk=$( command -v 'awk' )
+curl=$( command -v 'curl' )
+mv=$( command -v 'mv' )
+sed=$( command -v 'sed' )
+shutdown=$( command -v 'shutdown' )
+systemctl=$( command -v 'systemctl' )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() {
-  # Apps.
-  apt=$( command -v 'apt' )
-  awk=$( command -v 'awk' )
-  curl=$( command -v 'curl' )
-  mv=$( command -v 'mv' )
-  sed=$( command -v 'sed' )
-  shutdown=$( command -v 'shutdown' )
-  systemctl=$( command -v 'systemctl' )
-
-  # Run.
-  networkd && resolved && reboot
-}
+run() { networkd && resolved && reboot; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # SYSTEMD / NETWORKD.

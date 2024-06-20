@@ -1,19 +1,18 @@
 #!/usr/bin/env -S bash -e
 
+# Apps.
+sed=$( command -v 'sed' )
+curl=$( command -v 'curl' )
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  # Apps.
-  sed=$( command -v 'sed' )
-  curl=$( command -v 'curl' )
-
-  # OS.
-  osId=$( . '/etc/os-release' && echo "${ID}" )
-  osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
-
-  # Run.
   case "${osId}" in
     'debian')
       debian

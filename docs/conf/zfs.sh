@@ -1,18 +1,17 @@
 #!/usr/bin/env -S bash -e
 
+# Apps.
+apt=$( command -v 'apt' )
+uname=$( command -v 'uname' )
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  # Apps.
-  apt=$( command -v 'apt' )
-  uname=$( command -v 'uname' )
-
-  # OS.
-  osId=$( . '/etc/os-release' && echo "${ID}" )
-
-  # Run.
   case "${osId}" in
     'debian')
       debian

@@ -1,20 +1,19 @@
 #!/usr/bin/env -S bash -e
 
+# Apps.
+curl=$( command -v 'curl' )
+gpg=$( command -v 'gpg' )
+sed=$( command -v 'sed' )
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  # Apps.
-  curl=$( command -v 'curl' )
-  gpg=$( command -v 'gpg' )
-  sed=$( command -v 'sed' )
-
-  # OS.
-  osId=$( . '/etc/os-release' && echo "${ID}" )
-  osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
-
-  # Run.
   case "${osId}" in
     'debian')
       debian
