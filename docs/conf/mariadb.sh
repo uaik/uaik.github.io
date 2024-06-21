@@ -4,6 +4,7 @@
 cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
 
 # Apps.
+apt=$( command -v 'apt' ); cmd_check 'apt'
 curl=$( command -v 'curl' ); cmd_check 'curl'
 sed=$( command -v 'sed' ); cmd_check 'sed'
 
@@ -27,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '11.4' && service; }
+  run() { repo '11.4' && apt && service; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -54,6 +55,8 @@ debian() {
     local f=( 'homedir.conf' 'limits.conf' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
   }
+
+  apt() { ${apt} update; }
 
   run
 }

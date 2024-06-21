@@ -4,6 +4,7 @@
 cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
 
 # Apps.
+apt=$( command -v 'apt' ); cmd_check 'apt'
 curl=$( command -v 'curl' ); cmd_check 'curl'
 gpg=$( command -v 'gpg' ); cmd_check 'gpg'
 sed=$( command -v 'sed' ); cmd_check 'sed'
@@ -28,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && service; }
+  run() { repo '8.4-lts' && apt && service; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -48,6 +49,8 @@ debian() {
         -e "s|<#sig#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
+
+  apt() { ${apt} update; }
 
   service() {
     local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1

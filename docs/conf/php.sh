@@ -4,6 +4,7 @@
 cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
 
 # Apps.
+apt=$( command -v 'apt' ); cmd_check 'apt'
 curl=$( command -v 'curl' ); cmd_check 'curl'
 sed=$( command -v 'sed' ); cmd_check 'sed'
 
@@ -27,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && conf '8.3'; }
+  run() { repo && apt && conf '8.3'; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -47,6 +48,8 @@ debian() {
         -e "s|<#sig#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
+
+  apt() { ${apt} update; }
 
   conf() {
     local d="/etc/php/${1}/apache2/conf.d"; [[ ! -d "${d}" ]] && exit 1
