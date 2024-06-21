@@ -55,7 +55,7 @@ debian() {
       "php${1}-common"
       "php${1}-cli"
       "php${1}-fpm"
-      "php${1}-{bz2,curl,gd,geoip,imagick,imap,intl,mbstring,memcached,mysql,opcache,xml}"
+      "php${1}-{bz2,curl,gd,gmp,geoip,imagick,imap,intl,mbstring,memcached,mysql,odbc,opcache,redis,xml,zip,zstd}"
     )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
