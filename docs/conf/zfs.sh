@@ -29,7 +29,7 @@ debian() {
   local k; k=$( ${uname} -r )
 
   xanmod() {
-    echo "Zfs is not compatible with this kernel version (${k})!" && exit 1
+    echo "ZFS is not compatible with this kernel version (${k})!" && exit 1
   }
 
   zabbly() {
