@@ -49,7 +49,10 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local p=''
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   conf() {
     local d="/etc/php/${1}/apache2/conf.d"; [[ ! -d "${d}" ]] && exit 1

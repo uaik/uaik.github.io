@@ -4,6 +4,7 @@
 cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
 
 # Apps.
+apt=$( command -v 'apt' ); cmd_check 'apt'
 curl=$( command -v 'curl' ); cmd_check 'curl'
 
 # OS.
@@ -25,7 +26,12 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { conf && jail && service; }
+  run() { apt && conf && jail && service; }
+
+  apt() {
+    local p='fail2ban'
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   conf() {
     local d='/etc/fail2ban'; [[ ! -d "${d}" ]] && exit 1

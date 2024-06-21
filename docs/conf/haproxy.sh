@@ -50,7 +50,10 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local p='haproxy=3.0.\*'
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   run
 }

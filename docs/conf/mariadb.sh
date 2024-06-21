@@ -49,7 +49,10 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local p='mariadb-server'
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   service() {
     local d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1

@@ -50,7 +50,10 @@ debian() {
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local p='mysql-server'
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   service() {
     local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1

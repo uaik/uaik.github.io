@@ -28,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && conf && apt; }
+  run() { repo && apt && conf; }
 
   repo() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
@@ -45,14 +45,14 @@ debian() {
         "${d}/debian.backports.sources"
   }
 
+  apt() { ${apt} update; }
+
   conf() {
     local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
 
     local f=( '00InstallSuggests' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/apt/${i}"; done
   }
-
-  apt() { ${apt} update; }
 
   run
 }
