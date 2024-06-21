@@ -28,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf '8.3'; }
+  run() { repo && apt '8.3' && conf '8.3'; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -50,8 +50,14 @@ debian() {
   }
 
   apt() {
-    local p=''
-    ${apt} update && ${apt} install --yes ${p}
+    local p=(
+      "php${1}"
+      "php${1}-common"
+      "php${1}-cli"
+      "php${1}-fpm"
+      "php${1}-{bz2,curl,gd,geoip,imagick,imap,intl,mbstring,memcached,mysql,opcache,xml}"
+    )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   conf() {
