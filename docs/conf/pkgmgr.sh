@@ -41,7 +41,7 @@ debian() {
         -e "s|<# suites #>|${osCodeName}-backports|g" \
         -e "s|<# components #>|main contrib non-free|g" \
         -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
-        -e "s|Signed-By:|# Signed-By:|g" \
+        -e "s|Signed-By:  |# Signed-By:|g" \
         "${d}/debian.backports.sources"
   }
 
