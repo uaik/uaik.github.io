@@ -1,5 +1,5 @@
 [Match]
-Name=<#name#>
+Name=<# name #>
 
 [Network]
 DHCP=ipv4

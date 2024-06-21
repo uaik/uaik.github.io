@@ -38,14 +38,14 @@ debian() {
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#name#>|MariaDB|g" \
-        -e "s|<#enabled#>|yes|g" \
-        -e "s|<#types#>|deb|g" \
-        -e "s|<#uri#>|https://mirror.netcologne.de/mariadb/repo/${1}/${osId}|g" \
-        -e "s|<#suites#>|${osCodeName}|g" \
-        -e "s|<#components#>|main|g" \
-        -e "s|<#arch#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#sig#>|${gpg_d}/${gpg_f}|g" \
+        -e "s|<# name #>|MariaDB|g" \
+        -e "s|<# enabled #>|yes|g" \
+        -e "s|<# types #>|deb|g" \
+        -e "s|<# uri #>|https://mirror.netcologne.de/mariadb/repo/${1}/${osId}|g" \
+        -e "s|<# suites #>|${osCodeName}|g" \
+        -e "s|<# components #>|main|g" \
+        -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
+        -e "s|<# sig #>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 

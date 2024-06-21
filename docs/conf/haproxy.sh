@@ -39,14 +39,14 @@ debian() {
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#name#>|HAProxy|g" \
-        -e "s|<#enabled#>|yes|g" \
-        -e "s|<#types#>|deb|g" \
-        -e "s|<#uri#>|http://haproxy.debian.net|g" \
-        -e "s|<#suites#>|${osCodeName}-backports-${1}|g" \
-        -e "s|<#components#>|main|g" \
-        -e "s|<#arch#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#sig#>|${gpg_d}/${gpg_f}|g" \
+        -e "s|<# name #>|HAProxy|g" \
+        -e "s|<# enabled #>|yes|g" \
+        -e "s|<# types #>|deb|g" \
+        -e "s|<# uri #>|http://haproxy.debian.net|g" \
+        -e "s|<# suites #>|${osCodeName}-backports-${1}|g" \
+        -e "s|<# components #>|main|g" \
+        -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
+        -e "s|<# sig #>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 
