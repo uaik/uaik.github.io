@@ -52,10 +52,26 @@ debian() {
   apt() {
     local p=(
       "php${1}"
-      "php${1}-common"
+      "php${1}-bz2"
       "php${1}-cli"
+      "php${1}-common"
+      "php${1}-curl"
       "php${1}-fpm"
-      "php${1}-{bz2,curl,gd,gmp,geoip,imagick,imap,intl,mbstring,memcached,mysql,odbc,opcache,redis,xml,zip,zstd}"
+      "php${1}-gd"
+      "php${1}-geoip"
+      "php${1}-gmp"
+      "php${1}-imagick"
+      "php${1}-imap"
+      "php${1}-intl"
+      "php${1}-mbstring"
+      "php${1}-memcached"
+      "php${1}-mysql"
+      "php${1}-odbc"
+      "php${1}-opcache"
+      "php${1}-redis"
+      "php${1}-xml"
+      "php${1}-zip"
+      "php${1}-zstd"
     )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
