@@ -49,14 +49,14 @@ debian() {
         "${list_d}/${list_f}"
   }
 
+  apt() { ${apt} update; }
+
   service() {
     local d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
 
     local f=( 'homedir.conf' 'limits.conf' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
   }
-
-  apt() { ${apt} update; }
 
   run
 }
