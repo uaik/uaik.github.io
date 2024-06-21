@@ -28,7 +28,7 @@ networkd() {
   local e; mapfile -t e < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
   for i in "${e[@]}"; do
     ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network.tpl' \
-      && ${sed} -i -e "s|<# name #>|${i}|g" "${d}/${i}.network"
+      && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 
   local s='systemd-networkd'; ${systemctl} enable ${s}

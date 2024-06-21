@@ -34,13 +34,13 @@ debian() {
     local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
     ${curl} -fsSLo "${d}/debian.backports.sources" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<# name #>|Debian Backports|g" \
-        -e "s|<# enabled #>|yes|g" \
-        -e "s|<# types #>|deb|g" \
-        -e "s|<# uri #>|http://deb.debian.org/${osId}|g" \
-        -e "s|<# suites #>|${osCodeName}-backports|g" \
-        -e "s|<# components #>|main contrib non-free|g" \
-        -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
+        -e "s|<#_name_#>|Debian Backports|g" \
+        -e "s|<#_enabled_#>|yes|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|http://deb.debian.org/${osId}|g" \
+        -e "s|<#_suites_#>|${osCodeName}-backports|g" \
+        -e "s|<#_components_#>|main contrib non-free|g" \
+        -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|Signed-By:  |# Signed-By:|g" \
         "${d}/debian.backports.sources"
   }

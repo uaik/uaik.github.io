@@ -37,14 +37,14 @@ debian() {
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<# name #>|Syncthing|g" \
-        -e "s|<# enabled #>|yes|g" \
-        -e "s|<# types #>|deb|g" \
-        -e "s|<# uri #>|https://apt.syncthing.net|g" \
-        -e "s|<# suites #>|syncthing|g" \
-        -e "s|<# components #>|stable|g" \
-        -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
-        -e "s|<# sig #>|${gpg_d}/${gpg_f}|g" \
+        -e "s|<#_name_#>|Syncthing|g" \
+        -e "s|<#_enabled_#>|yes|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|https://apt.syncthing.net|g" \
+        -e "s|<#_suites_#>|syncthing|g" \
+        -e "s|<#_components_#>|stable|g" \
+        -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
+        -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 

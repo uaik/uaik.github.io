@@ -39,14 +39,14 @@ debian() {
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<# name #>|MySQL|g" \
-        -e "s|<# enabled #>|yes|g" \
-        -e "s|<# types #>|deb|g" \
-        -e "s|<# uri #>|http://repo.mysql.com/apt/${osId}|g" \
-        -e "s|<# suites #>|${osCodeName}|g" \
-        -e "s|<# components #>|mysql-${1}|g" \
-        -e "s|<# arch #>|$( dpkg --print-architecture )|g" \
-        -e "s|<# sig #>|${gpg_d}/${gpg_f}|g" \
+        -e "s|<#_name_#>|MySQL|g" \
+        -e "s|<#_enabled_#>|yes|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|http://repo.mysql.com/apt/${osId}|g" \
+        -e "s|<#_suites_#>|${osCodeName}|g" \
+        -e "s|<#_components_#>|mysql-${1}|g" \
+        -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
+        -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 
