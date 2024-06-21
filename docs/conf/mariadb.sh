@@ -35,9 +35,10 @@ debian() {
     local key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/template.sources' \
       && ${sed} -i \
         -e "s|<name>|MariaDB|g" \
+        -e "s|<enabled>|yes|g" \
         -e "s|<types>|deb|g" \
         -e "s|<uri>|https://mirror.netcologne.de/mariadb/repo/${1}/${osId}|g" \
         -e "s|<suites>|${osCodeName}|g" \

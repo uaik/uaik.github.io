@@ -36,9 +36,10 @@ debian() {
     local key='https://haproxy.debian.net/bernat.debian.org.gpg'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/template.sources' \
       && ${sed} -i \
         -e "s|<name>|HAProxy|g" \
+        -e "s|<enabled>|yes|g" \
         -e "s|<types>|deb|g" \
         -e "s|<uri>|http://haproxy.debian.net|g" \
         -e "s|<suites>|${osCodeName}-backports-${1}|g" \

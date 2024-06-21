@@ -1,5 +1,5 @@
 X-Repolib-Name: <name>
-Enabled:        yes
+Enabled:        <enabled>
 Types:          <types>
 URIs:           <uri>
 Suites:         <suites>

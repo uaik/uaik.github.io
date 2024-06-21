@@ -34,9 +34,10 @@ debian() {
     local key='https://syncthing.net/release-key.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/example.sources' \
+      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/template.sources' \
       && ${sed} -i \
         -e "s|<name>|Syncthing|g" \
+        -e "s|<enabled>|yes|g" \
         -e "s|<types>|deb|g" \
         -e "s|<uri>|https://apt.syncthing.net|g" \
         -e "s|<suites>|syncthing|g" \
