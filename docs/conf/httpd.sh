@@ -102,7 +102,7 @@ debian() {
           -out "${d}/certs/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=localhost" \
           -addext "subjectAltName=${ip%,}" \
-        && ${openssl} req -x509 -sha256 -days ${days} \
+        && ${openssl} req -x509 -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
           -out "${d}/certs/${f}.crt"
