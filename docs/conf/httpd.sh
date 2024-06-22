@@ -88,7 +88,7 @@ debian() {
     local file='web.local'
     local host; host=$( ${hostname} -I )
 
-    ${openssl} ecparam -genkey -name 'prime256v1' -out "/etc/ssl/certs/${file}.key" \
+    ${openssl} ecparam -genkey -name 'prime256v1' -out "/etc/ssl/private/${file}.key" \
       && ${openssl} req -new -sha256 \
         -key "/etc/ssl/private/${file}.key" \
         -out "/etc/ssl/certs/${file}.csr" \
