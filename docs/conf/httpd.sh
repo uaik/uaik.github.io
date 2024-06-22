@@ -93,7 +93,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
-    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v dns 'DNS:%s,' "${host[@]}"
+    local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v dns 'DNS:%s,' "${host[@]}"
 
     if [[ ! -f "${d}/private/${f}.key" ]]; then
       ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
