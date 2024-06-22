@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf && site && ssl; }
+  run() { repo && apt && conf && site; ssl; }
 
   repo() {
     local gpg_d='/etc/apt/keyrings'; local gpg_f='apache2.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -76,7 +76,7 @@ debian() {
     local d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original sites.
-    for i in '/etc/apache2/sites-enabled/'*; do [[ -L "${i}" ]] && ${unlink} "${i}"; done
+    for i in '/etc/apache2/sites-enabled/'*; do [[ -L "${i}" ]] && ${unlink} "${i}" || continue; done
   }
 
   ssl() {
