@@ -1,12 +1,9 @@
 #!/usr/bin/env -S bash -e
 
-# Checking commands.
-cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
-
 # Apps.
-chmod=$( command -v 'chmod' ); cmd_check 'chmod'
-curl=$( command -v 'curl' ); cmd_check 'curl'
-mv=$( command -v 'mv' ); cmd_check 'mv'
+chmod=$( command -v 'chmod' )
+curl=$( command -v 'curl' )
+mv=$( command -v 'mv' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )

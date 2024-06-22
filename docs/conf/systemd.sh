@@ -1,16 +1,13 @@
 #!/usr/bin/env -S bash -e
 
-# Checking commands.
-cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
-
 # Apps.
-apt=$( command -v 'apt' ); cmd_check 'apt'
-awk=$( command -v 'awk' ); cmd_check 'awk'
-curl=$( command -v 'curl' ); cmd_check 'curl'
-mv=$( command -v 'mv' ); cmd_check 'mv'
-sed=$( command -v 'sed' ); cmd_check 'sed'
-shutdown=$( command -v 'shutdown' ); cmd_check 'shutdown'
-systemctl=$( command -v 'systemctl' ); cmd_check 'systemctl'
+apt=$( command -v 'apt' )
+awk=$( command -v 'awk' )
+curl=$( command -v 'curl' )
+mv=$( command -v 'mv' )
+sed=$( command -v 'sed' )
+shutdown=$( command -v 'shutdown' )
+systemctl=$( command -v 'systemctl' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

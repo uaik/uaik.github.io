@@ -3,8 +3,10 @@
 # Apps.
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
+ln=$( command -v 'ln' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
+unlink=$( command -v 'unlink' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
@@ -26,37 +28,47 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && apt && service; }
+  run() { repo && apt && conf; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://uaik.github.io/conf/mysql/mysql.asc'
+    local gpg_d='/etc/apt/keyrings'; local gpg_f='nginx.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d='/etc/apt/sources.list.d'; local list_f='nginx.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key='https://packages.sury.org/nginx/apt.gpg'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|MySQL|g" \
+        -e "s|<#_name_#>|Nginx (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|http://repo.mysql.com/apt/${osId}|g" \
+        -e "s|<#_uri_#>|https://packages.sury.org/nginx|g" \
         -e "s|<#_suites_#>|${osCodeName}|g" \
-        -e "s|<#_components_#>|mysql-${1}|g" \
+        -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 
   apt() {
-    local p='mysql-server'
-    ${apt} update && ${apt} install --yes ${p}
+    local p=( 'nginx' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
-  service() {
-    local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
+  conf() {
+    local conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
+    local conf_f=( 'main.local.conf' )
+    for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/${i}"; done
 
-    local f=( 'limits.conf' )
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"; done
+    local sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
+    local sites_f=( 'default.conf' )
+    for i in "${sites_f[@]}"; do
+      if [[ -f "${sites_d}/${i}" ]]; then
+        [[ -L "/etc/nginx/sites-enabled/${i}" ]] && ${unlink} "/etc/nginx/sites-enabled/${i}"
+        ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
+      fi
+      ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/site.${i}" \
+        && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
+    done
   }
 
   run
