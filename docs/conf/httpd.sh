@@ -84,7 +84,7 @@ debian() {
     local country='RU'
     local state='Russia'
     local city='Moscow'
-    local org='RiK'
+    local org='LocalHost'
     local file='web.local'
     local host; host=$( ${hostname} -I )
 
