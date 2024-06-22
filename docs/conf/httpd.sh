@@ -86,28 +86,30 @@ debian() {
   }
 
   ssl() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
     local f; f='web.local'
-
     local days; days='3650'
     local country; country='RU'
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
-    local host; host=$( ${hostname} -I )
+    local host; mapfile -t host < <( ${hostname} -I )
+    host=$( printf -v host 'DNS:%s,' "${host[@]}" )
 
-    ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
-      && ${openssl} req -new -sha256 \
-        -key "${d}/private/${f}.key" \
-        -out "${d}/certs/${f}.csr" \
-        -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${host}" \
-        -addext "subjectAltName=DNS:${host},DNS:*.${host}" \
-      && ${openssl} req -x509 -sha256 -days ${days} \
-        -key "${d}/private/${f}.key" \
-        -in "${d}/certs/${f}.csr" \
-        -out "${d}/certs/${f}.crt"
+    if [[ ! -f "${d}/private/${f}.key" ]]; then
+      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
+        && ${openssl} req -new -sha256 \
+          -key "${d}/private/${f}.key" \
+          -out "${d}/certs/${f}.csr" \
+          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${host[0]}" \
+          -addext "subjectAltName=${host%,}" \
+        && ${openssl} req -x509 -sha256 -days ${days} \
+          -key "${d}/private/${f}.key" \
+          -in "${d}/certs/${f}.csr" \
+          -out "${d}/certs/${f}.crt"
+    fi
 
-    ${openssl} dhparam -out "${d}/certs/dhparam.pem" 4096
+    [[ ! -f "${d}/certs/dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/dhparam.pem" 4096
   }
 
   run
