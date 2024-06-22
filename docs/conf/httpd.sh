@@ -60,7 +60,7 @@ debian() {
 
     # Disabling original config.
     for i in '/etc/apache2/conf-enabled/'*; do
-      if [[ -L "${i}" ]]; then ${unlink} "${i}" else continue; fi
+      if [[ -L "${i}" ]]; then ${unlink} "${i}"; else continue; fi
     done
 
     # Installing and enabling custom config.
@@ -79,7 +79,7 @@ debian() {
 
     # Disabling original sites.
     for i in '/etc/apache2/sites-enabled/'*; do
-      if [[ -L "${i}" ]]; then ${unlink} "${i}" else continue; fi
+      if [[ -L "${i}" ]]; then ${unlink} "${i}"; else continue; fi
     done
   }
 
