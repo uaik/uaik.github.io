@@ -60,7 +60,7 @@ debian() {
     for i in '/etc/apache2/conf-enabled/'*; do [[ -L "${i}" ]] && ${unlink} "${i}"; done
 
     # Install and enabled custom config.
-    local f=( 'main.local.conf' )
+    local f=( 'httpd.local.conf' )
     for i in "${f[@]}"; do
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/${i}" \
         && ${ln} -s "${d}/${i}" '/etc/apache2/conf-enabled/'

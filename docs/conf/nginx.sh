@@ -56,7 +56,7 @@ debian() {
 
   conf() {
     local conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
-    local conf_f=( 'main.local.conf' )
+    local conf_f=( 'nginx.local.conf' )
     for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/${i}"; done
 
     local sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
