@@ -93,7 +93,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
-    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v host 'DNS:%s,' "${host[@]}"
+    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v dns 'DNS:%s,' "${host[@]}"
 
     if [[ ! -f "${d}/private/${f}.key" ]]; then
       ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
@@ -101,7 +101,7 @@ debian() {
           -key "${d}/private/${f}.key" \
           -out "${d}/certs/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${host[0]}" \
-          -addext "subjectAltName=${host%,}" \
+          -addext "subjectAltName=${dns%,}" \
         && ${openssl} req -x509 -sha256 -days ${days} \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
