@@ -27,9 +27,11 @@ debian() {
   run() { repo && apt && conf; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='syncthing.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='syncthing.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://syncthing.net/release-key.gpg'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='syncthing.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='syncthing.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://syncthing.net/release-key.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -46,17 +48,17 @@ debian() {
   }
 
   apt() {
-    local apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
-    local apt_f=( 'syncthing.pref' )
+    local apt_d; apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
+    local apt_f; apt_f=( 'syncthing.pref' )
     for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
 
-    local p='syncthing'
+    local p; p='syncthing'
     ${apt} update && ${apt} install --yes ${p}
   }
 
   conf() {
-    local sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
-    local sys_f=( 'syncthing@.service' )
+    local sys_d; sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
+    local sys_f; sys_f=( 'syncthing@.service' )
     for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
   }
 

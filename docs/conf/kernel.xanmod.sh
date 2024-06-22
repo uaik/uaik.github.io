@@ -28,9 +28,11 @@ debian() {
   run() { repo && apt; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='kernel.xanmod.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='kernel.xanmod.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://dl.xanmod.org/archive.key'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='kernel.xanmod.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='kernel.xanmod.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://dl.xanmod.org/archive.key'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \

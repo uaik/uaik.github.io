@@ -31,9 +31,11 @@ debian() {
   run() { repo && apt && conf; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='nginx.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='nginx.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://packages.sury.org/nginx/apt.gpg'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='nginx.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='nginx.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://packages.sury.org/nginx/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -50,17 +52,17 @@ debian() {
   }
 
   apt() {
-    local p=( 'nginx' )
+    local p; p=( 'nginx' )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   conf() {
-    local conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
-    local conf_f=( 'nginx.local.conf' )
+    local conf_d; conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
+    local conf_f; conf_f=( 'nginx.local.conf' )
     for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/${i}"; done
 
-    local sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
-    local sites_f=( 'default.conf' )
+    local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
+    local sites_f; sites_f=( 'default.conf' )
     for i in "${sites_f[@]}"; do
       if [[ -f "${sites_d}/${i}" ]]; then
         [[ -L "/etc/nginx/sites-enabled/${i}" ]] && ${unlink} "/etc/nginx/sites-enabled/${i}"

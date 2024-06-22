@@ -32,9 +32,11 @@ debian() {
   run() { repo && apt && conf && site; ssl; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='apache2.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='apache2.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://packages.sury.org/apache2/apt.gpg'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='apache2.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='apache2.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://packages.sury.org/apache2/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -51,12 +53,12 @@ debian() {
   }
 
   apt() {
-    local p=( 'apache2' )
+    local p; p=( 'apache2' )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   conf() {
-    local d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original config.
     for i in '/etc/apache2/conf-enabled/'*; do
@@ -64,7 +66,7 @@ debian() {
     done
 
     # Installing and enabling custom config.
-    local f=( 'httpd.local.conf' )
+    local f; f=( 'httpd.local.conf' )
     for i in "${f[@]}"; do
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/${i}" \
         && ${ln} -s "${d}/${i}" '/etc/apache2/conf-enabled/'
@@ -75,7 +77,7 @@ debian() {
   }
 
   site() {
-    local d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original sites.
     for i in '/etc/apache2/sites-enabled/'*; do
@@ -84,24 +86,28 @@ debian() {
   }
 
   ssl() {
-    local days='3650'
-    local country='RU'
-    local state='Russia'
-    local city='Moscow'
-    local org='LocalHost'
-    local file='web.local'
+    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
+    local f; f='web.local'
+
+    local days; days='3650'
+    local country; country='RU'
+    local state; state='Russia'
+    local city; city='Moscow'
+    local org; org='LocalHost'
     local host; host=$( ${hostname} -I )
 
-    ${openssl} ecparam -genkey -name 'prime256v1' -out "/etc/ssl/private/${file}.key" \
+    ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
       && ${openssl} req -new -sha256 \
-        -key "/etc/ssl/private/${file}.key" \
-        -out "/etc/ssl/certs/${file}.csr" \
+        -key "${d}/private/${f}.key" \
+        -out "${d}/certs/${f}.csr" \
         -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${host}" \
         -addext "subjectAltName=DNS:${host},DNS:*.${host}" \
       && ${openssl} req -x509 -sha256 -days ${days} \
-        -key "/etc/ssl/private/${file}.key" \
-        -in "/etc/ssl/certs/${file}.csr" \
-        -out "/etc/ssl/certs/${file}.crt"
+        -key "${d}/private/${f}.key" \
+        -in "${d}/certs/${f}.csr" \
+        -out "${d}/certs/${f}.crt"
+
+    ${openssl} dhparam -out "${d}/certs/dhparam.pem" 4096
   }
 
   run

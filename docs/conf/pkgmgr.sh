@@ -28,7 +28,7 @@ debian() {
   run() { repo && apt && conf; }
 
   repo() {
-    local d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
     ${curl} -fsSLo "${d}/debian.backports.sources" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Debian Backports|g" \
@@ -45,9 +45,9 @@ debian() {
   apt() { ${apt} update; }
 
   conf() {
-    local d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( '00InstallSuggests' )
+    local f; f=( '00InstallSuggests' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/apt/${i}"; done
   }
 

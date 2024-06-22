@@ -14,9 +14,9 @@ run() { conf; }
 # -------------------------------------------------------------------------------------------------------------------- #
 
 conf() {
-  local d='/etc/sysctl.d'; [[ ! -d "${d}" ]] && exit 1
+  local d; d='/etc/sysctl.d'; [[ ! -d "${d}" ]] && exit 1
 
-  local f=( '00-sysctl.local.conf' )
+  local f; f=( '00-sysctl.local.conf' )
   for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/sysctl/${i}"; done
 }
 

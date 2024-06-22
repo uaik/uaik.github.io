@@ -14,9 +14,9 @@ run() { conf; }
 # -------------------------------------------------------------------------------------------------------------------- #
 
 conf() {
-  local d='/etc/vim'; [[ ! -d "${d}" ]] && exit 1
+  local d; d='/etc/vim'; [[ ! -d "${d}" ]] && exit 1
 
-  local f=( 'vimrc.local' )
+  local f; f=( 'vimrc.local' )
   for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/vim/${i}"; done
 }
 

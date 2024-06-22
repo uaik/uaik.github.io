@@ -29,9 +29,11 @@ debian() {
   run() { repo '8.4-lts' && apt && service; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://uaik.github.io/conf/mysql/mysql.asc'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='mysql.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='mysql.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://uaik.github.io/conf/mysql/mysql.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -48,14 +50,14 @@ debian() {
   }
 
   apt() {
-    local p='mysql-server'
+    local p; p='mysql-server'
     ${apt} update && ${apt} install --yes ${p}
   }
 
   service() {
-    local d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( 'limits.conf' )
+    local f; f=( 'limits.conf' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"; done
   }
 

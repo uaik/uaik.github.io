@@ -29,9 +29,11 @@ debian() {
   run() { repo '3.0' && apt; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='haproxy.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://haproxy.debian.net/bernat.debian.org.gpg'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='haproxy.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='haproxy.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://haproxy.debian.net/bernat.debian.org.gpg'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -48,7 +50,7 @@ debian() {
   }
 
   apt() {
-    local p='haproxy=3.0.\*'
+    local p; p='haproxy=3.0.\*'
     ${apt} update && ${apt} install --yes ${p}
   }
 

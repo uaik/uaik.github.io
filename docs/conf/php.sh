@@ -28,9 +28,11 @@ debian() {
   run() { repo && apt '8.3' && conf '8.3'; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='php.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://packages.sury.org/php/apt.gpg'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='php.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://packages.sury.org/php/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -47,7 +49,7 @@ debian() {
   }
 
   apt() {
-    local p=(
+    local p; p=(
       "php${1}"
       "php${1}-bz2"
       "php${1}-cli"
@@ -75,9 +77,9 @@ debian() {
   }
 
   conf() {
-    local d="/etc/php/${1}/fpm/conf.d"; [[ ! -d "${d}" ]] && exit 1
+    local d; d="/etc/php/${1}/fpm/conf.d"; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( 'php.local.ini' )
+    local f; f=( 'php.local.ini' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"; done
   }
 

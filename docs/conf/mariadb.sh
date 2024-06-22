@@ -28,9 +28,11 @@ debian() {
   run() { repo '11.4' && apt && service; }
 
   repo() {
-    local gpg_d='/etc/apt/keyrings'; local gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d='/etc/apt/sources.list.d'; local list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
-    local key='https://mariadb.org/mariadb_release_signing_key.pgp'
+    local gpg_d; gpg_d='/etc/apt/keyrings'
+    local gpg_f; gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local list_d; list_d='/etc/apt/sources.list.d'
+    local list_f; list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local key; key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
@@ -47,14 +49,14 @@ debian() {
   }
 
   apt() {
-    local p='mariadb-server'
+    local p; p='mariadb-server'
     ${apt} update && ${apt} install --yes ${p}
   }
 
   service() {
-    local d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
 
-    local f=( 'homedir.conf' 'limits.conf' )
+    local f; f=( 'homedir.conf' 'limits.conf' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
   }
 

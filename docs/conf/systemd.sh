@@ -20,7 +20,7 @@ run() { networkd && resolved && reboot; }
 # -------------------------------------------------------------------------------------------------------------------- #
 
 networkd() {
-  local d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
+  local d; d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
 
   local e; mapfile -t e < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
   for i in "${e[@]}"; do
@@ -28,7 +28,7 @@ networkd() {
       && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 
-  local s='systemd-networkd'; ${systemctl} enable ${s}
+  local s; s='systemd-networkd'; ${systemctl} enable ${s}
   [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
@@ -37,7 +37,7 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  local s='systemd-resolved'
+  local s; s='systemd-resolved'
   ${apt} install --yes ${s} && ${systemctl} enable ${s}
 }
 
