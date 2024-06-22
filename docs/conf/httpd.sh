@@ -59,7 +59,9 @@ debian() {
     local d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original config.
-    for i in '/etc/apache2/conf-enabled/'*; do [[ -L "${i}" ]] && ${unlink} "${i}"; done
+    for i in '/etc/apache2/conf-enabled/'*; do
+      if [[ -L "${i}" ]]; then ${unlink} "${i}" else continue; fi
+    done
 
     # Installing and enabling custom config.
     local f=( 'httpd.local.conf' )
@@ -76,7 +78,9 @@ debian() {
     local d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original sites.
-    for i in '/etc/apache2/sites-enabled/'*; do [[ -L "${i}" ]] && ${unlink} "${i}" || continue; done
+    for i in '/etc/apache2/sites-enabled/'*; do
+      if [[ -L "${i}" ]]; then ${unlink} "${i}" else continue; fi
+    done
   }
 
   ssl() {
