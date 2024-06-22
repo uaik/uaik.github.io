@@ -101,6 +101,9 @@ debian() {
           -key "${d}/private/${f}.key" \
           -out "${d}/certs/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=localhost" \
+          -addext "extendedKeyUsage=serverAuth,clientAuth" \
+          -addext "keyUsage=digitalSignature,keyEncipherment" \
+          -addext "basicConstraints=CA:FALSE" \
           -addext "subjectAltName=${ip%,}" \
         && ${openssl} req -x509 -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
