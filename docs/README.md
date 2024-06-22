@@ -45,6 +45,12 @@ curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim
 curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'systemd'
 ```
 
+#### Apache HTTPD / Nginx / PHP
+
+```sh
+curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'httpd;nginx;php'
+```
+
 ## Scripts
 
 - [OS](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
