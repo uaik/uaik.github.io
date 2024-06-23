@@ -87,7 +87,7 @@ debian() {
 
   ssl() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
-    local f; f='httpd.localhost'
+    local f; f='local'
     local days; days='3650'
     local country; country='RU'
     local state; state='Russia'
@@ -111,7 +111,7 @@ debian() {
           -out "${d}/certs/${f}.crt"
     fi
 
-    [[ ! -f "${d}/certs/localhost.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/localhost.dhparam.pem" 4096
+    [[ ! -f "${d}/certs/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/local.dhparam.pem" 4096
   }
 
   run
