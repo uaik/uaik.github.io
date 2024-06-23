@@ -106,7 +106,7 @@ debian() {
           -addext "extendedKeyUsage=serverAuth,clientAuth" \
           -addext "subjectAltName=${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -signkey "${d}/private/${f}.key" \
+          -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
           -out "${d}/certs/${f}.crt"
     fi
