@@ -95,7 +95,7 @@ debian() {
     local org; org='LocalHost'
     local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
-    if [[ ! -f "${d}/private/${f}.key" ]]; then
+    if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
       ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
         && ${openssl} req -new -sha256 \
           -key "${d}/private/${f}.key" \
