@@ -105,8 +105,8 @@ debian() {
           -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
           -addext "extendedKeyUsage=serverAuth,clientAuth" \
           -addext "subjectAltName=${ip%,}" \
-        && ${openssl} req -x509 -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/private/${f}.key" \
+        && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
+          -signkey "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
           -out "${d}/certs/${f}.crt"
     fi
