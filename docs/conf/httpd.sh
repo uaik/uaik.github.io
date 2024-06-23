@@ -108,7 +108,8 @@ debian() {
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
-          -out "${d}/certs/${f}.crt"
+          -out "${d}/certs/${f}.crt" \
+        && ${openssl} x509 -in "${d}/certs/${f}.crt" -text -noout
     fi
 
     [[ ! -f "${d}/certs/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/local.dhparam.pem" 4096
