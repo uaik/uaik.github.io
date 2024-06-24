@@ -47,7 +47,6 @@ debian() {
           -addext 'nsCertType = server' \
           -addext 'nsComment = OpenSSL Generated Server Certificate' \
           -addext 'subjectKeyIdentifier = hash' \
-          -addext 'subjectKeyIdentifier = keyid, issuer:always' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth' \
           -addext "subjectAltName = ${ip%,}" \
@@ -94,6 +93,7 @@ debian() {
   }
 
   dhparam() {
+    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
     [[ ! -f "${d}/certs/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/local.dhparam.pem" 4096
   }
 
