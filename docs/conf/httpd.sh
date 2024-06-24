@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf && site; ssl; }
+  run() { repo && apt && conf && site; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'
@@ -83,36 +83,6 @@ debian() {
     for i in '/etc/apache2/sites-enabled/'*; do
       if [[ -L "${i}" ]]; then ${unlink} "${i}"; else continue; fi
     done
-  }
-
-  ssl() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
-    local f; f='local'
-    local days; days='3650'
-    local country; country='RU'
-    local state; state='Russia'
-    local city; city='Moscow'
-    local org; org='LocalHost'
-    local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
-
-    if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
-        && ${openssl} req -new -sha256 \
-          -key "${d}/private/${f}.key" \
-          -out "${d}/certs/${f}.csr" \
-          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=localhost" \
-          -addext "basicConstraints=critical,CA:FALSE" \
-          -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
-          -addext "extendedKeyUsage=serverAuth,clientAuth" \
-          -addext "subjectAltName=${ip%,}" \
-        && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/private/${f}.key" \
-          -in "${d}/certs/${f}.csr" \
-          -out "${d}/certs/${f}.crt" \
-        && ${openssl} x509 -in "${d}/certs/${f}.crt" -text -noout
-    fi
-
-    [[ ! -f "${d}/certs/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/local.dhparam.pem" 4096
   }
 
   run
