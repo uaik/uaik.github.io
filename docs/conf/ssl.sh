@@ -47,8 +47,6 @@ debian() {
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server' \
           -addext 'nsComment = OpenSSL Generated Server Certificate' \
-          -addext 'subjectKeyIdentifier = hash' \
-          -addext 'authorityKeyIdentifier = keyid, issuer:always' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth' \
           -addext "subjectAltName = ${ip%,}" \
@@ -82,8 +80,6 @@ debian() {
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = client, email' \
           -addext 'nsComment = OpenSSL Generated Client Certificate' \
-          -addext 'subjectKeyIdentifier = hash' \
-          -addext 'authorityKeyIdentifier = keyid, issuer' \
           -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
           -addext "subjectAltName = ${ip%,}" \
