@@ -34,7 +34,8 @@ debian() {
     local city; city='Moscow'
     local org; org='LocalHost'
     local cn; cn='localhost'
-    local email; email="postmaster@$( ${hostname} -d || echo 'localhost' )"
+    local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
+    local email; email="postmaster@${domain}"
     local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
     if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
@@ -68,7 +69,8 @@ debian() {
     local city; city='Moscow'
     local org; org='LocalHost'
     local cn; cn='localhost'
-    local email; email="postmaster@$( ${hostname} -d || echo 'localhost' )"
+    local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
+    local email; email="postmaster@${domain}"
     local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
     if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
