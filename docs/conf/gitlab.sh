@@ -50,7 +50,7 @@ debian() {
   }
 
   apt() {
-    local p; p='postgresql'
+    local p; p='gitlab-ce'
     ${apt} update && ${apt} install --yes ${p}
   }
 
