@@ -1,5 +1,5 @@
 1. Getting device IDs:
-  ls -l '/dev/disk/by-id/'
+  ls -l '/dev/disk/by-id/' && ls -l '/dev/disk/by-path/'
 2. Creating ZFS pool:
   2.1. Single disk stripe pool:
     p='data'; zpool create -o ashift=12 -O atime=off "${p}" <scsi-id-01>

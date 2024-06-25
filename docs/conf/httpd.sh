@@ -4,10 +4,8 @@
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 ln=$( command -v 'ln' )
-openssl=$( command -v 'openssl' )
 sed=$( command -v 'sed' )
 unlink=$( command -v 'unlink' )
-hostname=$( command -v 'hostname' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
