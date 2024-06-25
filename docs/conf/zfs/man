@@ -1,0 +1,7 @@
+1. Getting device IDs:
+  ls -l '/dev/disk/by-id/'
+2. Creating ZFS pool:
+  2.1. Single disk stripe pool:
+    p='data'; zpool create -o ashift=12 -O atime=off "${p}" <scsi-id-01>
+  2.2. Mirror pool (similar to raid-1, ≥ 2 disks, 1:1 redundancy):
+    p='data'; zpool create -o ashift=12 -O atime=off "${p}" mirror <scsi-id-01> <scsi-id-02>

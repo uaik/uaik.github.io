@@ -2,6 +2,7 @@
 
 # Apps.
 apt=$( command -v 'apt' )
+curl=$( command -v 'curl' )
 uname=$( command -v 'uname' )
 
 # OS.
@@ -23,7 +24,15 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  local k; k=$( ${uname} -r )
+  run() {
+    local k; k=$( ${uname} -r )
+
+    case "${k}" in
+      *'xanmod'*) xanmod ;;
+      *'zabbly'*) zabbly && man ;;
+      *) default && man ;;
+    esac
+  }
 
   xanmod() {
     echo "ZFS is not compatible with this kernel version (${k})!" && exit 1
@@ -38,11 +47,11 @@ debian() {
       && ${apt} install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
   }
 
-  case "${k}" in
-    *'xanmod'*) xanmod ;;
-    *'zabbly'*) zabbly ;;
-    *) default ;;
-  esac
+  man() {
+    ${curl} -fsSL 'https://uaik.github.io/conf/zfs/man'
+  }
+
+  run
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
