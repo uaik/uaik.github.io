@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && apt; }
+  run() { repo '2.x' && apt '2.13.0'; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -56,7 +56,7 @@ debian() {
     local osp; osp=$( password '32' '1' )
     env OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
 
-    local p; p='opensearch'
+    local p; p="opensearch=${1}"
     ${apt} update && ${apt} install --yes ${p}
 
     echo '' && echo 'OpenSearch administrator password:' && echo "${osp}" && echo ''
