@@ -33,7 +33,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
-    local ou; ou='ITD'
+    local ou; ou='IT Department'
     local cn; cn='localhost'
     local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
@@ -67,7 +67,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
-    local ou; ou='ITD'
+    local ou; ou='IT Department'
     local cn; cn='localhost'
     local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
