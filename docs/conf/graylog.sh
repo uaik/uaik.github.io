@@ -33,12 +33,12 @@ debian() {
     local gpg_f; gpg_f='graylog.gpg'
     local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
     local list_f; list_f='graylog.sources'
-    local key; key="https://packages.graylog2.org/repo/debian/keyring.gpg"
+    local key; key='https://packages.graylog2.org/repo/debian/keyring.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|MongoDB|g" \
+        -e "s|<#_name_#>|Graylog|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
         -e "s|<#_uri_#>|https://packages.graylog2.org/repo/debian|g" \
