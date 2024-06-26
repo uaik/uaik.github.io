@@ -50,7 +50,7 @@ debian() {
           -addext 'nsComment = OpenSSL Generated Server Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth' \
-          -addext "subjectAltName = DNS:localhost, IP:127.0.0.1, ${ip%,}" \
+          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
@@ -84,7 +84,7 @@ debian() {
           -addext 'nsComment = OpenSSL Generated Client Certificate' \
           -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
-          -addext "subjectAltName = DNS:localhost, IP:127.0.0.1, ${ip%,}" \
+          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
