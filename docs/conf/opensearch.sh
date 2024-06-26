@@ -2,13 +2,16 @@
 
 # Apps.
 apt=$( command -v 'apt' )
+cat=$( command -v 'cat' )
 curl=$( command -v 'curl' )
+fold=$( command -v 'fold' )
 gpg=$( command -v 'gpg' )
+head=$( command -v 'head' )
 sed=$( command -v 'sed' )
+tr=$( command -v 'tr' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -26,30 +29,44 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo '2.x' && apt; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='kernel.zabbly.gpg'
+    local gpg_f; gpg_f='opensearch.gpg'
     local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='kernel.zabbly.sources'
-    local key; key='https://pkgs.zabbly.com/key.asc'
+    local list_f; list_f='opensearch.sources'
+    local key; key='https://artifacts.opensearch.org/publickeys/opensearch.pgp'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|Kernel (Zabbly)|g" \
+        -e "s|<#_name_#>|OpenSearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
-        -e "s|<#_types_#>|deb deb-src|g" \
-        -e "s|<#_uri_#>|https://pkgs.zabbly.com/kernel/stable|g" \
-        -e "s|<#_suites_#>|${osCodeName}|g" \
-        -e "s|<#_components_#>|main zfs|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|https://artifacts.opensearch.org/releases/bundle/opensearch/${1}/apt|g" \
+        -e "s|<#_suites_#>|stable|g" \
+        -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local osp; osp=$( password '32' '1' )
+    env OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
+
+    local p; p='opensearch'
+    ${apt} update && ${apt} install --yes ${p}
+
+    echo '' && echo 'OpenSearch administrator password:' && echo "${osp}" && echo ''
+  }
+
+  password() {
+    local password
+    password=$( ${cat} /dev/urandom | LC_ALL=C ${tr} -dc 'a-zA-Z0-9' | ${fold} -w "${1}" | ${head} -n "${2}" )
+    echo "${password}"
+  }
 
   run
 }

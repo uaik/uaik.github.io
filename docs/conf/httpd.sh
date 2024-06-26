@@ -30,10 +30,10 @@ debian() {
   run() { repo && apt && conf && site; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'
-    local gpg_f; gpg_f='apache2.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d; list_d='/etc/apt/sources.list.d'
-    local list_f; list_f='apache2.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local gpg_f; gpg_f='apache2.gpg'
+    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
+    local list_f; list_f='apache2.sources'
     local key; key='https://packages.sury.org/apache2/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \

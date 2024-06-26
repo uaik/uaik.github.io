@@ -28,10 +28,10 @@ debian() {
   run() { repo '11.4' && apt && service; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'
-    local gpg_f; gpg_f='mariadb.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d; list_d='/etc/apt/sources.list.d'
-    local list_f; list_f='mariadb.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local gpg_f; gpg_f='mariadb.gpg'
+    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
+    local list_f; list_f='mariadb.sources'
     local key; key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \

@@ -26,30 +26,33 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo '6.0' && apt '6.0'; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='kernel.zabbly.gpg'
+    local gpg_f; gpg_f='graylog.gpg'
     local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='kernel.zabbly.sources'
-    local key; key='https://pkgs.zabbly.com/key.asc'
+    local list_f; list_f='graylog.sources'
+    local key; key="https://packages.graylog2.org/repo/debian/keyring.gpg"
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|Kernel (Zabbly)|g" \
+        -e "s|<#_name_#>|MongoDB|g" \
         -e "s|<#_enabled_#>|yes|g" \
-        -e "s|<#_types_#>|deb deb-src|g" \
-        -e "s|<#_uri_#>|https://pkgs.zabbly.com/kernel/stable|g" \
-        -e "s|<#_suites_#>|${osCodeName}|g" \
-        -e "s|<#_components_#>|main zfs|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|https://packages.graylog2.org/repo/debian|g" \
+        -e "s|<#_suites_#>|stable|g" \
+        -e "s|<#_components_#>|${1}|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
         "${list_d}/${list_f}"
   }
 
-  apt() { ${apt} update; }
+  apt() {
+    local p; p="graylog-server=${1}"
+    ${apt} update && ${apt} install --yes ${p}
+  }
 
   run
 }

@@ -31,10 +31,10 @@ debian() {
   run() { repo && apt && conf; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'
-    local gpg_f; gpg_f='nginx.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d; list_d='/etc/apt/sources.list.d'
-    local list_f; list_f='nginx.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local gpg_f; gpg_f='nginx.gpg'
+    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
+    local list_f; list_f='nginx.sources'
     local key; key='https://packages.sury.org/nginx/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \

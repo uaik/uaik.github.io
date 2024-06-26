@@ -28,10 +28,10 @@ debian() {
   run() { repo && apt '8.3' && conf '8.3'; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'
-    local gpg_f; gpg_f='php.gpg'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local list_d; list_d='/etc/apt/sources.list.d'
-    local list_f; list_f='php.sources'; [[ ! -d "${list_d}" ]] && exit 1
+    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
+    local gpg_f; gpg_f='php.gpg'
+    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
+    local list_f; list_f='php.sources'
     local key; key='https://packages.sury.org/php/apt.gpg'
 
     ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
