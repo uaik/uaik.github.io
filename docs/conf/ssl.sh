@@ -49,7 +49,7 @@ debian() {
           -addext 'nsCertType = server' \
           -addext 'nsComment = OpenSSL Generated Server Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
-          -addext 'extendedKeyUsage = serverAuth' \
+          -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
