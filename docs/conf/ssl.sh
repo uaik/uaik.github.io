@@ -33,6 +33,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
+    local ou; ou='ITD'
     local cn; cn='localhost'
     local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
@@ -43,13 +44,13 @@ debian() {
         && ${openssl} req -new -sha256 \
           -key "${d}/private/${f}.key" \
           -out "${d}/certs/${f}.csr" \
-          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${cn}/emailAddress=${email}" \
+          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server' \
           -addext 'nsComment = OpenSSL Generated Server Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth' \
-          -addext "subjectAltName = ${ip%,}" \
+          -addext "subjectAltName = IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
@@ -66,6 +67,7 @@ debian() {
     local state; state='Russia'
     local city; city='Moscow'
     local org; org='LocalHost'
+    local ou; ou='ITD'
     local cn; cn='localhost'
     local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
@@ -76,13 +78,13 @@ debian() {
         && ${openssl} req -new -sha256 \
           -key "${d}/private/${f}.key" \
           -out "${d}/certs/${f}.csr" \
-          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/CN=${cn}/emailAddress=${email}" \
+          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = client, email' \
           -addext 'nsComment = OpenSSL Generated Client Certificate' \
           -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
-          -addext "subjectAltName = ${ip%,}" \
+          -addext "subjectAltName = IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/private/${f}.key" \
           -in "${d}/certs/${f}.csr" \
