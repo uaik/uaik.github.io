@@ -26,7 +26,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo && apt '16'; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -50,7 +50,7 @@ debian() {
   }
 
   apt() {
-    local p; p='postgresql'
+    local p; p="postgresql-${1}"
     ${apt} update && ${apt} install --yes ${p}
   }
 
