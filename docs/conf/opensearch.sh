@@ -18,6 +18,8 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
+  osp=$( password '32' '1' ); env OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
+
   case "${osId}" in
     'debian') debian ;;
     *) echo 'OS is not supported!' && exit 1 ;;
@@ -53,9 +55,6 @@ debian() {
   }
 
   apt() {
-    local osp; osp=$( password '32' '1' )
-    env OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
-
     local p; p="opensearch=${1}"
     ${apt} update && ${apt} install --yes ${p}
 
