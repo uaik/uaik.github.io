@@ -18,7 +18,7 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  osp=$( password '32' '1' ); env OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
+  osp=$( password '32' '1' ); export OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
 
   case "${osId}" in
     'debian') debian ;;
@@ -61,13 +61,17 @@ debian() {
     echo '' && echo 'OpenSearch administrator password:' && echo "${osp}" && echo ''
   }
 
-  password() {
-    local password
-    password=$( ${cat} /dev/urandom | LC_ALL=C ${tr} -dc 'a-zA-Z0-9' | ${fold} -w "${1}" | ${head} -n "${2}" )
-    echo "${password}"
-  }
-
   run
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# COMMON FUNCTIONS.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+password() {
+  local password
+  password=$( ${cat} /dev/urandom | LC_ALL=C ${tr} -dc 'a-zA-Z0-9' | ${fold} -w "${1}" | ${head} -n "${2}" )
+  echo "${password}"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
