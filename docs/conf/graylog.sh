@@ -24,7 +24,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '6.0' && apt '6.0'; }
+  run() { repo '6.0' && apt; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -48,7 +48,7 @@ debian() {
   }
 
   apt() {
-    local p; p="graylog-server=${1}"
+    local p; p="graylog-server"
     ${apt} update && ${apt} install --yes ${p}
   }
 
