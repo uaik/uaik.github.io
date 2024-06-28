@@ -64,13 +64,18 @@ debian() {
     local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
     local sites_f; sites_f=( 'default.conf' )
     for i in "${sites_f[@]}"; do
-      if [[ -f "${sites_d}/${i}" ]]; then
-        [[ -L "/etc/nginx/sites-enabled/${i}" ]] && ${unlink} "/etc/nginx/sites-enabled/${i}"
-        ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
-      fi
+      [[ -f "${sites_d}/${i}" ]] && ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
       ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \
         && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
     done
+
+    ${sed} -i \
+      -e 's|worker_connections 768;|worker_connections 1024;|g' \
+      -e 's|types_hash_max_size |#types_hash_max_size |g' \
+      -e 's|ssl_protocols |#ssl_protocols |g' \
+      -e 's|ssl_prefer_server_ciphers |#ssl_prefer_server_ciphers |g' \
+      -e 's|gzip on;|#gzip on;|g' \
+      '/etc/nginx/nginx.conf'
   }
 
   run
