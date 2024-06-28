@@ -2,6 +2,7 @@
 
 # Apps.
 apt=$( command -v 'apt' )
+cp=$( command -v 'cp' )
 curl=$( command -v 'curl' )
 ln=$( command -v 'ln' )
 mv=$( command -v 'mv' )
@@ -69,13 +70,16 @@ debian() {
         && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
     done
 
-    ${sed} -i \
-      -e 's|worker_connections 768;|worker_connections 1024;|g' \
-      -e 's|types_hash_max_size |#types_hash_max_size |g' \
-      -e 's|ssl_protocols |#ssl_protocols |g' \
-      -e 's|ssl_prefer_server_ciphers |#ssl_prefer_server_ciphers |g' \
-      -e 's|gzip on;|#gzip on;|g' \
-      '/etc/nginx/nginx.conf'
+    [[ -f '/etc/nginx/nginx.conf' ]] \
+      && ${mv} '/etc/nginx/nginx.conf' '/etc/nginx/nginx.conf.orig' \
+      && ${cp} '/etc/nginx/nginx.conf.orig' '/etc/nginx/nginx.conf' \
+      && ${sed} -i \
+        -e 's|worker_connections 768;|worker_connections 1024;|g' \
+        -e 's|types_hash_max_size |#types_hash_max_size |g' \
+        -e 's|ssl_protocols |#ssl_protocols |g' \
+        -e 's|ssl_prefer_server_ciphers |#ssl_prefer_server_ciphers |g' \
+        -e 's|gzip on;|#gzip on;|g' \
+        '/etc/nginx/nginx.conf'
   }
 
   run
