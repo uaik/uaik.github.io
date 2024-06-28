@@ -59,7 +59,7 @@ debian() {
   conf() {
     local conf_d; conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
     local conf_f; conf_f=( 'nginx.local.conf' )
-    for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/${i}"; done
+    for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"; done
 
     local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
     local sites_f; sites_f=( 'default.conf' )
@@ -68,7 +68,7 @@ debian() {
         [[ -L "/etc/nginx/sites-enabled/${i}" ]] && ${unlink} "/etc/nginx/sites-enabled/${i}"
         ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
       fi
-      ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/site.${i}" \
+      ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \
         && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
     done
   }
