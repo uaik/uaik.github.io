@@ -50,8 +50,8 @@ debian() {
   }
 
   apt() {
-    local p; p='mongodb-org'
-    ${apt} update && ${apt} install --yes ${p}
+    local p; p=( 'mongodb-org' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   run

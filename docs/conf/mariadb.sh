@@ -49,8 +49,8 @@ debian() {
   }
 
   apt() {
-    local p; p='mariadb-server'
-    ${apt} update && ${apt} install --yes ${p}
+    local p; p=( 'mariadb-server' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   service() {

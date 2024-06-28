@@ -53,8 +53,8 @@ debian() {
     local apt_f; apt_f=( 'nodejs.pref' 'nsolid.pref' )
     for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/nodejs/${i}"; done
 
-    local p; p='nodejs'
-    ${apt} update && ${apt} install --yes ${p}
+    local p; p=( 'nodejs' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   run

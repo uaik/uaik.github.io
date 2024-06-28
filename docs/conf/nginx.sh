@@ -52,7 +52,7 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'nginx' )
+    local p; p=( 'nginx' 'libnginx-mod-brotli' )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 

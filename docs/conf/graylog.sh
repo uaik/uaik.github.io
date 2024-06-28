@@ -48,8 +48,8 @@ debian() {
   }
 
   apt() {
-    local p; p="graylog-server"
-    ${apt} update && ${apt} install --yes ${p}
+    local p; p=( 'graylog-server' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   run
