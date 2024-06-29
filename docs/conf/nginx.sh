@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf; }
+  run() { repo && apt && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -57,11 +57,15 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
-  conf() {
+  config() {
     local conf_d; conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
     local conf_f; conf_f=( 'nginx.local.conf' )
     for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"; done
 
+    # Removing default symlinks.
+    for i in '/etc/nginx/sites-enabled'/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
+
+    # Downloading custom site config.
     local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
     local sites_f; sites_f=( 'default.conf' )
     for i in "${sites_f[@]}"; do
@@ -70,6 +74,7 @@ debian() {
         && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
     done
 
+    # Changing default nginx config.
     [[ -f '/etc/nginx/nginx.conf' ]] \
       && ${mv} '/etc/nginx/nginx.conf' '/etc/nginx/nginx.conf.orig' \
       && ${cp} '/etc/nginx/nginx.conf.orig' '/etc/nginx/nginx.conf' \
@@ -79,6 +84,7 @@ debian() {
         -e 's|ssl_protocols |#ssl_protocols |g' \
         -e 's|ssl_prefer_server_ciphers |#ssl_prefer_server_ciphers |g' \
         -e 's|gzip on;|#gzip on;|g' \
+        -e 's|sites-enabled/*;|sites-enabled/*.conf;|g' \
         '/etc/nginx/nginx.conf'
   }
 

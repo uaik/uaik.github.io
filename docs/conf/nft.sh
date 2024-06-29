@@ -4,6 +4,7 @@
 chmod=$( command -v 'chmod' )
 curl=$( command -v 'curl' )
 mv=$( command -v 'mv' )
+systemctl=$( command -v 'systemctl' )
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
@@ -24,11 +25,16 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { conf; }
+  run() { config && service; }
 
-  conf() {
+  config() {
     local f; f='/etc/nftables.conf'; [[ -f "${f}" && ! -f "${f}.orig" ]] && ${mv} "${f}" "${f}.orig" || exit 1
     ${curl} -fsSLo "${f}" 'https://uaik.github.io/conf/nft/nftables.conf' && ${chmod} +x "${f}"
+  }
+
+  service() {
+    local s; s=( 'nftables' )
+    for i in "${s[@]}"; do ${systemctl} enable "${i}"; done
   }
 
   run

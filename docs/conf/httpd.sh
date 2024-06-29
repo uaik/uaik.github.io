@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf && site; }
+  run() { repo && apt && config && site; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -55,7 +55,7 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
-  conf() {
+  config() {
     local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
 
     # Disabling original config.

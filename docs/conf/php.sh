@@ -25,7 +25,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt '8.3' && conf '8.3'; }
+  run() { repo && apt '8.3' && config '8.3'; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -76,7 +76,7 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
-  conf() {
+  config() {
     local d; d="/etc/php/${1}/fpm/conf.d"; [[ ! -d "${d}" ]] && exit 1
 
     local f; f=( 'php.local.ini' )

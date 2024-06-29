@@ -25,7 +25,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf; }
+  run() { repo && apt && config; }
 
   repo() {
     local d; d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
@@ -44,7 +44,7 @@ debian() {
 
   apt() { ${apt} update; }
 
-  conf() {
+  config() {
     local d; d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
 
     local f; f=( '00InstallSuggests' )

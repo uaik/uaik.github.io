@@ -23,14 +23,14 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { apt && conf && jail && service; }
+  run() { apt && config && jail && service; }
 
   apt() {
     local p; p='fail2ban'
     ${apt} update && ${apt} install --yes ${p}
   }
 
-  conf() {
+  config() {
     local d; d='/etc/fail2ban'; [[ ! -d "${d}" ]] && exit 1
 
     local f; f=( 'fail2ban.local' 'jail.local' )

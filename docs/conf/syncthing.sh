@@ -24,7 +24,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && conf; }
+  run() { repo && apt && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -56,7 +56,7 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
-  conf() {
+  config() {
     local sys_d; sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
     local sys_f; sys_f=( 'syncthing@.service' )
     for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
