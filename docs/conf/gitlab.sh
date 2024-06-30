@@ -2,6 +2,7 @@
 
 # Apps.
 apt=$( command -v 'apt' )
+cat=$( command -v 'cat' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
 sed=$( command -v 'sed' )
@@ -26,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo && apt && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -52,6 +53,20 @@ debian() {
   apt() {
     local p; p=( 'gitlab-ce' )
     ${apt} update && ${apt} install --yes "${p[@]}"
+  }
+
+  config() {
+    local d; d='/etc/gitlab'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=( 'gitlab.local.rb' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/${i}"; done
+
+    ${cat} << EOF >> "${d}/gitlab.rb"
+
+#################################################################################
+## Loading external configuration file
+#################################################################################
+from_file '${d}/gitlab.local.rb'
+EOF
   }
 
   run

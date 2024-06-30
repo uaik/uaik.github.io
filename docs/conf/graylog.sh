@@ -24,7 +24,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '6.0' && apt; }
+  run() { repo '6.0' && apt && nginx; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -50,6 +50,12 @@ debian() {
   apt() {
     local p; p=( 'graylog-server' )
     ${apt} update && ${apt} install --yes "${p[@]}"
+  }
+
+  nginx() {
+    local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=( 'graylog.conf' )
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/debian.nginx.${i}"; done
   }
 
   run

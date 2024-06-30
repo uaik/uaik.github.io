@@ -50,7 +50,7 @@ debian() {
   apt() {
     local apt_d; apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
     local apt_f; apt_f=( 'syncthing.pref' )
-    for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
+    for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/debian.apt.${i}"; done
 
     local p; p=( 'syncthing' )
     ${apt} update && ${apt} install --yes "${p[@]}"
@@ -59,7 +59,7 @@ debian() {
   config() {
     local sys_d; sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
     local sys_f; sys_f=( 'syncthing@.service' )
-    for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/${i}"; done
+    for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/debian.${i}"; done
   }
 
   run
