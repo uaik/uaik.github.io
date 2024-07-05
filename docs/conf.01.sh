@@ -14,7 +14,6 @@
 
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # Apps.
 apt=$( command -v 'apt' )
