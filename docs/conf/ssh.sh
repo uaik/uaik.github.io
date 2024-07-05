@@ -15,7 +15,6 @@ run() { config; }
 
 config() {
   local d; d='/etc/ssh/sshd_config.d'; [[ ! -d "${d}" ]] && exit 1
-
   local f; f=( '00-sshd.local.conf' )
   for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/ssh/${i}"; done
 }

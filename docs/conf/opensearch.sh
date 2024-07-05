@@ -57,7 +57,6 @@ debian() {
   apt() {
     local p; p=( "opensearch=${1}" )
     ${apt} update && ${apt} install --yes "${p[@]}" && apt-mark hold "${p[@]}"
-
     echo '' && echo 'OpenSearch administrator password:' && echo "${osp}" && echo ''
   }
 

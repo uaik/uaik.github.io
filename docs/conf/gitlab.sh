@@ -59,7 +59,6 @@ debian() {
     local d; d='/etc/gitlab'; [[ ! -d "${d}" ]] && exit 1
     local f; f=( 'gitlab.local.rb' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/debian.${i}"; done
-
     ${cat} << EOF >> "${d}/gitlab.rb"
 
 #################################################################################

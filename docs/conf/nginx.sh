@@ -59,6 +59,8 @@ debian() {
 
   config() {
     local conf_d; conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
+
+    # Downloading nginx config.
     local conf_f; conf_f=( 'nginx.local.conf' )
     for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"; done
 
@@ -68,6 +70,7 @@ debian() {
     # Downloading custom site config.
     local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
     local sites_f; sites_f=( 'default.conf' )
+
     for i in "${sites_f[@]}"; do
       [[ -f "${sites_d}/${i}" ]] && ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
       ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \

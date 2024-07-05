@@ -51,7 +51,6 @@ debian() {
     local apt_d; apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
     local apt_f; apt_f=( 'syncthing.pref' )
     for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/debian.apt.${i}"; done
-
     local p; p=( 'syncthing' )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }

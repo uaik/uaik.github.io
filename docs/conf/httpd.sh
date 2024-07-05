@@ -57,6 +57,7 @@ debian() {
 
   config() {
     local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=( 'httpd.local.conf' )
 
     # Disabling original config.
     for i in '/etc/apache2/conf-enabled/'*; do
@@ -64,7 +65,6 @@ debian() {
     done
 
     # Installing and enabling custom config.
-    local f; f=( 'httpd.local.conf' )
     for i in "${f[@]}"; do
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}" \
         && ${ln} -s "${d}/${i}" '/etc/apache2/conf-enabled/'

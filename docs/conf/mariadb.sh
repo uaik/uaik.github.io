@@ -55,7 +55,6 @@ debian() {
 
   service() {
     local d; d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
-
     local f; f=( 'homedir.conf' 'limits.conf' )
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
   }

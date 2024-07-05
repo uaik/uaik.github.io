@@ -21,13 +21,11 @@ run() { networkd && resolved && reboot; }
 
 networkd() {
   local d; d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
-
   local e; mapfile -t e < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
   for i in "${e[@]}"; do
     ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network.tpl' \
       && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
-
   local s; s='systemd-networkd.service'; ${systemctl} enable ${s}
   [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
