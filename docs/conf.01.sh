@@ -24,6 +24,7 @@ chsh=$( command -v 'chsh' ); cmd_check 'chsh'
 curl=$( command -v 'curl' ); cmd_check 'curl'
 find=$( command -v 'find' ); cmd_check 'find'
 head=$( command -v 'head' ); cmd_check 'head'
+id=$( command -v 'id' ); cmd_check 'id'
 mkdir=$( command -v 'mkdir' ); cmd_check 'mkdir'
 mv=$( command -v 'mv' ); cmd_check 'mv'
 tr=$( command -v 'tr' ); cmd_check 'tr'
@@ -34,14 +35,14 @@ usermod=$( command -v 'usermod' ); cmd_check 'usermod'
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { root && u0001 && u0002 && u0000; }
+run() { root && u000X && u0002; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # USER / ROOT.
 # -------------------------------------------------------------------------------------------------------------------- #
 
 root() {
-  local user='root'
+  local user; user='root'
   local password
 
   # Changing password.
@@ -58,41 +59,33 @@ root() {
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# USER / 0000.
+# USER / [0000 | 0001].
 # -------------------------------------------------------------------------------------------------------------------- #
 
-u0000() {
-  local user='u0000'
-
-  # Locking user.
-  echo "--- [${user^^}] Locking user..."
-  ${usermod} -L "${user}"
-}
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# USER / 0001.
-# -------------------------------------------------------------------------------------------------------------------- #
-
-u0001() {
-  local user='u0001'
+u000X() {
+  local user; user=( 'u0000' 'u0001' )
   local password; password=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
 
-  # Creating user.
-  echo "--- [${user^^}] Adding user..."
-  ${useradd} -m -p "${password}" -c "${user^^}" "${user}"
+  for i in "${user[@]}"; do
+    if ! ${id} -u "${i}" >/dev/null 2>&1; then
+      # Creating user.
+      echo "--- [${i^^}] Adding user..."
+      ${useradd} -m -p "${password}" -c "${i^^}" "${i}"
 
-  # Generating password.
-  local home; home=$( _home "${user}" )
-  echo "${password}" > "${home}/.password"
-  ${chown} ${user}:${user} "${home}/.password"
+      # Generating password.
+      local home; home=$( _home "${i}" )
+      echo "${password}" > "${home}/.password"
+      ${chown} ${i}:${i} "${home}/.password"
+    fi
 
-  # Changing shell.
-  echo "--- [${user^^}] Changing shell..."
-  ${chsh} -s '/bin/zsh' "${user}"
+    # Changing shell.
+    echo "--- [${i^^}] Changing shell..."
+    ${chsh} -s '/bin/zsh' "${i}"
 
-  # Locking user.
-  echo "--- [${user^^}] Locking user..."
-  ${usermod} -L "${user}"
+    # Locking user.
+    echo "--- [${i^^}] Locking user..."
+    ${usermod} -L "${i}"
+  done
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -100,7 +93,7 @@ u0001() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 u0002() {
-  local user='u0002'
+  local user; user='u0002'
   local password
 
   # Creating user.
@@ -125,9 +118,8 @@ u0002() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 _home() {
-  local user="${1}"
+  local user; user="${1}"
   local home; home=$( ${awk} -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )
-
   echo "${home}"
 }
 
@@ -136,10 +128,10 @@ _home() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 _grml() {
-  local user="${1}"
-  local uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
+  local user; user="${1}"
+  local uri; uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   local home; home=$( _home "${user}" )
-  local zshrc='/etc/zsh/zshrc.grml'
+  local zshrc; zshrc='/etc/zsh/zshrc.grml'
 
   # Downloading 'grml' config.
   if [[ ! -f "${zshrc}" || $( ${find} "${zshrc}" -mmin '+60' ) ]]; then
