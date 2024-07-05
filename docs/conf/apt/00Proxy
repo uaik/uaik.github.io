@@ -1,4 +1,2 @@
-Acquire {
-  http::Proxy "http://username:password@192.168.11.22:3128/";
-  https::Proxy "http://username:password@192.168.11.22:3128/";
-}
+# Acquire::http::Proxy "http://username:password@192.168.11.22:3128/";
+# Acquire::https::Proxy "http://username:password@192.168.11.22:3128/";
