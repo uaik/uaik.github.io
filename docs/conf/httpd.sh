@@ -1,4 +1,9 @@
 #!/usr/bin/env -S bash -e
+# -------------------------------------------------------------------------------------------------------------------- #
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # Apps.
 apt=$( command -v 'apt' )
@@ -6,10 +11,6 @@ curl=$( command -v 'curl' )
 ln=$( command -v 'ln' )
 sed=$( command -v 'sed' )
 unlink=$( command -v 'unlink' )
-
-# OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.

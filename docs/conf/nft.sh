@@ -1,13 +1,14 @@
 #!/usr/bin/env -S bash -e
+# -------------------------------------------------------------------------------------------------------------------- #
+
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # Apps.
 chmod=$( command -v 'chmod' )
 curl=$( command -v 'curl' )
 mv=$( command -v 'mv' )
 systemctl=$( command -v 'systemctl' )
-
-# OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
