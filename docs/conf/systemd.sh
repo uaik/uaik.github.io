@@ -28,7 +28,7 @@ networkd() {
       && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 
-  local s; s='systemd-networkd'; ${systemctl} enable ${s}
+  local s; s='systemd-networkd.service'; ${systemctl} enable ${s}
   [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
@@ -37,7 +37,7 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  local s; s='systemd-resolved'
+  local s; s='systemd-resolved.service'
   ${apt} install --yes ${s} && ${systemctl} enable ${s}
 }
 
