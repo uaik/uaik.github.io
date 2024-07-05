@@ -39,11 +39,12 @@ debian() {
     local email; email="postmaster@${domain}"
     local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
-    if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
+    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
+    if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
+      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
         && ${openssl} req -new -sha256 \
-          -key "${d}/private/${f}.key" \
-          -out "${d}/certs/${f}.csr" \
+          -key "${d}/_ssc/${f}.key" \
+          -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server' \
@@ -52,10 +53,10 @@ debian() {
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/private/${f}.key" \
-          -in "${d}/certs/${f}.csr" \
-          -out "${d}/certs/${f}.crt" \
-        && ${openssl} x509 -in "${d}/certs/${f}.crt" -text -noout
+          -key "${d}/_ssc/${f}.key" \
+          -in "${d}/_ssc/${f}.csr" \
+          -out "${d}/_ssc/${f}.crt" \
+        && ${openssl} x509 -in "${d}/_ssc/${f}.crt" -text -noout
     fi
   }
 
@@ -73,11 +74,12 @@ debian() {
     local email; email="postmaster@${domain}"
     local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
-    if [[ ! -f "${d}/private/${f}.key" || ! -f "${d}/certs/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/private/${f}.key" \
+    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
+    if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
+      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
         && ${openssl} req -new -sha256 \
-          -key "${d}/private/${f}.key" \
-          -out "${d}/certs/${f}.csr" \
+          -key "${d}/_ssc/${f}.key" \
+          -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = client, email' \
@@ -86,16 +88,17 @@ debian() {
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
         && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/private/${f}.key" \
-          -in "${d}/certs/${f}.csr" \
-          -out "${d}/certs/${f}.crt" \
-        && ${openssl} x509 -in "${d}/certs/${f}.crt" -text -noout
+          -key "${d}/_ssc/${f}.key" \
+          -in "${d}/_ssc/${f}.csr" \
+          -out "${d}/_ssc/${f}.crt" \
+        && ${openssl} x509 -in "${d}/_ssc/${f}.crt" -text -noout
     fi
   }
 
   dhparam() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
-    [[ ! -f "${d}/certs/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/certs/local.dhparam.pem" 4096
+    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
+    [[ ! -f "${d}/_ssc/local.dhparam.pem" ]] && ${openssl} dhparam -out "${d}/_ssc/local.dhparam.pem" 4096
   }
 
   run
