@@ -1,7 +1,6 @@
 #!/usr/bin/env -S bash -e
 
 # Apps.
-chmod=$( command -v 'chmod' )
 curl=$( command -v 'curl' )
 mv=$( command -v 'mv' )
 systemctl=$( command -v 'systemctl' )
