@@ -67,12 +67,13 @@ u000X() {
 
   for i in "${user[@]}"; do
     if ! ${id} -u "${i}" >/dev/null 2>&1; then
+      local password; password=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
+
       # Creating user.
       echo "--- [${i^^}] Adding user..."
       ${useradd} -m -p "${password}" -c "${i^^}" "${i}"
 
-      # Generating password.
-      local password; password=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
+      # Saving password.
       local home; home=$( _home "${i}" )
       echo "${password}" > "${home}/.password"
       ${chown} ${i}:${i} "${home}/.password"
