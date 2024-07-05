@@ -12,30 +12,43 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
-# Checking commands.
-cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
+# OS.
+osId=$( . '/etc/os-release' && echo "${ID}" )
+osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
 # Apps.
-awk=$( command -v 'awk' ); cmd_check 'awk'
-cat=$( command -v 'cat' ); cmd_check 'cat'
-chown=$( command -v 'chown' ); cmd_check 'chown'
-chpasswd=$( command -v 'chpasswd' ); cmd_check 'chpasswd'
-chsh=$( command -v 'chsh' ); cmd_check 'chsh'
-curl=$( command -v 'curl' ); cmd_check 'curl'
-find=$( command -v 'find' ); cmd_check 'find'
-head=$( command -v 'head' ); cmd_check 'head'
-id=$( command -v 'id' ); cmd_check 'id'
-mkdir=$( command -v 'mkdir' ); cmd_check 'mkdir'
-mv=$( command -v 'mv' ); cmd_check 'mv'
-tr=$( command -v 'tr' ); cmd_check 'tr'
-useradd=$( command -v 'useradd' ); cmd_check 'useradd'
-usermod=$( command -v 'usermod' ); cmd_check 'usermod'
+apt=$( command -v 'apt' )
+awk=$( command -v 'awk' )
+cat=$( command -v 'cat' )
+chown=$( command -v 'chown' )
+chpasswd=$( command -v 'chpasswd' )
+chsh=$( command -v 'chsh' )
+curl=$( command -v 'curl' )
+find=$( command -v 'find' )
+head=$( command -v 'head' )
+id=$( command -v 'id' )
+mkdir=$( command -v 'mkdir' )
+mv=$( command -v 'mv' )
+tr=$( command -v 'tr' )
+useradd=$( command -v 'useradd' )
+usermod=$( command -v 'usermod' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { root && u000X && u0002; }
+run() { pkg && root && u000X && u0002; }
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# PACKAGES.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+pkg() {
+  case "${osId}" in
+    'debian') ${apt} install --yes zsh ;;
+    *) echo 'OS is not supported!' && exit 1 ;;
+  esac
+}
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # USER / ROOT.
