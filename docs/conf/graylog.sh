@@ -7,6 +7,7 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 # Apps.
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -56,7 +57,10 @@ debian() {
   nginx() {
     local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=( 'graylog.conf' )
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/debian.nginx.${i}"; done
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/debian.nginx.${i}"
+    done
   }
 
   run
