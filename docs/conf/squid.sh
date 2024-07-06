@@ -5,6 +5,7 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # Apps.
+apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 mv=$( command -v 'mv' )
 systemctl=$( command -v 'systemctl' )
@@ -25,7 +26,12 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { config && service; }
+  run() { apt && config && service; }
+
+  apt() {
+    local p; p=( 'squid' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
+  }
 
   config() {
     local d; d='/etc/squid'; [[ ! -d "${d}" ]] && exit 1
