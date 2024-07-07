@@ -42,7 +42,7 @@ debian() {
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
+      ${openssl} ecparam -genkey -name 'prime256v1' | ${openssl} ec -out "${d}/_ssc/${f}.key" \
         && ${openssl} req -new -sha256 \
           -key "${d}/_ssc/${f}.key" \
           -out "${d}/_ssc/${f}.csr" \
@@ -77,7 +77,7 @@ debian() {
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
+      ${openssl} ecparam -genkey -name 'prime256v1' | ${openssl} ec -out "${d}/_ssc/${f}.key" \
         && ${openssl} req -new -sha256 \
           -key "${d}/_ssc/${f}.key" \
           -out "${d}/_ssc/${f}.csr" \
