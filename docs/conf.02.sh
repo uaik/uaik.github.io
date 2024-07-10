@@ -33,7 +33,7 @@ conf() {
   local c; c="${1}"; IFS=';' read -ra c <<< "${c}"
 
   for i in "${c[@]}"; do
-    if local s; s=$( ${curl} --fail -sL "https://uaik.github.io/conf/${i}.sh" ); then
+    if local s; s=$( ${curl} -fsL "https://uaik.github.io/conf/${i}.sh" ); then
       echo "--- [${i^^}] Installing a configuration..."
       ${bash} -s <<< "${s}"
     else
