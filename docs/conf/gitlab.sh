@@ -43,7 +43,7 @@ debian() {
         -e "s|<#_name_#>|GitLab|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|https://packages.gitlab.com/gitlab/gitlab-ce/debian|g" \
+        -e "s|<#_uri_#>|https://packages.gitlab.com/gitlab/gitlab-ee/debian|g" \
         -e "s|<#_suites_#>|${osCodeName}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
@@ -52,7 +52,7 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'gitlab-ce' )
+    local p; p=( 'gitlab-ee' )
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
@@ -76,4 +76,4 @@ EOF
 # -------------------------------------------------< RUNNING SCRIPT >------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run "$@"; exit 0
+run && exit 0 || exit 1
