@@ -19,7 +19,7 @@ tr=$( command -v 'tr' )
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  osp=$( password '32' '1' ); export OPENSEARCH_INITIAL_ADMIN_PASSWORD="${osp}"
+  esp=$( password '32' '1' ); export ELASTIC_PASSWORD="${esp}"
 
   case "${osId}" in
     'debian') debian ;;
@@ -32,22 +32,22 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && apt '2.13.0'; }
+  run() { repo '8.x' && apt; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='opensearch.gpg'
+    local gpg_f; gpg_f='elasticsearch.gpg'
     local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='opensearch.sources'
-    local key; key='https://artifacts.opensearch.org/publickeys/opensearch.pgp'
+    local list_f; list_f='elasticsearch.sources'
+    local key; key='https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|OpenSearch|g" \
+        -e "s|<#_name_#>|Elasticsearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|https://artifacts.opensearch.org/releases/bundle/opensearch/${1}/apt|g" \
+        -e "s|<#_uri_#>|https://artifacts.elastic.co/packages/${1}/apt|g" \
         -e "s|<#_suites_#>|stable|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
@@ -56,9 +56,9 @@ debian() {
   }
 
   apt() {
-    local p; p=( "opensearch=${1}" )
-    ${apt} update && ${apt} install --yes "${p[@]}" && apt-mark hold "${p[@]}"
-    echo '' && echo '[!!!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
+    local p; p=( 'elasticsearch' )
+    ${apt} update && ${apt} install --yes "${p[@]}"
+    echo '' && echo '[!!!] ELASTICSEARCH PASSWORD:' && echo "${esp}" && echo ''
   }
 
   run
