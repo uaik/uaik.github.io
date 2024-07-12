@@ -6,13 +6,9 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # Apps.
 apt=$( command -v 'apt' )
-cat=$( command -v 'cat' )
 curl=$( command -v 'curl' )
-fold=$( command -v 'fold' )
 gpg=$( command -v 'gpg' )
-head=$( command -v 'head' )
 sed=$( command -v 'sed' )
-tr=$( command -v 'tr' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
