@@ -8,6 +8,7 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -26,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.x' && apt; }
+  run() { repo '8.x' && apt && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -52,6 +53,15 @@ debian() {
   apt() {
     local p; p=( 'elasticsearch' )
     ${apt} update && ${apt} install --yes "${p[@]}"
+  }
+
+  config() {
+    local d; d='/etc/elasticsearch'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('elasticsearch.yml')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}"
+    done
   }
 
   run

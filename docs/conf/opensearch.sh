@@ -11,6 +11,7 @@ curl=$( command -v 'curl' )
 fold=$( command -v 'fold' )
 gpg=$( command -v 'gpg' )
 head=$( command -v 'head' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 tr=$( command -v 'tr' )
 
@@ -32,7 +33,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && apt '2.13.0'; }
+  run() { repo '2.x' && apt '2.13.0' && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -58,7 +59,16 @@ debian() {
   apt() {
     local p; p=( "opensearch=${1}" )
     ${apt} update && ${apt} install --yes "${p[@]}" && apt-mark hold "${p[@]}"
-    echo '' && echo '[!!!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
+    echo '' && echo '[!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
+  }
+
+  config() {
+    local d; d='/etc/opensearch'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('opensearch.yml')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}"
+    done
   }
 
   run

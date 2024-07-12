@@ -52,13 +52,13 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'gitlab-ee' )
+    local p; p=('gitlab-ee')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   config() {
     local d; d='/etc/gitlab'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( 'gitlab.local.rb' )
+    local f; f=('gitlab.local.rb')
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/debian.${i}"; done
     ${cat} << EOF >> "${d}/gitlab.rb"
 

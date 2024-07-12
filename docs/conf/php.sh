@@ -79,7 +79,7 @@ debian() {
 
   config() {
     local d; d="/etc/php/${1}/fpm/conf.d"; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( 'php.local.ini' )
+    local f; f=('php.local.ini')
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"; done
   }
 

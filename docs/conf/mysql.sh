@@ -51,13 +51,13 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'mysql-server' )
+    local p; p=('mysql-server')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   service() {
     local d; d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( 'limits.conf' )
+    local f; f=('limits.conf')
     for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"; done
   }
 

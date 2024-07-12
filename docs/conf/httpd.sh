@@ -52,13 +52,13 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'apache2' )
+    local p; p=('apache2')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   config() {
     local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( 'httpd.local.conf' )
+    local f; f=('httpd.local.conf')
 
     # Disabling original config.
     for i in '/etc/apache2/conf-enabled/'*; do

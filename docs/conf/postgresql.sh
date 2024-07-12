@@ -51,7 +51,7 @@ debian() {
   }
 
   apt() {
-    local p; p=( "postgresql-${1}" )
+    local p; p=("postgresql-${1}")
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 

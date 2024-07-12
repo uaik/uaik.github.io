@@ -51,7 +51,7 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'angie' 'angie-module-brotli' )
+    local p; p=('angie' 'angie-module-brotli')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 

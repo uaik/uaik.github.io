@@ -50,13 +50,13 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'graylog-server' )
+    local p; p=('graylog-server')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
   nginx() {
     local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( 'graylog.conf' )
+    local f; f=('graylog.conf')
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/debian.nginx.${i}"

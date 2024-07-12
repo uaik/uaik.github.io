@@ -51,7 +51,7 @@ debian() {
   }
 
   apt() {
-    local p; p=( 'haproxy=3.0.\*' )
+    local p; p=('haproxy=3.0.\*')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 

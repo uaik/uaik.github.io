@@ -52,7 +52,7 @@ debian() {
   }
 
   service() {
-    local s; s=( 'squid.service' )
+    local s; s=('squid.service')
     for i in "${s[@]}"; do ${systemctl} restart "${i}"; done
   }
 
