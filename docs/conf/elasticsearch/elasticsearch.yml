@@ -6,6 +6,7 @@ network.host: 127.0.0.1
 http.port: 9200
 discovery.type: single-node
 action.auto_create_index: false
+bootstrap.memory_lock: true
 xpack.security.enabled: false
 xpack.security.enrollment.enabled: true
 xpack.security.http.ssl:

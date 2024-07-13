@@ -6,6 +6,10 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 
 # Apps.
 apt=$( command -v 'apt' )
+chmod=$( command -v 'chmod' )
+chmod=$( command -v 'chmod' )
+chown=$( command -v 'chown' )
+chown=$( command -v 'chown' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
 mv=$( command -v 'mv' )
@@ -27,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.x' && apt && config; }
+  run() { repo '8.x' && apt && config && jvm; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -60,7 +64,18 @@ debian() {
     local f; f=('elasticsearch.yml')
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
+        && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
+    done
+  }
+
+  jvm(){
+    local d; d='/etc/elasticsearch/jvm.options.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('jvm.local.options')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
+        && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
   }
 

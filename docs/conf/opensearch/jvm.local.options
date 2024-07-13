@@ -1,0 +1,6 @@
+-XX:-UseParNewGC
+-XX:-UseConcMarkSweepGC
+-XX:+UseG1GC
+-Xms2g
+-Xmx2g
+-XX:MaxGCPauseMillis=200

@@ -7,6 +7,8 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 # Apps.
 apt=$( command -v 'apt' )
 cat=$( command -v 'cat' )
+chmod=$( command -v 'chmod' )
+chown=$( command -v 'chown' )
 curl=$( command -v 'curl' )
 fold=$( command -v 'fold' )
 gpg=$( command -v 'gpg' )
@@ -33,7 +35,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && apt '2.13.0' && config; }
+  run() { repo '2.x' && apt '2.13.0' && config && jvm; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -68,6 +70,16 @@ debian() {
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}"
+    done
+  }
+
+  jvm(){
+    local d; d='/etc/opensearch/jvm.options.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('jvm.local.options')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}" \
+        && ${chown} opensearch:opensearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
   }
 
