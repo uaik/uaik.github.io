@@ -9,6 +9,7 @@ osVerId=$( . '/etc/os-release' && echo "${VERSION_ID}" )
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 systemctl=$( command -v 'systemctl' )
 
@@ -65,6 +66,7 @@ debian() {
     local d; d='/etc/rsyslog.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('99-local.conf')
     for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" 'https://uaik.github.io/conf/rsyslog/99-local.conf'
     done
   }
