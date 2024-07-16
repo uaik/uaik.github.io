@@ -10,6 +10,7 @@ apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
 sed=$( command -v 'sed' )
+systemctl=$( command -v 'systemctl' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -53,6 +54,11 @@ debian() {
   apt() {
     local p; p=('rsyslog')
     ${apt} update && ${apt} install --yes "${p[@]}"
+
+    # FIX:
+    # > systemd[1]: Dependency failed for rsyslog.service - System Logging Service.
+    local s; s=('rsyslog')
+    for i in "${s[@]}"; do ${systemctl} enable "${i}.service" && ${systemctl} restart "${i}.service"; done
   }
 
   config() {
