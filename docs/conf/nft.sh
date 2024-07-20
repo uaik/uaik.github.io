@@ -34,8 +34,8 @@ debian() {
   }
 
   service() {
-    local s; s=('nftables.service')
-    for i in "${s[@]}"; do ${systemctl} enable "${i}"; done
+    local s; s=('nftables')
+    for i in "${s[@]}"; do ${systemctl} enable "${i}.service"; done
   }
 
   run

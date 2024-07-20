@@ -36,8 +36,9 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  local s; s='systemd-resolved.service'
-  ${apt} install --yes ${s} && ${systemctl} enable ${s}
+  local p; p='systemd-resolved'
+  local s; s='systemd-resolved'
+  ${apt} install --yes ${p} && ${systemctl} enable "${s}.service"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
