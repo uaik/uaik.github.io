@@ -76,7 +76,7 @@ debian() {
     local d; d='/etc/elasticsearch/jvm.options.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('jvm.local.options')
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
         && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
