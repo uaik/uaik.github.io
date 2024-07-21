@@ -11,7 +11,7 @@ mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # Proxy.
-[[ -n "${proxy}" ]] && cProxy="-x '${proxy}'" || cProxy=''
+[[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
@@ -38,7 +38,7 @@ debian() {
     local list_f; list_f='graylog.sources'
     local key; key='https://packages.graylog2.org/repo/debian/keyring.gpg'
 
-    ${curl} "${cProxy}" -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
+    ${curl} ${cProxy} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Graylog|g" \
