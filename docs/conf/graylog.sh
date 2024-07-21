@@ -11,7 +11,7 @@ mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # Proxy.
-[[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
+[[ -n "${proxy}" ]] && cProxy="-x '${proxy}'" || cProxy=''
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
