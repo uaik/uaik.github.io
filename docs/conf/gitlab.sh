@@ -12,6 +12,9 @@ curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
 sed=$( command -v 'sed' )
 
+# Proxy.
+[[ -n "${proxy}" ]] && cProxy="-x '${proxy}'" || cProxy=''
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -37,7 +40,7 @@ debian() {
     local list_f; list_f='gitlab.sources'
     local key; key='https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+    ${curl} "${cProxy}" -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|GitLab|g" \
