@@ -10,6 +10,7 @@ apt=$( command -v 'apt' )
 cat=$( command -v 'cat' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # Proxy.
@@ -31,7 +32,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config; }
+  run() { repo && apt && config && license; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -70,6 +71,15 @@ debian() {
 #################################################################################
 from_file '${d}/gitlab.local.rb'
 EOF
+  }
+
+  license() {
+    local d; d='/opt/gitlab/embedded/service/gitlab-rails'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('.license_encryption_key.pub')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/${i}"
+    done
   }
 
   run
