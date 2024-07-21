@@ -68,7 +68,7 @@ debian() {
     local d; d='/etc/opensearch'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('opensearch.yml')
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig" || exit 1
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}"
     done
   }
