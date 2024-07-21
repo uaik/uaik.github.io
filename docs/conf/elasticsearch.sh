@@ -15,6 +15,9 @@ gpg=$( command -v 'gpg' )
 mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
+# Proxy.
+[[ -n "${proxy}" ]] && cProxy="-x '${proxy}'" || cProxy=''
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -40,7 +43,7 @@ debian() {
     local list_f; list_f='elasticsearch.sources'
     local key; key='https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
+    ${curl} "${cProxy}" -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Elasticsearch|g" \
