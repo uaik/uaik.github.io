@@ -9,6 +9,7 @@ osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -27,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '7.0' && apt; }
+  run() { repo '7.0' && apt && config; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -53,6 +54,15 @@ debian() {
   apt() {
     local p; p=('mongodb-org')
     ${apt} update && ${apt} install --yes "${p[@]}"
+  }
+
+  config() {
+    local d; d='/etc'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('mongod.conf')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mongodb/${i}"
+    done
   }
 
   run

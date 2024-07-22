@@ -9,6 +9,7 @@ osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -27,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && apt && service; }
+  run() { repo '8.4-lts' && apt && config && service; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -55,10 +56,22 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
+  config() {
+    local d; d='/etc/mysql/mysql.conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('mysqld.cnf')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/${i}"
+    done
+  }
+
   service() {
     local d; d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('limits.conf')
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"; done
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"
+    done
   }
 
   run

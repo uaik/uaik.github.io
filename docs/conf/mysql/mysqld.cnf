@@ -1,0 +1,87 @@
+# -------------------------------------------------------------------------------------------------------------------- #
+# MySQL.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+[mysql]
+port = 3306
+socket = /var/run/mysqld/mysqld.sock
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# MySQL Server.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+[mysqld]
+bind_address = 127.0.0.1
+port = 3306
+socket = /var/run/mysqld/mysqld.sock
+
+# Required settings.
+datadir = /var/lib/mysql
+max_allowed_packet = 256M
+max_connect_errors = 1000000
+pid_file = /var/run/mysqld/mysqld.pid
+skip_external_locking
+skip_name_resolve
+
+# InnoDB settings.
+default_storage_engine = InnoDB
+innodb_buffer_pool_instances = 4
+innodb_buffer_pool_size = 4G
+innodb_data_file_path = ibdata1:4096M;ibdata2:4096M:autoextend
+innodb_file_per_table = 1
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method = O_DIRECT
+innodb_log_buffer_size = 16M
+innodb_log_file_size = 1G
+innodb_read_io_threads = 64
+innodb_sort_buffer_size = 4M
+innodb_stats_on_metadata = 0
+innodb_write_io_threads = 64
+
+# MyISAM settings.
+key_buffer_size = 24M
+low_priority_updates = 1
+concurrent_insert = 2
+
+# Connection settings.
+max_connections = 100
+back_log = 512
+thread_cache_size = 100
+thread_stack = 192K
+interactive_timeout = 180
+wait_timeout = 180
+
+# Buffer settings.
+join_buffer_size = 4M
+read_buffer_size = 3M
+read_rnd_buffer_size = 4M
+sort_buffer_size = 4M
+
+# Table settings.
+table_definition_cache = 40000
+table_open_cache = 40000
+open_files_limit = 60000
+max_heap_table_size = 128M
+tmp_table_size = 128M
+
+# Search settings.
+ft_min_word_len = 3
+
+# Binary logging.
+disable_log_bin = 1
+
+# Error & slow query logging.
+log_error = /var/log/mysql/error.log
+log_queries_not_using_indexes = 0
+long_query_time = 5
+slow_query_log = 0
+slow_query_log_file = /var/log/mysql/slow.log
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# MySQL Dump.
+# -------------------------------------------------------------------------------------------------------------------- #
+
+[mysqldump]
+quick
+quote_names
+max_allowed_packet = 1024M
