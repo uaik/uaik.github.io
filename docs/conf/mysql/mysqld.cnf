@@ -27,7 +27,7 @@ skip_name_resolve
 default_storage_engine = InnoDB
 innodb_buffer_pool_instances = 4
 innodb_buffer_pool_size = 4G
-innodb_data_file_path = ibdata1:4096M;ibdata2:4096M:autoextend
+innodb_data_file_path = ibdata1:4G;ibdata2:4G:autoextend
 innodb_file_per_table = 1
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method = O_DIRECT
