@@ -30,7 +30,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config; }
+  run() { repo && apt && config && configExt && sitesRemoveSymlink && sitesConfig; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -59,37 +59,40 @@ debian() {
   }
 
   config() {
-    local conf_d; conf_d='/etc/nginx/conf.d'; [[ ! -d "${conf_d}" ]] && exit 1
-
-    # Downloading nginx config.
-    local conf_f; conf_f=('nginx.local.conf')
-    for i in "${conf_f[@]}"; do ${curl} -fsSLo "${conf_d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"; done
-
-    # Removing default symlinks.
-    for i in '/etc/nginx/sites-enabled'/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
-
-    # Downloading custom site config.
-    local sites_d; sites_d='/etc/nginx/sites-available'; [[ ! -d "${sites_d}" ]] && exit 1
-    local sites_f; sites_f=('default.conf')
-
-    for i in "${sites_f[@]}"; do
-      [[ -f "${sites_d}/${i}" ]] && ${mv} "${sites_d}/${i}" "${sites_d}/${i}.orig"
-      ${curl} -fsSLo "${sites_d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \
-        && ${ln} -s "${sites_d}/${i}" '/etc/nginx/sites-enabled/'
+    local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('nginx.conf')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"
     done
+  }
 
-    # Changing default nginx config.
-    [[ -f '/etc/nginx/nginx.conf' ]] \
-      && ${mv} '/etc/nginx/nginx.conf' '/etc/nginx/nginx.conf.orig' \
-      && ${cp} '/etc/nginx/nginx.conf.orig' '/etc/nginx/nginx.conf' \
-      && ${sed} -i \
-        -e 's|worker_connections 768;|worker_connections 1024;|g' \
-        -e 's|types_hash_max_size |#types_hash_max_size |g' \
-        -e 's|ssl_protocols |#ssl_protocols |g' \
-        -e 's|ssl_prefer_server_ciphers |#ssl_prefer_server_ciphers |g' \
-        -e 's|gzip on;|#gzip on;|g' \
-        -e 's|sites-enabled/*;|sites-enabled/*.conf;|g' \
-        '/etc/nginx/nginx.conf'
+  configExt() {
+    local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'ssl.conf')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
+    done
+  }
+
+  sitesRemoveSymlink() {
+    local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
+    local d_en; d_en="${d}/sites-enabled"; [[ ! -d "${d_en}" ]] && exit 1
+    for i in "${d_en}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
+  }
+
+  sitesConfig() {
+    local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
+    local d_av; d_av="${d}/sites-available"; [[ ! -d "${d_av}" ]] && exit 1
+    local d_en; d_en="${d}/sites-enabled"; [[ ! -d "${d_en}" ]] && exit 1
+    local f; f=('default.conf')
+
+    for i in "${f[@]}"; do
+      [[ -f "${d_av}/${i}" ]] && ${mv} "${d_av}/${i}" "${d_av}/${i}.orig"
+      ${curl} -fsSLo "${d_av}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \
+        && ${ln} -s "${d_av}/${i}" "${d_en}/"
+    done
   }
 
   run
