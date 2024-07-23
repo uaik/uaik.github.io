@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && symlink && config && configExt && site; }
+  run() { repo && apt && symlink && config && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/apache2.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -73,22 +73,22 @@ debian() {
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
     done
-  }
 
-  configExt() {
-    local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('logs.conf' 'security.conf')
+    ext() {
+      local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
+      local f; f=('logs.conf' 'security.conf')
 
-    # Rename original configs.
-    for i in "${d}"/*; do
-      { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
-    done
+      # Rename original configs.
+      for i in "${d}"/*; do
+        { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
+      done
 
-    # Download custom configs.
-    for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
-    done
+      # Download custom configs.
+      for i in "${f[@]}"; do
+        [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+        ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
+      done
+    }; ext
   }
 
   site() {

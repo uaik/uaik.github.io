@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && symlink && config && configExt && site; }
+  run() { repo && apt && symlink && config && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/nginx.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -73,15 +73,15 @@ debian() {
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"
     done
-  }
 
-  configExt() {
-    local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
-    for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
-    done
+    ext() {
+      local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
+      local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
+      for i in "${f[@]}"; do
+        [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+        ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
+      done
+    }; ext
   }
 
   site() {
