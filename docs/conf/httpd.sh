@@ -54,6 +54,7 @@ debian() {
 
   apt() {
     local p; p=('apache2')
+
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
@@ -69,6 +70,7 @@ debian() {
   config() {
     local d; d='/etc/apache2'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('apache2.conf' 'ports.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
@@ -94,6 +96,7 @@ debian() {
   site() {
     local d; d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.site.${i}"
