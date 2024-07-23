@@ -31,14 +31,12 @@ debian() {
   run() { repo '7.0' && apt && config; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='mongodb.gpg'
-    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='mongodb.sources'
+    local sig; sig='/etc/apt/keyrings/mongodb.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/mongodb.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key="https://www.mongodb.org/static/pgp/server-${1}.asc"
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|MongoDB|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -47,8 +45,8 @@ debian() {
         -e "s|<#_suites_#>|${osCodeName}/mongodb-org/${1}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
-        "${list_d}/${list_f}"
+        -e "s|<#_sig_#>|${sig}|g" \
+        "${src}"
   }
 
   apt() {

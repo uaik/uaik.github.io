@@ -34,14 +34,12 @@ debian() {
   run() { repo && apt && config && configExt && siteRemoveSymlink && siteConfig; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='apache2.gpg'
-    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='apache2.sources'
+    local sig; sig='/etc/apt/keyrings/apache2.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/apache2.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.sury.org/apache2/apt.gpg'
 
-    ${curl} ${cProxy} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+    ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Apache (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -50,8 +48,8 @@ debian() {
         -e "s|<#_suites_#>|${osCodeName}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
-        "${list_d}/${list_f}"
+        -e "s|<#_sig_#>|${sig}|g" \
+        "${src}"
   }
 
   apt() {

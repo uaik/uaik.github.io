@@ -29,14 +29,12 @@ debian() {
   run() { repo '20.x' && apt; }
 
   repo() {
-    local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
-    local gpg_f; gpg_f='nodejs.gpg'
-    local list_d; list_d='/etc/apt/sources.list.d'; [[ ! -d "${list_d}" ]] && exit 1
-    local list_f; list_f='nodejs.sources'
+    local sig; sig='/etc/apt/keyrings/nodejs.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/nodejs.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg_d}/${gpg_f}" \
-      && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Node.js|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -45,8 +43,8 @@ debian() {
         -e "s|<#_suites_#>|nodistro|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${gpg_d}/${gpg_f}|g" \
-        "${list_d}/${list_f}"
+        -e "s|<#_sig_#>|${sig}|g" \
+        "${src}"
   }
 
   apt() {

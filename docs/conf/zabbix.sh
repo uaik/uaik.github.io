@@ -27,29 +27,32 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt '22-jdk'; }
+  run() { repo '7.0' && apt; }
 
   repo() {
-    local sig; sig='/etc/apt/keyrings/adoptium.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
-    local src; src='/etc/apt/sources.list.d/adoptium.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://packages.adoptium.net/artifactory/api/gpg/key/public'
+    local gpg; gpg='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${gpg%/*}" ]] && exit 1
+    local list; list='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${list%/*}" ]] && exit 1
+    local key; key='https://repo.zabbix.com/zabbix-official-repo.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg}" \
+      && ${curl} -fsSLo "${list}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
-        -e "s|<#_name_#>|Eclipse Temurin|g" \
+        -e "s|<#_name_#>|Zabbix|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|https://packages.adoptium.net/artifactory/deb|g" \
+        -e "s|<#_uri_#>|https://repo.zabbix.com/zabbix/${1}/debian|g" \
         -e "s|<#_suites_#>|${osCodeName}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${sig}|g" \
-        "${src}"
+        -e "s|<#_sig_#>|${gpg}|g" \
+        "${list}"
   }
 
   apt() {
-    local p; p=("temurin-${1}")
+    local d; d='/etc/apt/preferences.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('nodejs.pref' 'nsolid.pref')
+    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nodejs/debian.apt.${i}"; done
+    local p; p=('nodejs')
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
