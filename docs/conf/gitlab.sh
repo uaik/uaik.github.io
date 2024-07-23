@@ -32,7 +32,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && license; }
+  run() { repo && apt && config; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/gitlab.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -69,15 +69,6 @@ debian() {
 #################################################################################
 from_file '${d}/gitlab.local.rb'
 EOF
-  }
-
-  license() {
-    local d; d='/opt/gitlab/embedded/service/gitlab-rails'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('.license_encryption_key.pub')
-    for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/${i}"
-    done
   }
 
   run
