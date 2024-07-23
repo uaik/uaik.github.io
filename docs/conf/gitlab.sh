@@ -10,7 +10,6 @@ apt=$( command -v 'apt' )
 cat=$( command -v 'cat' )
 curl=$( command -v 'curl' )
 gpg=$( command -v 'gpg' )
-mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
 # Proxy.
