@@ -30,12 +30,12 @@ debian() {
   run() { repo '7.0' && apt; }
 
   repo() {
-    local gpg; gpg='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${gpg%/*}" ]] && exit 1
-    local list; list='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${list%/*}" ]] && exit 1
+    local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://repo.zabbix.com/zabbix-official-repo.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${gpg}" \
-      && ${curl} -fsSLo "${list}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Zabbix|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -44,8 +44,8 @@ debian() {
         -e "s|<#_suites_#>|${osCodeName}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${gpg}|g" \
-        "${list}"
+        -e "s|<#_sig_#>|${sig}|g" \
+        "${src}"
   }
 
   apt() {

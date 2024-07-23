@@ -30,8 +30,8 @@ debian() {
   run() { repo && apt; }
 
   repo() {
-    local sig; sig='/etc/apt/keyrings/syslog-ng.gpg'; [[ ! -d "${sig}" ]] && exit 1
-    local src; src='/etc/apt/sources.list.d/syslog-ng.sources'; [[ ! -d "${src}" ]] && exit 1
+    local sig; sig='/etc/apt/keyrings/syslog-ng.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/syslog-ng.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://ose-repo.syslog-ng.com/apt/syslog-ng-ose-pub.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \

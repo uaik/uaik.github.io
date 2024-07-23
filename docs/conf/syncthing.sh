@@ -28,8 +28,8 @@ debian() {
   run() { repo && apt && config; }
 
   repo() {
-    local sig; sig='/etc/apt/keyrings/syncthing.gpg'; [[ ! -d "${sig}" ]] && exit 1
-    local src; src='/etc/apt/sources.list.d/syncthing.sources'; [[ ! -d "${src}" ]] && exit 1
+    local sig; sig='/etc/apt/keyrings/syncthing.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/syncthing.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://syncthing.net/release-key.gpg'
 
     ${curl} -fsSLo "${sig}" "${key}" \

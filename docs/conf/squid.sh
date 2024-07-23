@@ -26,7 +26,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { apt && config && config_ext && service; }
+  run() { apt && config && configExt && service; }
 
   apt() {
     local p; p=( 'squid' )
@@ -42,7 +42,7 @@ debian() {
     done
   }
 
-  config_ext() {
+  configExt() {
     local d; d='/etc/squid/conf.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('acl.dnf_yum.conf' 'main.extended.conf')
     for i in "${f[@]}"; do
