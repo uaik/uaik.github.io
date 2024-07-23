@@ -10,6 +10,9 @@ apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 sed=$( command -v 'sed' )
 
+# Proxy.
+[[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -35,7 +38,7 @@ debian() {
     local list_f; list_f='php.sources'
     local key; key='https://packages.sury.org/php/apt.gpg'
 
-    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
+    ${curl} ${cProxy} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|PHP (Sury)|g" \
