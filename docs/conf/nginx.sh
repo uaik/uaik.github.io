@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && symlink && config && site; }
+  run() { repo && install && symlink && config01 && config02 && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/nginx.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -52,10 +52,11 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('nginx' 'libnginx-mod-brotli')
 
-    ${apt} update && ${apt} install --yes "${p[@]}"
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   symlink() {
@@ -63,11 +64,13 @@ debian() {
 
     for i in "${d[@]}"; do
       [[ -d "${i}" ]] || continue
-      for f in "${i}"/*; do { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue; done
+      for f in "${i}"/*; do
+        { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue
+      done
     done
   }
 
-  config() {
+  config01() {
     local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('nginx.conf')
 
@@ -75,16 +78,16 @@ debian() {
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"
     done
+  }
 
-    ext() {
-      local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
-      local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
+  config02() {
+    local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
 
-      for i in "${f[@]}"; do
-        [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-        ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
-      done
-    }; ext
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
+    done
   }
 
   site() {

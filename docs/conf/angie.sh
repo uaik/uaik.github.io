@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/angie.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -48,9 +48,11 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('angie' 'angie-module-brotli')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   run

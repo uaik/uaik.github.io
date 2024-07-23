@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt '8.3' && config '8.3'; }
+  run() { repo && install '8.3' && config '8.3'; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/php.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -50,7 +50,7 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=(
       "php${1}"
       "php${1}-bz2"
@@ -75,13 +75,18 @@ debian() {
       "php${1}-zip"
       "php${1}-zstd"
     )
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   config() {
     local d; d="/etc/php/${1}/fpm/conf.d"; [[ ! -d "${d}" ]] && exit 1
     local f; f=('php.local.ini')
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"; done
+
+    for i in "${f[@]}"; do
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"
+    done
   }
 
   run

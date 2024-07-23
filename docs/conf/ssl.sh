@@ -98,6 +98,7 @@ debian() {
 
   dhparam() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
+
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     [[ ! -f "${d}/_ssc/dhparam.pem" ]] && ${openssl} dhparam -out "${d}/_ssc/dhparam.pem" 4096
   }

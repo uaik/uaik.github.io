@@ -40,12 +40,17 @@ debian() {
   }
 
   zabbly() {
-    ${apt} --yes install openzfs-zfsutils openzfs-zfs-dkms openzfs-zfs-initramfs
+    local p; p=('openzfs-zfsutils' 'openzfs-zfs-dkms' 'openzfs-zfs-initramfs')
+
+    ${apt} --yes install "${p[@]}"
   }
 
   default() {
-    ${apt} install --yes linux-headers-amd64 \
-      && ${apt} install --yes -t stable-backports zfsutils-linux zfs-dkms zfs-zed
+    local p01; p01=('linux-headers-amd64')
+    local p02; p02=('zfsutils-linux' 'zfs-dkms zfs-zed')
+
+    ${apt} install --yes "${p01[@]}" \
+      && ${apt} install --yes -t 'stable-backports' "${p02[@]}"
   }
 
   man() {

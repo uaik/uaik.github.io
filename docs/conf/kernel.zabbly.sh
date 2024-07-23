@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo && update; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/kernel.zabbly.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -48,7 +48,7 @@ debian() {
         "${src}"
   }
 
-  apt() { ${apt} update; }
+  update() { ${apt} update; }
 
   run
 }

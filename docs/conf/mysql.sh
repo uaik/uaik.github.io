@@ -28,7 +28,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && apt && config && service; }
+  run() { repo '8.4-lts' && install && config && service; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/mysql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -49,14 +49,17 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('mysql-server')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   config() {
     local d; d='/etc/mysql/mysql.conf.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('mysqld.cnf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/${i}"
@@ -66,6 +69,7 @@ debian() {
   service() {
     local d; d='/etc/systemd/system/mysql.service.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('limits.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"

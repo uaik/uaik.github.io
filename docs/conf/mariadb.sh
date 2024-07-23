@@ -26,7 +26,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '11.4' && apt && service; }
+  run() { repo '11.4' && install && service; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/mariadb.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -47,15 +47,20 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('mariadb-server')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   service() {
     local d; d='/etc/systemd/system/mariadb.service.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('homedir.conf' 'limits.conf')
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"; done
+
+    for i in "${f[@]}"; do
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"
+    done
   }
 
   run

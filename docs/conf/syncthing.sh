@@ -25,7 +25,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config; }
+  run() { repo && install && config; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/syncthing.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -46,18 +46,26 @@ debian() {
         "${src}"
   }
 
-  apt() {
-    local apt_d; apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
-    local apt_f; apt_f=('syncthing.pref')
-    for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/syncthing/debian.apt.${i}"; done
+  install() {
+    local d; d='/etc/apt/preferences.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('syncthing.pref')
     local p; p=('syncthing')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    for i in "${f[@]}"; do
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/syncthing/debian.apt.${i}"
+    done
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   config() {
-    local sys_d; sys_d='/etc/systemd/system'; [[ ! -d "${sys_d}" ]] && exit 1
-    local sys_f; sys_f=('syncthing@.service')
-    for i in "${sys_f[@]}"; do ${curl} -fsSLo "${sys_d}/${i}" "https://uaik.github.io/conf/syncthing/debian.${i}"; done
+    local d; d='/etc/systemd/system'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('syncthing@.service')
+
+    for i in "${f[@]}"; do
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/syncthing/debian.${i}"
+    done
   }
 
   run

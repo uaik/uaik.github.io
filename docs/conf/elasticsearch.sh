@@ -34,7 +34,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.x' && apt && config && jvm; }
+  run() { repo '8.x' && install && config && jvm; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/elasticsearch.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -55,14 +55,17 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=( 'elasticsearch' )
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   config() {
     local d; d='/etc/elasticsearch'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('elasticsearch.yml')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
@@ -73,6 +76,7 @@ debian() {
   jvm(){
     local d; d='/etc/elasticsearch/jvm.options.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('jvm.local.options')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \

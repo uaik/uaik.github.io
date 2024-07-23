@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt; }
+  run() { repo && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/syslog-ng.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -48,9 +48,11 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('syslog-ng')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   run

@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && symlink && config && site; }
+  run() { repo && install && symlink && config01 && config02 && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/apache2.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -52,10 +52,11 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('apache2')
 
-    ${apt} update && ${apt} install --yes "${p[@]}"
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   symlink() {
@@ -63,11 +64,13 @@ debian() {
 
     for i in "${d[@]}"; do
       [[ -d "${i}" ]] || continue
-      for f in "${i}"/*; do { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue; done
+      for f in "${i}"/*; do
+        { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue
+      done
     done
   }
 
-  config() {
+  config01() {
     local d; d='/etc/apache2'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('apache2.conf' 'ports.conf')
 
@@ -75,22 +78,22 @@ debian() {
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
     done
+  }
 
-    ext() {
-      local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
-      local f; f=('logs.conf' 'security.conf')
+  config02() {
+    local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('logs.conf' 'security.conf')
 
-      # Rename original configs.
-      for i in "${d}"/*; do
-        { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
-      done
+    # Rename original configs.
+    for i in "${d}"/*; do
+      { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
+    done
 
-      # Download custom configs.
-      for i in "${f[@]}"; do
-        [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-        ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
-      done
-    }; ext
+    # Download custom configs.
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
+    done
   }
 
   site() {

@@ -35,7 +35,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && apt '2.13.0' && config && jvm; }
+  run() { repo '2.x' && install '2.13.0' && config && jvm; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/opensearch.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -56,15 +56,20 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=( "opensearch=${1}" )
-    ${apt} update && ${apt} install --yes "${p[@]}" && apt-mark hold "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}" \
+      && apt-mark hold "${p[@]}"
+
     echo '' && echo '[!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
   }
 
   config() {
     local d; d='/etc/opensearch'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('opensearch.yml')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}"
@@ -74,6 +79,7 @@ debian() {
   jvm(){
     local d; d='/etc/opensearch/jvm.options.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('jvm.local.options')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}" \

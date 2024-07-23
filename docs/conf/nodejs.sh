@@ -26,7 +26,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '20.x' && apt; }
+  run() { repo '20.x' && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/nodejs.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -47,12 +47,17 @@ debian() {
         "${src}"
   }
 
-  apt() {
-    local apt_d; apt_d='/etc/apt/preferences.d'; [[ ! -d "${apt_d}" ]] && exit 1
-    local apt_f; apt_f=('nodejs.pref' 'nsolid.pref')
-    for i in "${apt_f[@]}"; do ${curl} -fsSLo "${apt_d}/${i}" "https://uaik.github.io/conf/nodejs/debian.apt.${i}"; done
+  install() {
+    local d; d='/etc/apt/preferences.d'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('nodejs.pref' 'nsolid.pref')
+
+    for i in "${f[@]}"; do
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nodejs/debian.apt.${i}"
+    done
+
     local p; p=('nodejs')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   run

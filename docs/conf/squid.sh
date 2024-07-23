@@ -26,25 +26,29 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { apt && config && configExt && service; }
+  run() { install && config01 && config02 && service; }
 
-  apt() {
-    local p; p=( 'squid' )
-    ${apt} update && ${apt} install --yes "${p[@]}"
+  install() {
+    local p; p=('squid')
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
-  config() {
+  config01() {
     local d; d='/etc/squid'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('squid.conf' 'users.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/squid/${i}"
     done
   }
 
-  configExt() {
+  config02() {
     local d; d='/etc/squid/conf.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('acl.dnf_yum.conf' 'main.extended.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/squid/${i}"
@@ -53,7 +57,10 @@ debian() {
 
   service() {
     local s; s=('squid')
-    for i in "${s[@]}"; do ${systemctl} restart "${i}.service"; done
+
+    for i in "${s[@]}"; do
+      ${systemctl} restart "${i}.service"
+    done
   }
 
   run

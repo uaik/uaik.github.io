@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config; }
+  run() { repo && install && config; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/rsyslog.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -50,19 +50,23 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=('rsyslog')
-    ${apt} update && ${apt} install --yes "${p[@]}"
+    local s; s=('rsyslog')
 
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
     # FIX:
     # > systemd[1]: Dependency failed for rsyslog.service - System Logging Service.
-    local s; s=('rsyslog')
-    for i in "${s[@]}"; do ${systemctl} enable "${i}.service" && ${systemctl} restart "${i}.service"; done
+    for i in "${s[@]}"; do
+      ${systemctl} enable "${i}.service" && ${systemctl} restart "${i}.service"
+    done
   }
 
   config() {
     local d; d='/etc/rsyslog.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('99-local.conf')
+
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/rsyslog/${i}"

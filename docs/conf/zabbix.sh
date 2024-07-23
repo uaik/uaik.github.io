@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '7.0' && apt; }
+  run() { repo '7.0' && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -48,13 +48,7 @@ debian() {
         "${src}"
   }
 
-  apt() {
-    local d; d='/etc/apt/preferences.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('nodejs.pref' 'nsolid.pref')
-    for i in "${f[@]}"; do ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nodejs/debian.apt.${i}"; done
-    local p; p=('nodejs')
-    ${apt} update && ${apt} install --yes "${p[@]}"
-  }
+  install() { echo ''; }
 
   run
 }

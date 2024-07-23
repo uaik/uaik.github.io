@@ -29,13 +29,21 @@ debian() {
   run() { config && service; }
 
   config() {
-    local f; f='/etc/nftables.conf'; [[ -f "${f}" && ! -f "${f}.orig" ]] && ${mv} "${f}" "${f}.orig" || exit 1
-    ${curl} -fsSLo "${f}" 'https://uaik.github.io/conf/nft/nftables.conf' && ${chmod} +x "${f}"
+    local d; d='/etc'
+    local f; f=('nftables.conf')
+
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" 'https://uaik.github.io/conf/nft/nftables.conf' && ${chmod} +x "${d}/${i}"
+    done
   }
 
   service() {
     local s; s=('nftables')
-    for i in "${s[@]}"; do ${systemctl} enable "${i}.service"; done
+
+    for i in "${s[@]}"; do
+      ${systemctl} enable "${i}.service"
+    done
   }
 
   run

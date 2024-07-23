@@ -27,7 +27,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt '22-jdk'; }
+  run() { repo && install '22-jdk'; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/adoptium.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -48,9 +48,11 @@ debian() {
         "${src}"
   }
 
-  apt() {
+  install() {
     local p; p=("temurin-${1}")
-    ${apt} update && ${apt} install --yes "${p[@]}"
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
   }
 
   run
