@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && configExt && sitesRemoveSymlink && sitesConfig; }
+  run() { repo && apt && config && configExt && siteRemoveSymlink && siteConfig; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -77,12 +77,12 @@ debian() {
     done
   }
 
-  sitesRemoveSymlink() {
+  siteRemoveSymlink() {
     local d; d='/etc/nginx/sites-enabled'; [[ ! -d "${d}" ]] && exit 1
     for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
   }
 
-  sitesConfig() {
+  siteConfig() {
     local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
     for i in "${f[@]}"; do
