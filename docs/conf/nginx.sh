@@ -75,20 +75,16 @@ debian() {
   }
 
   sitesRemoveSymlink() {
-    local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
-    local d_en; d_en="${d}/sites-enabled"; [[ ! -d "${d_en}" ]] && exit 1
-    for i in "${d_en}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
+    local d; d='/etc/nginx/sites-enabled'; [[ ! -d "${d}" ]] && exit 1
+    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
   }
 
   sitesConfig() {
-    local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
-    local d_av; d_av="${d}/sites-available"; [[ ! -d "${d_av}" ]] && exit 1
-    local d_en; d_en="${d}/sites-enabled"; [[ ! -d "${d_en}" ]] && exit 1
+    local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
-
     for i in "${f[@]}"; do
-      [[ -f "${d_av}/${i}" ]] && ${mv} "${d_av}/${i}" "${d_av}/${i}.orig"
-      ${curl} -fsSLo "${d_av}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}"
+      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}"
     done
   }
 
