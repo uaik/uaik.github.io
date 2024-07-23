@@ -70,7 +70,7 @@ debian() {
 
   configExt() {
     local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'ssl.conf')
+    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.cf.conf' 'ssl.conf')
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
