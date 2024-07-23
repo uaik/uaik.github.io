@@ -12,6 +12,9 @@ mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 unlink=$( command -v 'unlink' )
 
+# Proxy.
+[[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -37,7 +40,7 @@ debian() {
     local list_f; list_f='nginx.sources'
     local key; key='https://packages.sury.org/nginx/apt.gpg'
 
-    ${curl} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
+    ${curl} ${cProxy} -fsSLo "${gpg_d}/${gpg_f}" "${key}" \
       && ${curl} -fsSLo "${list_d}/${list_f}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Nginx (Sury)|g" \
