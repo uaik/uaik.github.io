@@ -9,6 +9,7 @@ osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
 ln=$( command -v 'ln' )
+mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 unlink=$( command -v 'unlink' )
 
@@ -31,7 +32,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && site; }
+  run() { repo && apt && config && configExt && siteRemoveSymlink && siteConfig; }
 
   repo() {
     local gpg_d; gpg_d='/etc/apt/keyrings'; [[ ! -d "${gpg_d}" ]] && exit 1
@@ -60,30 +61,41 @@ debian() {
   }
 
   config() {
-    local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('httpd.local.conf')
-
-    # Disabling original config.
-    for i in '/etc/apache2/conf-enabled/'*; do
-      if [[ -L "${i}" ]]; then ${unlink} "${i}"; else continue; fi
-    done
-
-    # Installing and enabling custom config.
+    local d; d='/etc/apache2'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('apache2.conf' 'ports.conf')
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}" \
-        && ${ln} -s "${d}/${i}" '/etc/apache2/conf-enabled/'
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
     done
-
-    # Changing base config.
-    ${sed} -i -e "s|80|8080|g" -e "s|443|8081|g" '/etc/apache2/ports.conf'
   }
 
-  site() {
-    local d; d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
+  configExt() {
+    local d; d='/etc/apache2/conf-available'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('logs.conf' 'security.conf')
 
-    # Disabling original sites.
-    for i in '/etc/apache2/sites-enabled/'*; do
-      if [[ -L "${i}" ]]; then ${unlink} "${i}"; else continue; fi
+    # Rename original configs.
+    for i in "${d}"/*; do
+      { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
+    done
+
+    # Download custom configs.
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
+    done
+  }
+
+  siteRemoveSymlink() {
+    local d; d='/etc/apache2/sites-enabled/'; [[ ! -d "${d}" ]] && exit 1
+    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
+  }
+
+  siteConfig() {
+    local d; d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('default.conf')
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.site.${i}"
     done
   }
 

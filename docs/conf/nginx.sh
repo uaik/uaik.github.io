@@ -63,7 +63,7 @@ debian() {
     local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('nginx.conf')
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.${i}"
     done
   }
@@ -72,7 +72,7 @@ debian() {
     local d; d='/etc/nginx/conf.d'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/${i}"
     done
   }
@@ -86,7 +86,7 @@ debian() {
     local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}"
     done
   }
