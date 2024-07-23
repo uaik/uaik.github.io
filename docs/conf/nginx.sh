@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && configExt && siteConfig && siteRemoveSymlink; }
+  run() { repo && apt && symlink && config && configExt && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/nginx.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -57,6 +57,15 @@ debian() {
     ${apt} update && ${apt} install --yes "${p[@]}"
   }
 
+  symlink() {
+    local d; d=('/etc/nginx/sites-enabled')
+
+    for i in "${d[@]}"; do
+      [[ -d "${i}" ]] || continue
+      for f in "${i}"/*; do { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue; done
+    done
+  }
+
   config() {
     local d; d='/etc/nginx'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('nginx.conf')
@@ -75,12 +84,7 @@ debian() {
     done
   }
 
-  siteRemoveSymlink() {
-    local d; d='/etc/nginx/sites-enabled'; [[ ! -d "${d}" ]] && exit 1
-    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
-  }
-
-  siteConfig() {
+  site() {
     local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
     for i in "${f[@]}"; do

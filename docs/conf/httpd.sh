@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && configExt && configRemoveSymlink && siteConfig && siteRemoveSymlink; }
+  run() { repo && apt && symlink && config && configExt && site; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/apache2.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -55,6 +55,15 @@ debian() {
   apt() {
     local p; p=('apache2')
     ${apt} update && ${apt} install --yes "${p[@]}"
+  }
+
+  symlink() {
+    local d; d=('/etc/apache2/conf-enabled/' '/etc/apache2/sites-enabled/')
+
+    for i in "${d[@]}"; do
+      [[ -d "${i}" ]] || continue
+      for f in "${i}"/*; do { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue; done
+    done
   }
 
   config() {
@@ -82,17 +91,7 @@ debian() {
     done
   }
 
-  configRemoveSymlink() {
-    local d; d='/etc/apache2/conf-enabled/'; [[ ! -d "${d}" ]] && exit 1
-    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
-  }
-
-  siteRemoveSymlink() {
-    local d; d='/etc/apache2/sites-enabled/'; [[ ! -d "${d}" ]] && exit 1
-    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
-  }
-
-  siteConfig() {
+  site() {
     local d; d='/etc/apache2/sites-available'; [[ ! -d "${d}" ]] && exit 1
     local f; f=('default.conf')
     for i in "${f[@]}"; do
