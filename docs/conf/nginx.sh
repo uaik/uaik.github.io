@@ -90,8 +90,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d_av}/${i}" ]] && ${mv} "${d_av}/${i}" "${d_av}/${i}.orig"
-      ${curl} -fsSLo "${d_av}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}" \
-        && ${ln} -s "${d_av}/${i}" "${d_en}/"
+      ${curl} -fsSLo "${d_av}/${i}" "https://uaik.github.io/conf/nginx/debian.site.${i}"
     done
   }
 
