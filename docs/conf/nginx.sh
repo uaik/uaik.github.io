@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && configExt && siteRemoveSymlink && siteConfig; }
+  run() { repo && apt && config && configExt && siteConfig && siteRemoveSymlink; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/nginx.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1

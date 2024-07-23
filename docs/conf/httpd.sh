@@ -31,7 +31,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && apt && config && configExt && siteRemoveSymlink && siteConfig; }
+  run() { repo && apt && config && configExt && configRemoveSymlink && siteConfig && siteRemoveSymlink; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/apache2.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -80,6 +80,11 @@ debian() {
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
       ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/httpd/debian.${i}"
     done
+  }
+
+  configRemoveSymlink() {
+    local d; d='/etc/apache2/conf-enabled/'; [[ ! -d "${d}" ]] && exit 1
+    for i in "${d}"/*; do { [[ -L "${i}" ]] && ${unlink} "${i}"; } || continue; done
   }
 
   siteRemoveSymlink() {
