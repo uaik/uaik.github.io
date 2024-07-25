@@ -47,7 +47,7 @@ debian() {
 
   default() {
     local p01; p01=('linux-headers-amd64')
-    local p02; p02=('zfsutils-linux' 'zfs-dkms zfs-zed')
+    local p02; p02=('zfsutils-linux' 'zfs-dkms' 'zfs-zed')
 
     ${apt} install --yes "${p01[@]}" \
       && ${apt} install --yes -t 'stable-backports' "${p02[@]}"
