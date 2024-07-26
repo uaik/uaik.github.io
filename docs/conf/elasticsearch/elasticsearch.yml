@@ -1,5 +1,6 @@
 cluster.name: 'cluster.01'
 node.name: 'node.01'
+node.processors: 2
 path.data: '/var/lib/elasticsearch'
 path.logs: '/var/log/elasticsearch'
 network.host: 127.0.0.1
