@@ -27,14 +27,14 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '7.0' && install; }
+  run() { repo01 '7.0' && repo02 && install; }
 
-  repo() {
+  repo01() {
     local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://repo.zabbix.com/zabbix-official-repo.key'
+    local key; key='https://uaik.github.io/conf/zabbix/zabbix.gpg'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
+    ${curl} -fsSLo "${sig}" "${key}" \
       && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Zabbix|g" \
@@ -48,7 +48,31 @@ debian() {
         "${src}"
   }
 
-  install() { echo ''; }
+  repo02() {
+    local sig; sig='/etc/apt/keyrings/zabbix.tools.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/zabbix.tools.sources'; [[ ! -d "${src%/*}" ]] && exit 1
+    local key; key='https://uaik.github.io/conf/zabbix/zabbix.tools.gpg'
+
+    ${curl} -fsSLo "${sig}" "${key}" \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${sed} -i \
+        -e "s|<#_name_#>|Zabbix Tools|g" \
+        -e "s|<#_enabled_#>|yes|g" \
+        -e "s|<#_types_#>|deb|g" \
+        -e "s|<#_uri_#>|https://repo.zabbix.com/zabbix-tools/debian-ubuntu|g" \
+        -e "s|<#_suites_#>|${osCodeName}|g" \
+        -e "s|<#_components_#>|main|g" \
+        -e "s|<#_arch_#>|all|g" \
+        -e "s|<#_sig_#>|${sig}|g" \
+        "${src}"
+  }
+
+  install() {
+    local p; p=('zabbix-server-mysql' 'zabbix-frontend-php' 'zabbix-nginx-conf' 'zabbix-sql-scripts' 'zabbix-agent')
+
+    ${apt} update \
+      && ${apt} install --yes "${p[@]}"
+  }
 
   run
 }
