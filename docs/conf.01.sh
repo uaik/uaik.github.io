@@ -44,7 +44,7 @@ run() { pkg && root && u000X && u0002; }
 
 pkg() {
   case "${osId}" in
-    'debian') ${apt} install --yes zsh ;;
+    'debian') ${apt} update && ${apt} install --yes zsh ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
 }
