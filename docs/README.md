@@ -13,7 +13,7 @@ inst.ks=https://uaik.github.io/os/[os.type.id.ini]
 ### Debian / Ubuntu
 
 ```
-url=https://uaik.github.io/os/[os]/[type.id.ini]
+url=https://uaik.github.io/os/[os]/[config.ini]
 ```
 
 ## Users / Passwords
@@ -34,21 +34,21 @@ url=https://uaik.github.io/os/[os]/[type.id.ini]
 ### Download & run configuration script
 
 ```sh
-curl -sL 'https://uaik.github.io/conf.01.sh' | bash -s
+curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
 ```sh
-curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim;nft'
+curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim;nft'
 ```
 
 ```sh
-curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'systemd'
+curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'systemd'
 ```
 
 #### Apache HTTPD / Nginx / PHP
 
 ```sh
-curl -sL 'https://uaik.github.io/conf.02.sh' | bash -s -- 'httpd;nginx;php'
+curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'httpd;nginx;php'
 ```
 
 ## Scripts

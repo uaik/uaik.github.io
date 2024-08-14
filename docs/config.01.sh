@@ -23,17 +23,17 @@ curl=$( command -v 'curl' ); cmd_check 'curl'
 # INITIALIZATION.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { conf "${1}"; }
+run() { config "${1}"; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # CONFIGURATIONS.
 # -------------------------------------------------------------------------------------------------------------------- #
 
-conf() {
+config() {
   local c; c="${1}"; IFS=';' read -ra c <<< "${c}"
 
   for i in "${c[@]}"; do
-    if local s; s=$( ${curl} -fsL "https://uaik.github.io/conf/${i}.sh" ); then
+    if local s; s=$( ${curl} -fsL "https://uaik.github.io/config/${i}.sh" ); then
       echo "--- [${i^^}] Installing a configuration..."
       ${bash} -s <<< "${s}"
     else
