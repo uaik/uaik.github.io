@@ -13,7 +13,7 @@ inst.ks=https://uaik.github.io/os/[os.type.id.ini]
 ### Debian / Ubuntu
 
 ```
-url=https://uaik.github.io/os/[os.type.id.ini]
+url=https://uaik.github.io/os/[os]/[type.id.ini]
 ```
 
 ## Users / Passwords
