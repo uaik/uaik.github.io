@@ -46,7 +46,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/tftpd/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/tftpd/${i}"
     done
   }
 

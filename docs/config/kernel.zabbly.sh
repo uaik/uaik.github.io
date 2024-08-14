@@ -35,7 +35,7 @@ debian() {
     local key; key='https://pkgs.zabbly.com/key.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Kernel (Zabbly)|g" \
         -e "s|<#_enabled_#>|yes|g" \

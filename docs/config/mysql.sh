@@ -33,10 +33,10 @@ debian() {
   repo() {
     local sig; sig='/etc/apt/keyrings/mysql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/mysql.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/conf/mysql/mysql.asc'
+    local key; key='https://uaik.github.io/config/mysql/mysql.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|MySQL|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -62,7 +62,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/mysql/${i}"
     done
   }
 
@@ -72,7 +72,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mysql/service.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/mysql/service.${i}"
     done
   }
 

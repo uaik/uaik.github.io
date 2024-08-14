@@ -26,7 +26,7 @@ networkd() {
   local s; s='systemd-networkd'
 
   for i in "${e[@]}"; do
-    ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/conf/systemd/dhcp.network.tpl' \
+    ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/config/systemd/dhcp.network.tpl' \
       && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 

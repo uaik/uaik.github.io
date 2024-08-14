@@ -35,7 +35,7 @@ debian() {
     local key; key='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|PostgreSQL|g" \
         -e "s|<#_enabled_#>|yes|g" \

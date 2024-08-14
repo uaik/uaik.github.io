@@ -55,7 +55,7 @@ debian() {
 
   man() {
     echo '' && echo '--- [ZFS] Creating the Pool'
-    ${curl} -fsSL 'https://uaik.github.io/conf/zfs/man.txt'
+    ${curl} -fsSL 'https://uaik.github.io/config/zfs/man.txt'
     echo ''
   }
 

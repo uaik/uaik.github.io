@@ -32,10 +32,10 @@ debian() {
   repo01() {
     local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/conf/zabbix/zabbix.gpg'
+    local key; key='https://uaik.github.io/config/zabbix/zabbix.gpg'
 
     ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Zabbix|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -51,10 +51,10 @@ debian() {
   repo02() {
     local sig; sig='/etc/apt/keyrings/zabbix.tools.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.tools.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/conf/zabbix/zabbix.tools.gpg'
+    local key; key='https://uaik.github.io/config/zabbix/zabbix.tools.gpg'
 
     ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Zabbix Tools|g" \
         -e "s|<#_enabled_#>|yes|g" \

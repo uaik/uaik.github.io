@@ -34,7 +34,7 @@ debian() {
     local key; key='https://mariadb.org/mariadb_release_signing_key.pgp'
 
     ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|MariaDB|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -59,7 +59,7 @@ debian() {
     local f; f=('homedir.conf' 'limits.conf')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/mariadb/service.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/mariadb/service.${i}"
     done
   }
 

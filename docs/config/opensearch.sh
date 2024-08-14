@@ -43,7 +43,7 @@ debian() {
     local key; key='https://artifacts.opensearch.org/publickeys/opensearch.pgp'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|OpenSearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -72,7 +72,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}"
     done
   }
 
@@ -82,7 +82,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/opensearch/${i}" \
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}" \
         && ${chown} opensearch:opensearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
   }

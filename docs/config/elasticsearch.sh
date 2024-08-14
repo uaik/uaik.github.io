@@ -42,7 +42,7 @@ debian() {
     local key; key='https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
     ${curl} ${cProxy} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Elasticsearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -68,7 +68,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
         && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
   }
@@ -79,7 +79,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/elasticsearch/${i}" \
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
         && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
     done
   }

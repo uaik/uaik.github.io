@@ -37,7 +37,7 @@ debian() {
     local key; key='https://packages.sury.org/php/apt.gpg'
 
     ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|PHP (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -85,7 +85,7 @@ debian() {
     local f; f=('php.local.ini')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/php/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/php/${i}"
     done
   }
 

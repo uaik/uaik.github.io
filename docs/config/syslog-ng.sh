@@ -35,7 +35,7 @@ debian() {
     local key; key='https://ose-repo.syslog-ng.com/apt/syslog-ng-ose-pub.asc'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Syslog-NG|g" \
         -e "s|<#_enabled_#>|yes|g" \

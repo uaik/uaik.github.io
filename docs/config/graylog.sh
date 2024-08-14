@@ -37,7 +37,7 @@ debian() {
     local key; key='https://packages.graylog2.org/repo/debian/keyring.gpg'
 
     ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Graylog|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -63,7 +63,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/graylog/${i}"
     done
   }
 
@@ -73,7 +73,7 @@ debian() {
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/graylog/debian.nginx.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/graylog/debian.nginx.${i}"
     done
   }
 

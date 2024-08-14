@@ -34,7 +34,7 @@ debian() {
     local key; key='https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
 
     ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Node.js|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -52,7 +52,7 @@ debian() {
     local f; f=('nodejs.pref' 'nsolid.pref')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/nodejs/debian.apt.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/nodejs/debian.apt.${i}"
     done
 
     local p; p=('nodejs')

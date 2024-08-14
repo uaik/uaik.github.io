@@ -40,7 +40,7 @@ debian() {
     local key; key='https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey'
 
     ${curl} ${cProxy} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|GitLab|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -65,7 +65,7 @@ debian() {
     local f; f=('gitlab.local.rb')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/gitlab/debian.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/gitlab/debian.${i}"
     done
 
     ${cat} << EOF >> "${d}/gitlab.rb"
@@ -83,7 +83,7 @@ EOF
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" 'https://uaik.github.io/conf/gitlab/license.pub'
+      ${curl} -fsSLo "${d}/${i}" 'https://uaik.github.io/config/gitlab/license.pub'
     done
   }
 

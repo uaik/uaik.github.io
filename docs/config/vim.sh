@@ -19,7 +19,7 @@ config() {
   local f; f=('vimrc.local')
 
   for i in "${f[@]}"; do
-    ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/vim/${i}"
+    ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/vim/${i}"
   done
 }
 

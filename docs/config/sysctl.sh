@@ -19,7 +19,7 @@ config() {
   local f; f=('00-sysctl.local.conf')
 
   for i in "${f[@]}"; do
-    ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/sysctl/${i}"
+    ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/sysctl/${i}"
   done
 }
 

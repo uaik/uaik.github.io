@@ -35,7 +35,7 @@ debian() {
     local key; key='https://angie.software/keys/angie-signing.gpg'
 
     ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Angie|g" \
         -e "s|<#_enabled_#>|yes|g" \

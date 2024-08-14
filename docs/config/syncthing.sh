@@ -33,7 +33,7 @@ debian() {
     local key; key='https://syncthing.net/release-key.gpg'
 
     ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/conf/apt/deb.sources.tpl' \
+      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && ${sed} -i \
         -e "s|<#_name_#>|Syncthing|g" \
         -e "s|<#_enabled_#>|yes|g" \
@@ -52,7 +52,7 @@ debian() {
     local p; p=('syncthing')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/syncthing/debian.apt.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/syncthing/debian.apt.${i}"
     done
 
     ${apt} update \
@@ -64,7 +64,7 @@ debian() {
     local f; f=('syncthing@.service')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/syncthing/debian.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/syncthing/debian.${i}"
     done
   }
 

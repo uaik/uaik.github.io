@@ -38,7 +38,7 @@ debian() {
     local f; f=('fail2ban.local' 'jail.local')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/${i}"
     done
 
     [[ ! -d '/var/log/fail2ban' ]] && mkdir '/var/log/fail2ban'
@@ -49,7 +49,7 @@ debian() {
     local f; f=('sshd.local')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/jail.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/jail.${i}"
     done
   }
 
@@ -58,7 +58,7 @@ debian() {
     local f; f=('service.override.conf')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/conf/fail2ban/service.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/service.${i}"
     done
   }
 
