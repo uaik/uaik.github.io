@@ -29,7 +29,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '6.0' && install && config; nginx; }
+  run() { repo '6.0' && install && config; angie; nginx; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/graylog.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -67,13 +67,23 @@ debian() {
     done
   }
 
-  nginx() {
-    local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && exit 1
+  angie() {
+    local d; d='/etc/angie/http.d'; [[ ! -d "${d}" ]] && return 0
     local f; f=('graylog.conf')
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/graylog/debian.nginx.${i}"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/graylog/debian.site.${i}"
+    done
+  }
+
+  nginx() {
+    local d; d='/etc/nginx/sites-available'; [[ ! -d "${d}" ]] && return 0
+    local f; f=('graylog.conf')
+
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
+      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/graylog/debian.site.${i}"
     done
   }
 
