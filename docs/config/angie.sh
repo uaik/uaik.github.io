@@ -9,6 +9,7 @@ osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 # Apps.
 apt=$( command -v 'apt' )
 curl=$( command -v 'curl' )
+mkdir=$( command -v 'mkdir' )
 mv=$( command -v 'mv' )
 sed=$( command -v 'sed' )
 
@@ -67,7 +68,7 @@ debian() {
   }
 
   config02() {
-    local d; d='/etc/angie/conf.d'; [[ ! -d "${d}" ]] && exit 1
+    local d; d='/etc/angie/conf.d'; [[ ! -d "${d}" ]] && ${mkdir} "${d}"
     local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
 
     for i in "${f[@]}"; do
