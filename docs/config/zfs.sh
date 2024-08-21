@@ -30,8 +30,8 @@ debian() {
 
     case "${k}" in
       *'xanmod'*) xanmod ;;
-      *'zabbly'*) zabbly && man ;;
-      *) default && man ;;
+      *'zabbly'*) zabbly ;;
+      *) default ;;
     esac
   }
 
@@ -46,17 +46,11 @@ debian() {
   }
 
   default() {
-    local p01; p01=('linux-headers-amd64')
-    local p02; p02=('zfsutils-linux' 'zfs-dkms' 'zfs-zed')
+    local p00; p00=('linux-headers-amd64')
+    local p01; p01=('zfsutils-linux' 'zfs-dkms' 'zfs-zed')
 
-    ${apt} install --yes "${p01[@]}" \
-      && ${apt} install --yes -t 'stable-backports' "${p02[@]}"
-  }
-
-  man() {
-    echo '' && echo '--- [ZFS] Creating the Pool'
-    ${curl} -fsSL 'https://uaik.github.io/config/zfs/man.txt'
-    echo ''
+    ${apt} install --yes "${p00[@]}" \
+      && ${apt} install --yes -t 'stable-backports' "${p01[@]}"
   }
 
   run
