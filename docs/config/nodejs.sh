@@ -4,12 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -33,9 +27,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/nodejs.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Node.js|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -52,12 +46,12 @@ debian() {
     local f; f=('nodejs.pref' 'nsolid.pref')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/nodejs/debian.apt.${i}"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/nodejs/debian.apt.${i}"
     done
 
     local p; p=('nodejs')
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   run

@@ -5,11 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-sed=$( command -v 'sed' )
-
 # Proxy.
 [[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
@@ -36,9 +31,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/php.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.sury.org/php/apt.gpg'
 
-    ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl ${cProxy} -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|PHP (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -76,8 +71,8 @@ debian() {
       "php${1}-zstd"
     )
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -85,7 +80,7 @@ debian() {
     local f; f=('php.local.ini')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/php/${i}"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/php/${i}"
     done
   }
 

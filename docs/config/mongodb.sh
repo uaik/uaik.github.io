@@ -5,13 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -35,9 +28,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/mongodb.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key="https://www.mongodb.org/static/pgp/server-${1}.asc"
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|MongoDB|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -52,8 +45,8 @@ debian() {
   install() {
     local p; p=('mongodb-org')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -61,8 +54,8 @@ debian() {
     local f; f=('mongod.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/mongodb/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/mongodb/${i}"
     done
   }
 

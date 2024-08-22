@@ -4,19 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-cat=$( command -v 'cat' )
-chmod=$( command -v 'chmod' )
-chown=$( command -v 'chown' )
-curl=$( command -v 'curl' )
-fold=$( command -v 'fold' )
-gpg=$( command -v 'gpg' )
-head=$( command -v 'head' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-tr=$( command -v 'tr' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -42,9 +29,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/opensearch.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://artifacts.opensearch.org/publickeys/opensearch.pgp'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|OpenSearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -59,8 +46,8 @@ debian() {
   install() {
     local p; p=( "opensearch=${1}" )
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}" \
+    apt update \
+      && apt install --yes "${p[@]}" \
       && apt-mark hold "${p[@]}"
 
     echo '' && echo '[!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
@@ -71,8 +58,8 @@ debian() {
     local f; f=('opensearch.yml')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}"
     done
   }
 
@@ -81,9 +68,9 @@ debian() {
     local f; f=('jvm.local.options')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}" \
-        && ${chown} opensearch:opensearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/opensearch/${i}" \
+        && chown opensearch:opensearch "${d}/${i}" && chmod 660 "${d}/${i}"
     done
   }
 
@@ -96,7 +83,7 @@ debian() {
 
 password() {
   local password
-  password=$( ${cat} /dev/urandom | LC_ALL=C ${tr} -dc 'a-zA-Z0-9' | ${fold} -w "${1}" | ${head} -n "${2}" )
+  password=$( cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w "${1}" | head -n "${2}" )
   echo "${password}"
 }
 

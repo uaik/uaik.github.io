@@ -5,12 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -34,9 +28,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/postgresql.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|PostgreSQL|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -51,8 +45,8 @@ debian() {
   install() {
     local p; p=("postgresql-${1}")
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   run

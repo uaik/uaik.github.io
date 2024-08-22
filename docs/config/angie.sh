@@ -6,13 +6,6 @@ osId=$( . '/etc/os-release' && echo "${ID}" )
 osVer=$( . '/etc/os-release' && echo "${VERSION_ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-mkdir=$( command -v 'mkdir' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -36,9 +29,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/angie.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://angie.software/keys/angie-signing.gpg'
 
-    ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Angie|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -53,8 +46,8 @@ debian() {
   install() {
     local p; p=('angie' 'angie-module-brotli')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config01() {
@@ -62,18 +55,18 @@ debian() {
     local f; f=('angie.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/debian.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/debian.${i}"
     done
   }
 
   config02() {
-    local d; d='/etc/angie/conf.d'; [[ ! -d "${d}" ]] && ${mkdir} "${d}"
+    local d; d='/etc/angie/conf.d'; [[ ! -d "${d}" ]] && mkdir "${d}"
     local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/${i}"
     done
   }
 
@@ -82,8 +75,8 @@ debian() {
     local f; f=('default.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/debian.site.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/angie/debian.site.${i}"
     done
   }
 

@@ -4,10 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-openssl=$( command -v 'openssl' )
-hostname=$( command -v 'hostname' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -36,14 +32,14 @@ debian() {
     local org; org='LocalHost'
     local ou; ou='IT Department'
     local cn; cn='localhost'
-    local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
+    local domain; domain=$( hostname -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
-    local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
+    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' | ${openssl} ec -out "${d}/_ssc/${f}.key" \
-        && ${openssl} req -new -sha256 \
+      openssl ecparam -genkey -name 'prime256v1' | openssl ec -out "${d}/_ssc/${f}.key" \
+        && openssl req -new -sha256 \
           -key "${d}/_ssc/${f}.key" \
           -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
@@ -53,11 +49,11 @@ debian() {
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
-        && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
+        && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/_ssc/${f}.key" \
           -in "${d}/_ssc/${f}.csr" \
           -out "${d}/_ssc/${f}.crt" \
-        && ${openssl} x509 -in "${d}/_ssc/${f}.crt" -text -noout
+        && openssl x509 -in "${d}/_ssc/${f}.crt" -text -noout
     fi
   }
 
@@ -71,14 +67,14 @@ debian() {
     local org; org='LocalHost'
     local ou; ou='IT Department'
     local cn; cn='localhost'
-    local domain; domain=$( ${hostname} -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
+    local domain; domain=$( hostname -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
     local email; email="postmaster@${domain}"
-    local host; IFS=' ' read -ra host <<< "$( ${hostname} -I )" && printf -v ip 'IP:%s,' "${host[@]}"
+    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      ${openssl} ecparam -genkey -name 'prime256v1' | ${openssl} ec -out "${d}/_ssc/${f}.key" \
-        && ${openssl} req -new -sha256 \
+      openssl ecparam -genkey -name 'prime256v1' | openssl ec -out "${d}/_ssc/${f}.key" \
+        && openssl req -new -sha256 \
           -key "${d}/_ssc/${f}.key" \
           -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
@@ -88,11 +84,11 @@ debian() {
           -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
-        && ${openssl} x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
+        && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/_ssc/${f}.key" \
           -in "${d}/_ssc/${f}.csr" \
           -out "${d}/_ssc/${f}.crt" \
-        && ${openssl} x509 -in "${d}/_ssc/${f}.crt" -text -noout
+        && openssl x509 -in "${d}/_ssc/${f}.crt" -text -noout
     fi
   }
 
@@ -100,7 +96,7 @@ debian() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
-    [[ ! -f "${d}/_ssc/dhparam.pem" ]] && ${openssl} dhparam -out "${d}/_ssc/dhparam.pem" 4096
+    [[ ! -f "${d}/_ssc/dhparam.pem" ]] && openssl dhparam -out "${d}/_ssc/dhparam.pem" 4096
   }
 
   run

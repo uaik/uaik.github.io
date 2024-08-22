@@ -4,12 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -33,9 +27,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/kernel.xanmod.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://dl.xanmod.org/archive.key'
 
-    ${curl} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Kernel (XanMod)|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -47,7 +41,7 @@ debian() {
         "${src}"
   }
 
-  update() { ${apt} update; }
+  update() { apt update; }
 
   run
 }

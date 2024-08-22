@@ -15,23 +15,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-awk=$( command -v 'awk' )
-cat=$( command -v 'cat' )
-chown=$( command -v 'chown' )
-chpasswd=$( command -v 'chpasswd' )
-chsh=$( command -v 'chsh' )
-curl=$( command -v 'curl' )
-find=$( command -v 'find' )
-head=$( command -v 'head' )
-id=$( command -v 'id' )
-mkdir=$( command -v 'mkdir' )
-mv=$( command -v 'mv' )
-tr=$( command -v 'tr' )
-useradd=$( command -v 'useradd' )
-usermod=$( command -v 'usermod' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -44,7 +27,7 @@ run() { pkg && root && u000X && u0002; }
 
 pkg() {
   case "${osId}" in
-    'debian') ${apt} update && ${apt} install --yes zsh ;;
+    'debian') apt update && apt install --yes zsh ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
 }
@@ -60,11 +43,11 @@ root() {
   # Changing password.
   echo "--- [${user^^}] Changing password."
   read -rp 'Password: ' password </dev/tty
-  echo "${user}:${password}" | ${chpasswd}
+  echo "${user}:${password}" | chpasswd
 
   # Changing shell.
   echo "--- [${user^^}] Changing shell."
-  ${chsh} -s '/bin/zsh' "${user}"
+  chsh -s '/bin/zsh' "${user}"
 
   # Installing 'grml' config.
   _grml "${user}"
@@ -78,26 +61,26 @@ u000X() {
   local user; user=( 'u0000' 'u0001' )
 
   for i in "${user[@]}"; do
-    if ! ${id} -u "${i}" >/dev/null 2>&1; then
-      local password; password=$( < /dev/urandom ${tr} -dc A-Za-z0-9 | ${head} -c8 )
+    if ! id -u "${i}" >/dev/null 2>&1; then
+      local password; password=$( < /dev/urandom tr -dc A-Za-z0-9 | head -c8 )
 
       # Creating user.
       echo "--- [${i^^}] Adding user..."
-      ${useradd} -m -p "${password}" -c "${i^^}" "${i}"
+      useradd -m -p "${password}" -c "${i^^}" "${i}"
 
       # Saving password.
       local home; home=$( _home "${i}" )
       echo "${password}" > "${home}/.password"
-      ${chown} ${i}:${i} "${home}/.password"
+      chown ${i}:${i} "${home}/.password"
     fi
 
     # Changing shell.
     echo "--- [${i^^}] Changing shell..."
-    ${chsh} -s '/bin/zsh' "${i}"
+    chsh -s '/bin/zsh' "${i}"
 
     # Locking user.
     echo "--- [${i^^}] Locking user..."
-    ${usermod} -L "${i}"
+    usermod -L "${i}"
   done
 }
 
@@ -111,16 +94,16 @@ u0002() {
 
   # Creating user.
   echo "--- [${user^^}] Adding user..."
-  ${useradd} -m -c "${user^^}" "${user}"
+  useradd -m -c "${user^^}" "${user}"
 
   # Changing password.
   echo "--- [${user^^}] Changing password..."
   read -rp 'Password: ' password </dev/tty
-  echo "${user}:${password}" | ${chpasswd}
+  echo "${user}:${password}" | chpasswd
 
   # Changing shell.
   echo "--- [${user^^}] Changing shell..."
-  ${chsh} -s '/bin/zsh' "${user}"
+  chsh -s '/bin/zsh' "${user}"
 
   # Installing 'grml' config.
   _grml "${user}"
@@ -132,7 +115,7 @@ u0002() {
 
 _home() {
   local user; user="${1}"
-  local home; home=$( ${awk} -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )
+  local home; home=$( awk -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )
   echo "${home}"
 }
 
@@ -147,19 +130,19 @@ _grml() {
   local zshrc; zshrc='/etc/zsh/zshrc.grml'
 
   # Downloading 'grml' config.
-  if [[ ! -f "${zshrc}" || $( ${find} "${zshrc}" -mmin '+60' ) ]]; then
-    ${mkdir} -p '/etc/zsh' && ${curl} -fsSLo "${zshrc}" "${uri}"
+  if [[ ! -f "${zshrc}" || $( find "${zshrc}" -mmin '+60' ) ]]; then
+    mkdir -p '/etc/zsh' && curl -fsSLo "${zshrc}" "${uri}"
   fi
 
   # Installing 'grml' config.
-  [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { ${mv} "${home}/.zshrc" "${home}/.zshrc.orig"; }
-  ${cat} > "${home}/.zshrc" <<EOF
+  [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
+  cat > "${home}/.zshrc" <<EOF
 . "${zshrc}"
 export GPG_TTY=\$(tty)
 EOF
 
   # Setting file owner.
-  ${chown} ${user}:${user} "${home}/.zshrc"
+  chown ${user}:${user} "${home}/.zshrc"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

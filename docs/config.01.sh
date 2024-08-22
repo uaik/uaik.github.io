@@ -12,13 +12,6 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
-# Checking commands.
-cmd_check() { command -v "${1}" > /dev/null 2>&1 || { echo >&2 "Required: '${1}'."; exit 1; }; }
-
-# Apps.
-bash=$( command -v 'bash' ); cmd_check 'bash'
-curl=$( command -v 'curl' ); cmd_check 'curl'
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -33,9 +26,9 @@ config() {
   local c; c="${1}"; IFS=';' read -ra c <<< "${c}"
 
   for i in "${c[@]}"; do
-    if local s; s=$( ${curl} -fsL "https://uaik.github.io/config/${i}.sh" ); then
+    if local s; s=$( curl -fsL "https://uaik.github.io/config/${i}.sh" ); then
       echo "--- [${i^^}] Installing a configuration..."
-      ${bash} -s <<< "${s}"
+      bash -s <<< "${s}"
     else
       echo "--- [${i^^}] Configuration not found!"
       exit 1

@@ -4,12 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-mv=$( command -v 'mv' )
-systemctl=$( command -v 'systemctl' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -32,11 +26,11 @@ debian() {
     local p; p=('tftpd-hpa')
     local s; s=('tftpd-hpa')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
 
     for i in "${s[@]}"; do
-      ${systemctl} enable "${i}.service"
+      systemctl enable "${i}.service"
     done
   }
 
@@ -45,8 +39,8 @@ debian() {
     local f; f=('tftpd-hpa')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/tftpd/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/tftpd/${i}"
     done
   }
 

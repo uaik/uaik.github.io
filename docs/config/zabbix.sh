@@ -5,12 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-sed=$( command -v 'sed' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -34,9 +28,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://uaik.github.io/config/zabbix/zabbix.gpg'
 
-    ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Zabbix|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -53,9 +47,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/zabbix.tools.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://uaik.github.io/config/zabbix/zabbix.tools.gpg'
 
-    ${curl} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Zabbix Tools|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -70,8 +64,8 @@ debian() {
   install() {
     local p; p=('zabbix-server-mysql' 'zabbix-frontend-php' 'zabbix-nginx-conf' 'zabbix-sql-scripts' 'zabbix-agent')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   run

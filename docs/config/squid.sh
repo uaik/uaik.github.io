@@ -4,12 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-mv=$( command -v 'mv' )
-systemctl=$( command -v 'systemctl' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -31,8 +25,8 @@ debian() {
   install() {
     local p; p=('squid')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -40,8 +34,8 @@ debian() {
     local f; f=('squid.conf' 'users.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/squid/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/squid/${i}"
     done
   }
 
@@ -49,7 +43,7 @@ debian() {
     local s; s=('squid')
 
     for i in "${s[@]}"; do
-      ${systemctl} restart "${i}.service"
+      systemctl restart "${i}.service"
     done
   }
 

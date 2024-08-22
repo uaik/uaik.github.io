@@ -4,17 +4,6 @@
 # OS.
 osId=$( . '/etc/os-release' && echo "${ID}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-chmod=$( command -v 'chmod' )
-chmod=$( command -v 'chmod' )
-chown=$( command -v 'chown' )
-chown=$( command -v 'chown' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-
 # Proxy.
 [[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
@@ -41,9 +30,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/elasticsearch.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
-    ${curl} ${cProxy} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl ${cProxy} -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Elasticsearch|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -58,8 +47,8 @@ debian() {
   install() {
     local p; p=( 'elasticsearch' )
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -67,9 +56,9 @@ debian() {
     local f; f=('elasticsearch.yml')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
-        && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
+        && chown root:elasticsearch "${d}/${i}" && chmod 660 "${d}/${i}"
     done
   }
 
@@ -78,9 +67,9 @@ debian() {
     local f; f=('jvm.local.options')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
-        && ${chown} root:elasticsearch "${d}/${i}" && ${chmod} 660 "${d}/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/elasticsearch/${i}" \
+        && chown root:elasticsearch "${d}/${i}" && chmod 660 "${d}/${i}"
     done
   }
 

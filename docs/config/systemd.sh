@@ -1,15 +1,6 @@
 #!/usr/bin/env -S bash -e
 # -------------------------------------------------------------------------------------------------------------------- #
 
-# Apps.
-apt=$( command -v 'apt' )
-awk=$( command -v 'awk' )
-curl=$( command -v 'curl' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-shutdown=$( command -v 'shutdown' )
-systemctl=$( command -v 'systemctl' )
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -22,16 +13,16 @@ run() { networkd && resolved; }
 
 networkd() {
   local d; d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
-  local e; mapfile -t e < <( ip -br l | ${awk} '$1 !~ "lo|vir|wl" { print $1 }' )
+  local e; mapfile -t e < <( ip -br l | awk '$1 !~ "lo|vir|wl" { print $1 }' )
   local s; s='systemd-networkd'
 
   for i in "${e[@]}"; do
-    ${curl} -fsSLo "${d}/${i}.network" 'https://uaik.github.io/config/systemd/dhcp.network.tpl' \
-      && ${sed} -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
+    curl -fsSLo "${d}/${i}.network" 'https://uaik.github.io/config/systemd/dhcp.network.tpl' \
+      && sed -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 
-  ${systemctl} enable "${s}.service"
-  [[ -f '/etc/network/interfaces' ]] && { ${mv} '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
+  systemctl enable "${s}.service"
+  [[ -f '/etc/network/interfaces' ]] && { mv '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -42,8 +33,8 @@ resolved() {
   local p; p='systemd-resolved'
   local s; s='systemd-resolved'
 
-  ${apt} install --yes ${p} \
-    && ${systemctl} enable "${s}.service"
+  apt install --yes ${p} \
+    && systemctl enable "${s}.service"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -51,7 +42,7 @@ resolved() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 reboot() {
-  ${shutdown} -r now
+  shutdown -r now
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #

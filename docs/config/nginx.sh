@@ -5,13 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-unlink=$( command -v 'unlink' )
-
 # Proxy.
 [[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
@@ -38,9 +31,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/nginx.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.sury.org/nginx/apt.gpg'
 
-    ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl ${cProxy} -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Nginx (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -55,8 +48,8 @@ debian() {
   install() {
     local p; p=('nginx' 'libnginx-mod-brotli')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   symlink() {
@@ -65,7 +58,7 @@ debian() {
     for i in "${d[@]}"; do
       [[ -d "${i}" ]] || continue
       for f in "${i}"/*; do
-        { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue
+        { [[ -L "${f}" ]] && unlink "${f}"; } || continue
       done
     done
   }
@@ -75,8 +68,8 @@ debian() {
     local f; f=('nginx.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/debian.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/debian.${i}"
     done
   }
 
@@ -85,8 +78,8 @@ debian() {
     local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/${i}"
     done
   }
 
@@ -95,8 +88,8 @@ debian() {
     local f; f=('default.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/debian.site.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/nginx/debian.site.${i}"
     done
   }
 

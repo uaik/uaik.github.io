@@ -5,13 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-curl=$( command -v 'curl' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-unlink=$( command -v 'unlink' )
-
 # Proxy.
 [[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
@@ -38,9 +31,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/apache2.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.sury.org/apache2/apt.gpg'
 
-    ${curl} ${cProxy} -fsSLo "${sig}" "${key}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl ${cProxy} -fsSLo "${sig}" "${key}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|Apache (Sury)|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -55,8 +48,8 @@ debian() {
   install() {
     local p; p=('apache2')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   symlink() {
@@ -65,7 +58,7 @@ debian() {
     for i in "${d[@]}"; do
       [[ -d "${i}" ]] || continue
       for f in "${i}"/*; do
-        { [[ -L "${f}" ]] && ${unlink} "${f}"; } || continue
+        { [[ -L "${f}" ]] && unlink "${f}"; } || continue
       done
     done
   }
@@ -75,8 +68,8 @@ debian() {
     local f; f=('apache2.conf' 'ports.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.${i}"
     done
   }
 
@@ -86,13 +79,13 @@ debian() {
 
     # Rename original configs.
     for i in "${d}"/*; do
-      { [[ -f "${i}" && ! -f "${i}.orig" ]] && ${mv} "${i}" "${i}.orig"; } || continue
+      { [[ -f "${i}" && ! -f "${i}.orig" ]] && mv "${i}" "${i}.orig"; } || continue
     done
 
     # Download custom configs.
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.${i}"
     done
   }
 
@@ -101,8 +94,8 @@ debian() {
     local f; f=('default.conf')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.site.${i}"
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/httpd/debian.site.${i}"
     done
   }
 

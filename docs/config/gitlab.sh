@@ -5,14 +5,6 @@
 osId=$( . '/etc/os-release' && echo "${ID}" )
 osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
 
-# Apps.
-apt=$( command -v 'apt' )
-cat=$( command -v 'cat' )
-curl=$( command -v 'curl' )
-gpg=$( command -v 'gpg' )
-mv=$( command -v 'mv' )
-sed=$( command -v 'sed' )
-
 # Proxy.
 [[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
 
@@ -39,9 +31,9 @@ debian() {
     local src; src='/etc/apt/sources.list.d/gitlab.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey'
 
-    ${curl} ${cProxy} -fsSL "${key}" | ${gpg} --dearmor -o "${sig}" \
-      && ${curl} -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && ${sed} -i \
+    curl ${cProxy} -fsSL "${key}" | gpg --dearmor -o "${sig}" \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && sed -i \
         -e "s|<#_name_#>|GitLab|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
@@ -56,8 +48,8 @@ debian() {
   install() {
     local p; p=('gitlab-ee')
 
-    ${apt} update \
-      && ${apt} install --yes "${p[@]}"
+    apt update \
+      && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -65,10 +57,10 @@ debian() {
     local f; f=('gitlab.local.rb')
 
     for i in "${f[@]}"; do
-      ${curl} -fsSLo "${d}/${i}" "https://uaik.github.io/config/gitlab/debian.${i}"
+      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/gitlab/debian.${i}"
     done
 
-    ${cat} << EOF >> "${d}/gitlab.rb"
+    cat << EOF >> "${d}/gitlab.rb"
 
 #################################################################################
 ## Loading external configuration file
@@ -82,8 +74,8 @@ EOF
     local f; f=('.license_encryption_key.pub')
 
     for i in "${f[@]}"; do
-      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && ${mv} "${d}/${i}" "${d}/${i}.orig"
-      ${curl} -fsSLo "${d}/${i}" 'https://uaik.github.io/config/gitlab/license.pub'
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+      curl -fsSLo "${d}/${i}" 'https://uaik.github.io/config/gitlab/license.pub'
     done
   }
 
