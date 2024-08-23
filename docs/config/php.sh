@@ -48,6 +48,7 @@ debian() {
   install() {
     local p; p=(
       "php${1}"
+      "php${1}-bcmath"
       "php${1}-bz2"
       "php${1}-cli"
       "php${1}-common"
@@ -58,6 +59,7 @@ debian() {
       "php${1}-imagick"
       "php${1}-imap"
       "php${1}-intl"
+      "php${1}-ldap"
       "php${1}-mbstring"
       "php${1}-memcached"
       "php${1}-mysql"
