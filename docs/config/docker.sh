@@ -28,7 +28,7 @@ debian() {
     local src; src='/etc/apt/sources.list.d/docker.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://download.docker.com/linux/debian/gpg'
 
-    curl -fsSLo "${sig}" "${key}" \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
       && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && sed -i \
         -e "s|<#_name_#>|Docker|g" \
