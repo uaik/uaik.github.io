@@ -24,8 +24,8 @@ debian() {
   run() { repo && install '16'; }
 
   repo() {
-    local sig; sig='/etc/apt/keyrings/postgresql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
-    local src; src='/etc/apt/sources.list.d/postgresql.sources'; [[ ! -d "${src%/*}" ]] && exit 1
+    local sig; sig='/etc/apt/keyrings/pgsql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local src; src='/etc/apt/sources.list.d/pgsql.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
     curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
