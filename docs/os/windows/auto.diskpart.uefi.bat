@@ -13,17 +13,17 @@ rem # --------------------------------------------------------------------------
 rem # SYSTEM
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
-echo CREATE PARTITION EFI SIZE=1024 >> "X:\auto.diskpart.txt"
-echo FORMAT QUICK FS=FAT32 LABEL="SYSTEM" >> "X:\auto.diskpart.txt"
+echo CREATE PARTITION EFI SIZE=512 >> "X:\auto.diskpart.txt"
+echo FORMAT QUICK FS=FAT32 LABEL="EFI" >> "X:\auto.diskpart.txt"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
 rem # MSR
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
-echo CREATE PARTITION MSR SIZE=2048 >> "X:\auto.diskpart.txt"
+echo CREATE PARTITION MSR SIZE=512 >> "X:\auto.diskpart.txt"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
-rem # WINRE
+rem # WINDOWS RE
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 echo CREATE PARTITION PRIMARY SIZE=4096 >> "X:\auto.diskpart.txt"

@@ -12,12 +12,12 @@ rem # --------------------------------------------------------------------------
 rem # SYSTEM RESERVED
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
-echo CREATE PARTITION PRIMARY SIZE=2048 >> "X:\auto.diskpart.txt"
+echo CREATE PARTITION PRIMARY SIZE=512 >> "X:\auto.diskpart.txt"
 echo FORMAT QUICK FS=NTFS LABEL="SYSTEM RESERVED" >> "X:\auto.diskpart.txt"
 echo ACTIVE >> "X:\auto.diskpart.txt"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
-rem # WINRE
+rem # WINDOWS RE
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 echo CREATE PARTITION PRIMARY SIZE=4096 >> "X:\auto.diskpart.txt"
