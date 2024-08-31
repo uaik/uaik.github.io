@@ -82,7 +82,7 @@
             <Description>USER-0000</Description>
             <DisplayName>USER-0000</DisplayName>
             <Group>Administrators</Group>
-            <Name>user-0000</Name>
+            <Name>u0000</Name>
           </LocalAccount>
           <LocalAccount wcm:action="add">
             <Password>
@@ -92,7 +92,17 @@
             <Description>USER-0001</Description>
             <DisplayName>USER-0001</DisplayName>
             <Group>Users</Group>
-            <Name>user-0001</Name>
+            <Name>u0001</Name>
+          </LocalAccount>
+          <LocalAccount wcm:action="add">
+            <Password>
+              <Value>7Jxs6PKVAk</Value>
+              <PlainText>true</PlainText>
+            </Password>
+            <Description>USER-0002</Description>
+            <DisplayName>USER-0002</DisplayName>
+            <Group>Users</Group>
+            <Name>u0002</Name>
           </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
