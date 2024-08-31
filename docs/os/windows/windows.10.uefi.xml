@@ -25,7 +25,7 @@
       <RunSynchronous>
         <RunSynchronousCommand>
           <Order>1</Order>
-          <Path>cmd.exe /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\auto.diskpart.uefi.cmd cmd.exe /k %i:\auto.diskpart.uefi.cmd"</Path>
+          <Path>cmd.exe /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\auto.diskpart.uefi.bat cmd.exe /k %i:\auto.diskpart.uefi.bat"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
