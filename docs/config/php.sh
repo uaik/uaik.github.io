@@ -47,13 +47,11 @@ debian() {
 
   install() {
     local p; p=(
-      "php${1}"
+      "php${1}-fpm"
       "php${1}-bcmath"
       "php${1}-bz2"
       "php${1}-cli"
-      "php${1}-common"
       "php${1}-curl"
-      "php${1}-fpm"
       "php${1}-gd"
       "php${1}-gmp"
       "php${1}-imagick"
