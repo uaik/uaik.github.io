@@ -47,7 +47,6 @@ debian() {
 
   install() {
     local p; p=(
-      "php${1}"
       "php${1}-bcmath"
       "php${1}-bz2"
       "php${1}-cli"
