@@ -21,7 +21,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && install '16'; }
+  run() { repo && install '16' '2.15.*'; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/timescaledb.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -43,7 +43,7 @@ debian() {
   }
 
   install() {
-    local p; p=("timescaledb-2-postgresql-${1}" 'timescaledb-tools')
+    local p; p=("timescaledb-2-postgresql-${1}='${2}'" 'timescaledb-tools')
 
     apt update \
       && apt install --yes "${p[@]}"
