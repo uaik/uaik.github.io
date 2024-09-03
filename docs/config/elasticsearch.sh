@@ -23,7 +23,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '7.x' && install && config && jvm; }
+  run() { repo '8.x' && install && config && jvm; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/elasticsearch.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
