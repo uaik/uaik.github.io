@@ -44,8 +44,8 @@ debian() {
 
   install() {
     local p; p=(
-      "timescaledb-2-postgresql-${1}='${2}'"
-      "timescaledb-2-loader-postgresql-${1}='${2}'"
+      "timescaledb-2-postgresql-${1}=${2}"
+      "timescaledb-2-loader-postgresql-${1}=${2}"
       'timescaledb-tools'
     )
 
