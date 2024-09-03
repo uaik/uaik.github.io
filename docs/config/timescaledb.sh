@@ -43,7 +43,7 @@ debian() {
   }
 
   install() {
-    local p; p=("timescaledb-2-postgresql-${1}")
+    local p; p=("timescaledb-2-postgresql-${1}" 'timescaledb-tools')
 
     apt update \
       && apt install --yes "${p[@]}"
