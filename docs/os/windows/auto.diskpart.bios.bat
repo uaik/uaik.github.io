@@ -1,6 +1,14 @@
-@echo off
 rem # DISK PARTITIONS (BIOS)
+rem #
+rem # @package   CMD
+rem # @author    Kai Kimera <mail@kai.kim>
+rem # @copyright 2024 Library Online
+rem # @license   MIT
+rem # @version   0.1.0
+rem # @link      https://lib.onl
 rem # ---------------------------------------------------------------------------------------------------------------- #
+
+@echo off
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
 rem # CLEAN
