@@ -43,22 +43,20 @@ debian() {
   }
 
   repo02() {
-    local sig; sig='/etc/apt/keyrings/zabbix.tools.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
+    local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.tools.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/config/zabbix/zabbix.tools.gpg'
 
-    curl -fsSLo "${sig}" "${key}" \
-      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-      && sed -i \
-        -e "s|<#_name_#>|Zabbix Tools|g" \
-        -e "s|<#_enabled_#>|yes|g" \
-        -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|https://repo.zabbix.com/zabbix-tools/debian-ubuntu|g" \
-        -e "s|<#_suites_#>|${osCodeName}|g" \
-        -e "s|<#_components_#>|main|g" \
-        -e "s|<#_arch_#>|all|g" \
-        -e "s|<#_sig_#>|${sig}|g" \
-        "${src}"
+    curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+    && sed -i \
+      -e "s|<#_name_#>|Zabbix Tools|g" \
+      -e "s|<#_enabled_#>|yes|g" \
+      -e "s|<#_types_#>|deb|g" \
+      -e "s|<#_uri_#>|https://repo.zabbix.com/zabbix-tools/debian-ubuntu|g" \
+      -e "s|<#_suites_#>|${osCodeName}|g" \
+      -e "s|<#_components_#>|main|g" \
+      -e "s|<#_arch_#>|all|g" \
+      -e "s|<#_sig_#>|${sig}|g" \
+      "${src}"
   }
 
   install() {
