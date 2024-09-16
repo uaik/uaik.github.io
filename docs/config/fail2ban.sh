@@ -23,7 +23,7 @@ debian() {
   run() { install && config && jail; }
 
   install() {
-    local p; p=('fail2ban' 'python3-systemd' 'rsyslog' 'sqlite3')
+    local p; p=('fail2ban' 'python3-systemd' 'rsyslog')
 
     apt update \
       && apt install --yes "${p[@]}"
@@ -42,7 +42,7 @@ debian() {
 
   jail() {
     local d; d='/etc/fail2ban/jail.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('sshd.local')
+    local f; f=('sshd.local' 'asterisk.local')
 
     for i in "${f[@]}"; do
       curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/jail.${i}"
