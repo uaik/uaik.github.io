@@ -36,8 +36,6 @@ debian() {
     for i in "${f[@]}"; do
       curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/${i}"
     done
-
-    [[ ! -d '/var/log/fail2ban' ]] && mkdir '/var/log/fail2ban'
   }
 
   jail() {
