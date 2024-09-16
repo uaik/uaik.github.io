@@ -1,5 +1,8 @@
 [asterisk]
-enabled = true
-bantime = 1h
-maxretry = 5
-logpath = /var/log/asterisk/messages.log
+enabled       = true
+backend       = polling
+journalmatch  =
+maxretry      = 5
+filter        = asterisk
+logpath       = /var/log/asterisk/messages.log
+action        = nftables-allports[name='asterisk']

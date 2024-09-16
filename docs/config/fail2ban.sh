@@ -20,10 +20,10 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { install && config && jail && service; }
+  run() { install && config && jail; }
 
   install() {
-    local p; p=('fail2ban' 'python3-systemd')
+    local p; p=('fail2ban' 'python3-systemd' 'rsyslog' 'sqlite3')
 
     apt update \
       && apt install --yes "${p[@]}"
@@ -46,15 +46,6 @@ debian() {
 
     for i in "${f[@]}"; do
       curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/jail.${i}"
-    done
-  }
-
-  service() {
-    local d; d='/etc/systemd/system/fail2ban.service.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('service.override.conf')
-
-    for i in "${f[@]}"; do
-      curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/fail2ban/service.${i}"
     done
   }
 
