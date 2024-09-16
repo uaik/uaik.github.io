@@ -1,5 +1,7 @@
 [sshd]
 enabled = true
+bantime = 1h
+maxretry = 5
+port = 8022
 filter = sshd
-action = nftables-multiport[name=sshd, port="8022", protocol=tcp]
-ignoreip = 127.0.0.1/8 10.0.0.0/8 192.168.0.0/16
+backend = systemd

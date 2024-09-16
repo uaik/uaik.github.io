@@ -1,8 +1,8 @@
 [DEFAULT]
-backend = systemd
-banaction = nftables[type=multiport]
-banaction_allports = nftables[type=allports]
-findtime = 3600
-bantime = 3600
+bantime = 10m
+findtime = 10m
 maxretry = 5
 ignoreip = 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+banaction = nftables-multiport
+banaction_allports = nftables-allports
+backend = auto
