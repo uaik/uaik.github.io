@@ -1,0 +1,8 @@
+[pregreet]
+enabled       = true
+backend       = polling
+journalmatch  =
+maxretry      = 1
+filter        = postfix-pregreet.custom
+logpath       = PH_MAILLOG
+action        = nftables-multiport[name='pregreet', port='PH_FAIL2BAN_DISABLED_SERVICES', protocol='tcp']

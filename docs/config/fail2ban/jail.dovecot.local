@@ -1,0 +1,7 @@
+[dovecot]
+enabled       = true
+backend       = polling
+journalmatch  =
+filter        = dovecot.custom
+logpath       = PH_DOVECOT_LOG_FILE
+action        = nftables-multiport[name='dovecot', port='PH_FAIL2BAN_DISABLED_SERVICES', protocol='tcp']

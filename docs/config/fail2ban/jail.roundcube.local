@@ -1,0 +1,8 @@
+[roundcube]
+enabled       = false
+backend       = polling
+journalmatch  =
+findtime      = 1h
+filter        = roundcube.custom
+logpath       = PH_RCM_LOGFILE
+action        = nftables-multiport[name='roundcube', port='PH_FAIL2BAN_DISABLED_SERVICES', protocol='tcp']
