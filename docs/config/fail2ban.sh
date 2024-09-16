@@ -23,10 +23,10 @@ debian() {
   run() { install && config && jail && service; }
 
   install() {
-    local p; p='fail2ban'
+    local p; p=('fail2ban' 'python3-systemd')
 
     apt update \
-      && apt install --yes ${p}
+      && apt install --yes "${p[@]}"
   }
 
   config() {
