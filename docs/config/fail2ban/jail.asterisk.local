@@ -2,7 +2,8 @@
 enabled       = true
 backend       = polling
 journalmatch  =
-maxretry      = 5
+maxretry      = 3
 filter        = asterisk
 logpath       = /var/log/asterisk/messages.log
-action        = nftables-allports[name='asterisk']
+action        = nftables-allports[name='asterisk-tcp', protocol='tcp']
+                nftables-allports[name='asterisk-udp', protocol='udp']
