@@ -5,5 +5,5 @@ journalmatch  =
 maxretry      = 3
 filter        = asterisk
 logpath       = /var/log/asterisk/messages.log
-action        = nftables-allports[name='asterisk-tcp', protocol='tcp']
-                nftables-allports[name='asterisk-udp', protocol='udp']
+action        = nftables-allports[name="%(__name__)s-tcp", protocol="tcp"]
+                nftables-allports[name="%(__name__)s-udp", protocol="udp"]

@@ -5,4 +5,4 @@ journalmatch  =
 maxretry      = 5
 filter        = sshd
 logpath       = /var/log/auth.log
-action        = nftables-multiport[name='sshd', port='8022', protocol='tcp']
+action        = nftables-multiport[name="%(__name__)s", port="22,8022", protocol="tcp"]

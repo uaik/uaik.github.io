@@ -4,4 +4,4 @@ backend       = polling
 journalmatch  =
 filter        = postfix.custom
 logpath       = PH_MAILLOG
-action        = nftables-multiport[name='postfix', port='PH_FAIL2BAN_DISABLED_SERVICES', protocol='tcp']
+action        = nftables-multiport[name="%(__name__)s", port="PH_FAIL2BAN_DISABLED_SERVICES", protocol="tcp"]

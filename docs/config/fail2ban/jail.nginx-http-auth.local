@@ -4,4 +4,4 @@ backend       = polling
 journalmatch  =
 filter        = nginx-http-auth
 logpath       = PH_NGINX_LOG_ERRORLOG
-action        = nftables-multiport[name='nginx', port='PH_FAIL2BAN_DISABLED_SERVICES', protocol='tcp']
+action        = nftables-multiport[name="nginx", port="PH_FAIL2BAN_DISABLED_SERVICES", protocol="tcp"]
