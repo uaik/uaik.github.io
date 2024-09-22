@@ -36,7 +36,7 @@ debian() {
         -e "s|<#_types_#>|deb|g" \
         -e "s|<#_uri_#>|http://download.opensuse.org/repositories/home:/alvistack/Debian_${osVerId}/|g" \
         -e "s|<#_suites_#>|/|g" \
-        -e "|<#_components_#>|d" \
+        -e "/<#_components_#>/d" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${sig}|g" \
         "${src}"
