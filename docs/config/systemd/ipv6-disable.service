@@ -1,0 +1,13 @@
+[Unit]
+Description=Enforce default disable_ipv6
+AssertPathExists=/proc/sys/net/ipv6/conf/all/disable_ipv6
+AssertPathExists=/proc/sys/net/ipv6/conf/default/disable_ipv6
+After=systemd-networkd.service
+PartOf=systemd-networkd.service
+
+[Service]
+Type=oneshot
+ExecStart=-/usr/bin/cp --no-preserve=all -T /proc/sys/net/ipv6/conf/default/disable_ipv6 /proc/sys/net/ipv6/conf/all/disable_ipv6
+
+[Install]
+WantedBy=systemd-networkd.service
