@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -eu
 #
 # Configuration script.
 #
@@ -13,7 +13,7 @@
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
+OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
@@ -26,7 +26,7 @@ run() { pkg && root && u000X && u0002; }
 # -------------------------------------------------------------------------------------------------------------------- #
 
 pkg() {
-  case "${osId}" in
+  case "${OS_ID}" in
     'debian') apt update && apt install --yes zsh ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac

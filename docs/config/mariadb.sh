@@ -1,16 +1,16 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -eu
 # -------------------------------------------------------------------------------------------------------------------- #
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
-osCodeName=$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )
+OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
+OS_CODENAME="$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )"; readonly OS_CODENAME
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  case "${osId}" in
+  case "${OS_ID}" in
     'debian') debian ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
@@ -34,8 +34,8 @@ debian() {
         -e "s|<#_name_#>|MariaDB|g" \
         -e "s|<#_enabled_#>|yes|g" \
         -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|https://mirror.netcologne.de/mariadb/repo/${1}/${osId}|g" \
-        -e "s|<#_suites_#>|${osCodeName}|g" \
+        -e "s|<#_uri_#>|https://mirror.netcologne.de/mariadb/repo/${1}/${OS_ID}|g" \
+        -e "s|<#_suites_#>|${OS_CODENAME}|g" \
         -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${sig}|g" \

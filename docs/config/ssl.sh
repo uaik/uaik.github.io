@@ -1,15 +1,15 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -eu
 # -------------------------------------------------------------------------------------------------------------------- #
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
+OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  case "${osId}" in
+  case "${OS_ID}" in
     'debian') debian ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
@@ -20,9 +20,9 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { serverAuth && clientAuth; dhparam; }
+  run() { server_auth && client_auth; dhparam; }
 
-  serverAuth() {
+  server_auth() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
     local f; f='auth.server'
     local days; days='3650'
@@ -57,7 +57,7 @@ debian() {
     fi
   }
 
-  clientAuth() {
+  client_auth() {
     local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
     local f; f='auth.client'
     local days; days='3650'

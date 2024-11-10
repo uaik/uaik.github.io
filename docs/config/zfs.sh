@@ -1,15 +1,15 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -eu
 # -------------------------------------------------------------------------------------------------------------------- #
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
+OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  case "${osId}" in
+  case "${OS_ID}" in
     'debian') debian ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
@@ -21,7 +21,7 @@ run() {
 
 debian() {
   run() {
-    local k; k=$( uname -r )
+    local k; k="$( uname -r )"
 
     case "${k}" in
       *'xanmod'*) xanmod ;;

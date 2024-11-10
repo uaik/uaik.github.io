@@ -1,18 +1,18 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -eu
 # -------------------------------------------------------------------------------------------------------------------- #
 
 # OS.
-osId=$( . '/etc/os-release' && echo "${ID}" )
+OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
 
 # Proxy.
-[[ -n "${proxy}" ]] && cProxy="-x ${proxy}" || cProxy=''
+[[ -n "${proxy}" ]] && C_PROXY="-x ${proxy}" || C_PROXY=''; readonly C_PROXY
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
 run() {
-  case "${osId}" in
+  case "${OS_ID}" in
     'debian') debian ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
@@ -30,7 +30,7 @@ debian() {
     local src; src='/etc/apt/sources.list.d/graylog.sources'; [[ ! -d "${src%/*}" ]] && exit 1
     local key; key='https://packages.graylog2.org/repo/debian/keyring.gpg'
 
-    curl ${cProxy} -fsSLo "${sig}" "${key}" \
+    curl ${C_PROXY} -fsSLo "${sig}" "${key}" \
       && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && sed -i \
         -e "s|<#_name_#>|Graylog|g" \
