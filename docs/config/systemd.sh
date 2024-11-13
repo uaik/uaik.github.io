@@ -5,7 +5,7 @@
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { networkd && resolved && ipv6_disable; }
+run() { ipv6_disable && networkd && resolved; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # SYSTEMD: NETWORKD
@@ -46,8 +46,7 @@ ipv6_disable() {
   local s; s=('ipv6-disable')
 
   for i in "${s[@]}"; do
-    curl -fsSLo "${d}/${i}.service" "https://uaik.github.io/config/systemd/${i}.service" \
-      && systemctl enable "${i}.service"
+    curl -fsSLo "${d}/${i}.service" "https://uaik.github.io/config/systemd/${i}.service"
   done
 }
 
