@@ -9,6 +9,7 @@ nginx['client_max_body_size'] = '250m'
 #registry_nginx['redirect_http_to_https'] = true
 #mattermost_nginx['redirect_http_to_https'] = true
 gitlab_rails['gitlab_default_projects_features_builds'] = false
+gitlab_rails['gitlab_default_projects_features_container_registry'] = false
 gitlab_rails['omniauth_enabled'] = false
 gitlab_rails['smtp_enable'] = false
 gitlab_rails['smtp_pool'] = true
