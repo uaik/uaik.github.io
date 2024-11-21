@@ -22,7 +22,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '2.x' && install '2.13.0' && config && jvm; }
+  run() { repo '2.x' && install '2.15.0' && config && jvm; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/opensearch.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1

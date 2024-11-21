@@ -23,7 +23,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '6.0' && install && config; angie; nginx; }
+  run() { repo '6.1' && install && config; angie; nginx; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/graylog.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
