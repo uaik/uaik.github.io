@@ -47,8 +47,7 @@ debian() {
   install() {
     local p; p=( 'elasticsearch' )
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

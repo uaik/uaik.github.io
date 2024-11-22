@@ -50,8 +50,7 @@ debian() {
     done
 
     local p; p=('nodejs')
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run

@@ -25,8 +25,7 @@ debian() {
   install() {
     local p; p=('squid')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {
@@ -42,9 +41,7 @@ debian() {
   service() {
     local s; s=('squid')
 
-    for i in "${s[@]}"; do
-      systemctl restart "${i}.service"
-    done
+    systemctl restart "${s[@]/%/.service}"
   }
 
   run

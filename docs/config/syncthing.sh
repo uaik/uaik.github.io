@@ -50,8 +50,7 @@ debian() {
       curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/syncthing/debian.apt.${i}"
     done
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

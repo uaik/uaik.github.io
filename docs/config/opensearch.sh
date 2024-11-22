@@ -46,10 +46,7 @@ debian() {
   install() {
     local p; p=( "opensearch=${1}" )
 
-    apt update \
-      && apt install --yes "${p[@]}" \
-      && apt-mark hold "${p[@]}"
-
+    apt update && apt install --yes "${p[@]}" && apt-mark hold "${p[@]}"
     echo '' && echo '[!] OPENSEARCH PASSWORD:' && echo "${osp}" && echo ''
   }
 

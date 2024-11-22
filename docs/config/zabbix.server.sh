@@ -62,8 +62,7 @@ debian() {
   install() {
     local p; p=('zabbix-server-pgsql' 'zabbix-frontend-php' 'zabbix-sql-scripts' 'zabbix-agent')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run

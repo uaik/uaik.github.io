@@ -5,7 +5,7 @@
 # INITIALIZATION
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { ipv6_disable && networkd && resolved; }
+run() { ipv6_disable && timesyncd && networkd && resolved; }
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # SYSTEMD: NETWORKD
@@ -14,14 +14,14 @@ run() { ipv6_disable && networkd && resolved; }
 networkd() {
   local d; d='/etc/systemd/network'; [[ ! -d "${d}" ]] && exit 1
   local e; mapfile -t e < <( ip -br l | awk '$1 !~ "lo|vir|wl" { print $1 }' )
-  local s; s='systemd-networkd'
+  local s; s=('systemd-networkd')
 
   for i in "${e[@]}"; do
-    curl -fsSLo "${d}/${i}.network" 'https://uaik.github.io/config/systemd/dhcp.network.tpl' \
+    curl -fsSLo "${d}/${i}.network" 'https://uaik.github.io/config/systemd/networkd.dhcp.tpl' \
       && sed -i -e "s|<#_name_#>|${i}|g" "${d}/${i}.network"
   done
 
-  systemctl enable "${s}.service"
+  systemctl enable "${s[@]/%/.service}"
   [[ -f '/etc/network/interfaces' ]] && { mv '/etc/network/interfaces' '/etc/network/interfaces.disable'; }
 }
 
@@ -30,11 +30,24 @@ networkd() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 resolved() {
-  local p; p='systemd-resolved'
-  local s; s='systemd-resolved'
+  local p; p=('systemd-resolved')
+  local s; s=('systemd-resolved')
 
-  apt install --yes ${p} \
-    && systemctl enable "${s}.service"
+  apt update && apt install --yes "${p[@]}" \
+    && systemctl enable "${s[@]/%/.service}"
+}
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# SYSTEMD: TIMESYNCD
+# -------------------------------------------------------------------------------------------------------------------- #
+
+timesyncd() {
+  local d; d='/etc/systemd/timesyncd.conf.d'; [[ ! -d "${d}" ]] && mkdir -p "${d}"
+  local f; f=('local.conf')
+
+  for i in "${f[@]}"; do
+    curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/systemd/timesyncd.${i}"
+  done
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -43,10 +56,10 @@ resolved() {
 
 ipv6_disable() {
   local d; d='/etc/systemd/system'; [[ ! -d "${d}" ]] && exit 1
-  local s; s=('ipv6-disable')
+  local f; f=('ipv6-disable.service')
 
-  for i in "${s[@]}"; do
-    curl -fsSLo "${d}/${i}.service" "https://uaik.github.io/config/systemd/${i}.service"
+  for i in "${f[@]}"; do
+    curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/systemd/${i}"
   done
 }
 

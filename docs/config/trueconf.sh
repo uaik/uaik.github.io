@@ -45,8 +45,7 @@ debian() {
   install() {
     local p; p=('trueconf-server')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run

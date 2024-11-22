@@ -48,8 +48,7 @@ debian() {
   install() {
     local p; p=('gitlab-ee')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

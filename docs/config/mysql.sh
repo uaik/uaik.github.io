@@ -45,8 +45,7 @@ debian() {
   install() {
     local p; p=('mysql-server')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

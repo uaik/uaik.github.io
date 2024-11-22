@@ -25,8 +25,7 @@ debian() {
   install() {
     local p; p=('fail2ban' 'python3-systemd' 'rsyslog')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

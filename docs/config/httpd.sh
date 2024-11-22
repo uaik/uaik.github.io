@@ -48,8 +48,7 @@ debian() {
   install() {
     local p; p=('apache2')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   symlink() {

@@ -71,8 +71,7 @@ debian() {
       "php${1}-zstd"
     )
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   config() {

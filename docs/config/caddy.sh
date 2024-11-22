@@ -44,8 +44,7 @@ debian() {
   install() {
     local p; p=('caddy')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run

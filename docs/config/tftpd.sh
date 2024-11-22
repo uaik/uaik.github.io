@@ -26,12 +26,8 @@ debian() {
     local p; p=('tftpd-hpa')
     local s; s=('tftpd-hpa')
 
-    apt update \
-      && apt install --yes "${p[@]}"
-
-    for i in "${s[@]}"; do
-      systemctl enable "${i}.service"
-    done
+    apt update && apt install --yes "${p[@]}" \
+      && systemctl enable "${s[@]/%/.service}"
   }
 
   config() {

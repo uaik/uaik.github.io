@@ -46,13 +46,8 @@ debian() {
     local p; p=('rsyslog')
     local s; s=('rsyslog')
 
-    apt update \
-      && apt install --yes "${p[@]}"
-    # FIX:
-    # > systemd[1]: Dependency failed for rsyslog.service - System Logging Service.
-    for i in "${s[@]}"; do
-      systemctl enable "${i}.service" && systemctl restart "${i}.service"
-    done
+    apt update && apt install --yes "${p[@]}" \
+      && systemctl enable "${s[@]/%/.service}" && systemctl restart "${s[@]/%/.service}"
   }
 
   config() {

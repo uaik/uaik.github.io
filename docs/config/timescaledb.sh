@@ -49,8 +49,7 @@ debian() {
       'timescaledb-tools'
     )
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run

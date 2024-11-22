@@ -64,8 +64,7 @@ debian() {
   install() {
     local p; p=('lua5.2' 'jitsi-meet')
 
-    apt update \
-      && apt install --yes "${p[@]}"
+    apt update && apt install --yes "${p[@]}"
   }
 
   run
