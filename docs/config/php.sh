@@ -24,7 +24,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && install '8.3' && config '8.3'; }
+  run() { repo && install '8.4' && config '8.4'; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/php.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
