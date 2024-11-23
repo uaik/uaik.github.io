@@ -21,7 +21,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '3.0' && install; }
+  run() { repo '3.0' && install '3.0'; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/haproxy.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -43,7 +43,7 @@ debian() {
   }
 
   install() {
-    local p; p=('haproxy=3.0.\*')
+    local p; p=("haproxy=${1}.\*")
 
     apt update && apt install --yes "${p[@]}"
   }
