@@ -21,7 +21,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '3.0'; }
+  run() { repo '3.0' && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/haproxy.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -40,6 +40,10 @@ debian() {
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${sig}|g" \
         "${src}"
+  }
+
+  install() {
+    apt update
   }
 
   run
