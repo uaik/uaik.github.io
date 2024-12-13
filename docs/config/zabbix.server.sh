@@ -21,14 +21,14 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo_zabbix '7.0' && repo_tools && install; }
+  run() { repo '7.0' && install; }
 
   repo_zabbix() {
     local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/config/zabbix/zabbix.gpg'
+    local key; key='https://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-B5333005'
 
-    curl -fsSLo "${sig}" "${key}" \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
       && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && sed -i \
         -e "s|<#_name_#>|Zabbix|g" \
@@ -40,23 +40,6 @@ debian() {
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
         -e "s|<#_sig_#>|${sig}|g" \
         "${src}"
-  }
-
-  repo_tools() {
-    local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
-    local src; src='/etc/apt/sources.list.d/zabbix.tools.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-
-    curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
-    && sed -i \
-      -e "s|<#_name_#>|Zabbix Tools|g" \
-      -e "s|<#_enabled_#>|yes|g" \
-      -e "s|<#_types_#>|deb|g" \
-      -e "s|<#_uri_#>|https://repo.zabbix.com/zabbix-tools/debian-ubuntu|g" \
-      -e "s|<#_suites_#>|${OS_CODENAME}|g" \
-      -e "s|<#_components_#>|main|g" \
-      -e "s|<#_arch_#>|all|g" \
-      -e "s|<#_sig_#>|${sig}|g" \
-      "${src}"
   }
 
   install() {

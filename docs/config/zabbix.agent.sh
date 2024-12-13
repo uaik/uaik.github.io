@@ -26,9 +26,9 @@ debian() {
   repo() {
     local sig; sig='/etc/apt/keyrings/zabbix.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
     local src; src='/etc/apt/sources.list.d/zabbix.sources'; [[ ! -d "${src%/*}" ]] && exit 1
-    local key; key='https://uaik.github.io/config/zabbix/zabbix.gpg'
+    local key; key='https://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-B5333005'
 
-    curl -fsSLo "${sig}" "${key}" \
+    curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
       && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
       && sed -i \
         -e "s|<#_name_#>|Zabbix|g" \
