@@ -15,20 +15,24 @@
         <OSImage>
           <InstallTo>
             <DiskID>0</DiskID>
-            <PartitionID>3</PartitionID>
+            <PartitionID>4</PartitionID>
           </InstallTo>
         </OSImage>
       </ImageInstall>
       <UserData>
         <ProductKey>
-          <Key></Key>
+          <Key>KBN8V-HFGQ4-MGXVD-347P6-PDQGT</Key>
         </ProductKey>
         <AcceptEula>true</AcceptEula>
       </UserData>
       <RunSynchronous>
         <RunSynchronousCommand>
           <Order>1</Order>
-          <Path>cmd.exe /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\auto.diskpart.bios.bat cmd.exe /k %i:\auto.diskpart.bios.bat"</Path>
+          <Path>cmd.exe /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\bypass.bat cmd.exe /k %i:\bypass.bat"</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand>
+          <Order>2</Order>
+          <Path>cmd.exe /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\diskpart.bat cmd.exe /k %i:\diskpart.bat"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
