@@ -9,5 +9,5 @@ echo FORMAT QUICK FS=NTFS LABEL="WINRE" >> "X:\diskpart.txt"
 echo SET ID=27 >> "X:\diskpart.txt"
 echo CREATE PARTITION PRIMARY >> "X:\diskpart.txt"
 echo FORMAT QUICK FS=NTFS LABEL="OS" >> "X:\diskpart.txt"
-diskpart /s "X:\diskpart.txt" >> "X:\auto.diskpart.log"
+diskpart /s "X:\diskpart.txt" >> "X:\diskpart.log"
 exit

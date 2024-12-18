@@ -11,5 +11,5 @@ echo SET ID="de94bba4-06d1-4d40-a16a-bfd50179d6ac" >> "X:\diskpart.txt"
 echo GPT ATTRIBUTES=0x8000000000000001 >> "X:\diskpart.txt"
 echo CREATE PARTITION PRIMARY >> "X:\diskpart.txt"
 echo FORMAT QUICK FS=NTFS LABEL="OS" >> "X:\diskpart.txt"
-diskpart /s "X:\diskpart.txt" >> "X:\auto.diskpart.log"
+diskpart /s "X:\diskpart.txt" >> "X:\diskpart.log"
 exit
