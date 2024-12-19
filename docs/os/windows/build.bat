@@ -1,6 +1,6 @@
 @echo off
 
-set index=2 4
+set index=2 5
 set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
 set "wim=%~dp0wim"
