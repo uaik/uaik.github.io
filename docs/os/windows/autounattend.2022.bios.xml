@@ -28,7 +28,7 @@
       <RunSynchronous>
         <RunSynchronousCommand>
           <Order>1</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.bios.bat cmd.exe /k %i:\diskpart.bios.bat"</Path>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.bat cmd.exe /k %i:\diskpart.bat"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
@@ -38,14 +38,26 @@
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
           <Order>1</Order>
-          <Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
+          <Path>reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v "AllowNewsAndInterests" /t "REG_DWORD" /d 0 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>2</Order>
-          <Path>reg.exe add "HKU\DefaultUser\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t "REG_DWORD" /d 0 /f</Path>
+          <Path>reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t "REG_DWORD" /d 1 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>3</Order>
+          <Path>reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "REG_DWORD" /d 1 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
+          <Order>101</Order>
+          <Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
+          <Order>102</Order>
+          <Path>reg.exe add "HKU\DefaultUser\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t "REG_DWORD" /d 0 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
+          <Order>199</Order>
           <Path>reg.exe unload "HKU\DefaultUser"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
