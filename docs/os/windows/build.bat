@@ -11,10 +11,9 @@ rem # CREATE STRUCTURE
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 if "%1" == "struct" (
-  if not exist "%drv%" md "%drv%"
-  if not exist "%mnt%" md "%mnt%"
-  if not exist "%pkg%" md "%pkg%"
-  if not exist "%wim%" md "%wim%"
+  for %%i in ("%drv%" "%mnt%" "%pkg%" "%wim%") do (
+    if not exist "%%i" md "%%i"
+  )
   exit
 )
 
