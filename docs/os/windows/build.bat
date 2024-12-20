@@ -35,7 +35,7 @@ for %%i in (2) do (
   )
 
   echo Saving Windows image...
-  Dism /Unmount-Image /MountDir:"%mnt%" /Commit && timeout /t 5 /nobreak > nul
+  Dism /Unmount-Image /MountDir:"%mnt%" /Commit
 )
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
@@ -71,7 +71,7 @@ for %%i in (%idx%) do (
   )
 
   echo Saving Windows image...
-  Dism /Unmount-Image /MountDir:"%mnt%" /Commit && timeout /t 5 /nobreak > nul
+  Dism /Unmount-Image /MountDir:"%mnt%" /Commit
 )
 
 exit
