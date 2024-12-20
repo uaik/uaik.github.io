@@ -40,7 +40,7 @@
         </RunSynchronousCommand>
         <RunSynchronousCommand>
           <Order>4</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.bat cmd.exe /k %i:\diskpart.bat"</Path>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.bios.bat cmd.exe /k %i:\diskpart.bios.bat"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
