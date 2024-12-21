@@ -4,6 +4,7 @@ set "idx=%*"
 set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
 set "pkg=%~dp0pkg"
+set "upd=%~dp0upd"
 set "wim=%~dp0wim"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
@@ -11,7 +12,7 @@ rem # CREATE STRUCTURE
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 if "%1" == "struct" (
-  for %%i in ("%drv%" "%mnt%" "%pkg%" "%wim%") do (
+  for %%i in ("%drv%" "%mnt%" "%pkg%" "%upd%" "%wim%") do (
     if not exist "%%i" md "%%i"
   )
   exit
@@ -23,18 +24,18 @@ rem # --------------------------------------------------------------------------
 
 for %%i in (2) do (
   if exist "%wim%\boot.wim" (
-    echo Mounting a Windows image...
+    echo: && echo Mounting a Windows image...
     Dism /Mount-Image /ImageFile:"%wim%\boot.wim" /Index:%%i /MountDir:"%mnt%"
   ) else (
     exit /b 1
   )
 
   if exist "%drv%" (
-    echo Integrating Windows Drivers...
+    echo: && echo Integrating Windows Drivers...
     Dism /Image:"%mnt%" /Add-Driver /Driver:"%drv%" /Recurse
   )
 
-  echo Saving Windows image...
+  echo: && echo Saving Windows image...
   Dism /Unmount-Image /MountDir:"%mnt%" /Commit
 )
 
@@ -44,30 +45,35 @@ rem # --------------------------------------------------------------------------
 
 for %%i in (%idx%) do (
   if exist "%wim%\install.wim" (
-    echo Mounting a Windows image...
+    echo: && echo Mounting a Windows image...
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%"
   ) else (
     exit /b 1
   )
 
   if exist "%drv%" (
-    echo Integrating Windows Drivers...
+    echo: && echo Integrating Windows Drivers...
     Dism /Image:"%mnt%" /Add-Driver /Driver:"%drv%" /Recurse
   )
 
   if exist "%pkg%" (
     if exist "%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab" (
-      echo Integrating Windows Client Language Packs...
+      echo: && echo Integrating Windows Client Language Packs...
       Dism /Image:"%mnt%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab"
-      echo Integration of additional Windows language packs...
+      echo: && echo Integration of additional Windows language packs...
       Dism /Image:"%mnt%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%pkg%"
     )
     if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab" (
-      echo Integrating Windows Server Language Packs...
+      echo: && echo Integrating Windows Server Language Packs...
       Dism /Image:"%mnt%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab"
-      echo Integration of additional Windows language packs...
+      echo: && echo Integration of additional Windows language packs...
       Dism /Image:"%mnt%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%pkg%"
     )
+  )
+
+  if exist "%upd%" (
+    echo: && echo Integrating Windows Updates...
+    Dism /Image:"%mnt%" /Add-Package /PackagePath:"%upd%"
   )
 
   echo Saving Windows image...
