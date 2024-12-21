@@ -76,7 +76,7 @@ for %%i in (%idx%) do (
     Dism /Image:"%mnt%" /Add-Package /PackagePath:"%upd%"
   )
 
-  echo Saving Windows image...
+  echo: && echo Saving Windows image...
   Dism /Unmount-Image /MountDir:"%mnt%" /Commit
 )
 
