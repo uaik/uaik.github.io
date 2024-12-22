@@ -1,6 +1,7 @@
 @echo off
 
 set "idx=%*"
+set "cap=%~dp0cap"
 set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
 set "pkg=%~dp0pkg"
@@ -60,15 +61,16 @@ for %%i in (%idx%) do (
     if exist "%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab" (
       echo: && echo Integrating Windows Client Language Packs...
       Dism /Image:"%mnt%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab"
-      echo: && echo Integration of additional Windows language packs...
-      Dism /Image:"%mnt%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%pkg%"
     )
     if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab" (
       echo: && echo Integrating Windows Server Language Packs...
       Dism /Image:"%mnt%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab"
-      echo: && echo Integration of additional Windows language packs...
-      Dism /Image:"%mnt%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%pkg%"
     )
+  )
+
+  if exist "%cap%" (
+    echo: && echo Integrating Windows capabilities...
+    Dism /Image:"%mnt%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%cap%"
   )
 
   if exist "%upd%" (
