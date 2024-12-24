@@ -49,6 +49,7 @@ for %%i in (%idx%) do (
     echo: && echo Mounting a Windows image...
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%"
   ) else (
+    echo install.wim not found!
     exit /b 1
   )
 
