@@ -58,18 +58,18 @@ root() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 u000X() {
-  local user; user=( 'u0000' 'u0001' )
+  local user; user=('u0000' 'u0001')
 
   for i in "${user[@]}"; do
     if ! id -u "${i}" >/dev/null 2>&1; then
-      local password; password=$( < /dev/urandom tr -dc A-Za-z0-9 | head -c8 )
+      local password; password="$( < /dev/urandom tr -dc A-Za-z0-9 | head -c8 )"
 
       # Creating user.
       echo "--- [${i^^}] Adding user..."
-      useradd -m -p "$(openssl passwd -6 ${password})" -c "${i^^}" "${i}"
+      useradd -m -p "$( openssl passwd -6 ${password} )" -c "${i^^}" "${i}"
 
       # Saving password.
-      local home; home=$( _home "${i}" )
+      local home; home="$( _home "${i}" )"
       echo "${password}" > "${home}/.password"
       chown ${i}:${i} "${home}/.password"
     fi
@@ -115,7 +115,7 @@ u0002() {
 
 _home() {
   local user; user="${1}"
-  local home; home=$( awk -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )
+  local home; home="$( awk -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )"
   echo "${home}"
 }
 
@@ -126,7 +126,7 @@ _home() {
 _grml() {
   local user; user="${1}"
   local uri; uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
-  local home; home=$( _home "${user}" )
+  local home; home="$( _home "${user}" )"
   local zshrc; zshrc='/etc/zsh/zshrc.grml'
 
   # Downloading 'grml' config.
