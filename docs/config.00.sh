@@ -66,7 +66,7 @@ u000X() {
 
       # Creating user.
       echo "--- [${i^^}] Adding user..."
-      useradd -m -p "${password}" -c "${i^^}" "${i}"
+      useradd -m -p "$(openssl passwd -6 ${password})" -c "${i^^}" "${i}"
 
       # Saving password.
       local home; home=$( _home "${i}" )
