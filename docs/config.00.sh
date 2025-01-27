@@ -137,7 +137,7 @@ _grml() {
   # Installing 'grml' config.
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
   cat > "${home}/.zshrc" <<EOF
-. "${zshrc}"
+. '${zshrc}'
 export GPG_TTY=\$(tty)
 EOF
 
