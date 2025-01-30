@@ -61,7 +61,16 @@ debian() {
 
   config02() {
     local d; d='/etc/angie/conf.d'; [[ ! -d "${d}" ]] && mkdir "${d}"
-    local f; f=('brotli.conf' 'gzip.conf' 'headers.conf' 'proxy.conf' 'real_ip.conf' 'real_ip.cf.conf' 'ssl.conf')
+    local f; f=(
+      'acme.conf'
+      'brotli.conf'
+      'gzip.conf'
+      'headers.conf'
+      'proxy.conf'
+      'real_ip.conf'
+      'real_ip.cf.conf'
+      'ssl.conf'
+    )
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
