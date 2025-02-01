@@ -38,7 +38,7 @@ curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
 ```sh
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim;nft'
+curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim;nft;tmux'
 ```
 
 ```sh
