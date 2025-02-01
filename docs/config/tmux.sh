@@ -25,7 +25,7 @@ debian() {
   install() {
     local p; p=('tmux')
 
-    apt install --yes -t 'stable-backports' "${p[@]}"
+    apt update && apt install --yes -t 'stable-backports' "${p[@]}"
   }
 
   run
