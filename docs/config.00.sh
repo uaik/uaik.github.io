@@ -139,6 +139,7 @@ _grml() {
   cat > "${home}/.zshrc" <<EOF
 . '${zshrc}'
 export GPG_TTY=\$(tty)
+[[ -n "\${PS1}" ]] && [[ -z "\${TMUX}" ]] && tmux new-session -A -s 'main'
 EOF
 
   # Setting file owner.
