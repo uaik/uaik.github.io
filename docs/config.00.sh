@@ -138,7 +138,7 @@ _grml() {
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
   cat > "${home}/.zshrc" <<EOF
 . '${zshrc}'
-export GPG_TTY=\$(tty)
+export GPG_TTY=\$( tty )
 [[ -d "\${HOME}/bin" ]] && PATH="\${HOME}/bin:\${PATH}"
 [[ -d "\${HOME}/.local/bin" ]] && PATH="\${HOME}/.local/bin:\${PATH}"
 [[ -n "\${PS1}" ]] && [[ -z "\${TMUX}" ]] && tmux new-session -A -s 'main'
