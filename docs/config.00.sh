@@ -71,7 +71,7 @@ u000X() {
       # Saving password.
       local home; home="$( _home "${i}" )"
       echo "${password}" > "${home}/.password"
-      chown ${i}:${i} "${home}/.password"
+      chown "${i}":"${i}" "${home}/.password"
     fi
 
     # Changing shell.
@@ -145,7 +145,7 @@ export GPG_TTY=\$(tty)
 EOF
 
   # Setting file owner.
-  chown ${user}:${user} "${home}/.zshrc"
+  chown "${user}":"${user}" "${home}/.zshrc"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
