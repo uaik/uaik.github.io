@@ -140,6 +140,7 @@ _grml() {
 . '${zshrc}'
 export GPG_TTY=\$(tty)
 [[ -d "\${HOME}/bin" ]] && PATH="\${HOME}/bin:\${PATH}"
+[[ -d "\${HOME}/.local/bin" ]] && PATH="\${HOME}/.local/bin:\${PATH}"
 [[ -n "\${PS1}" ]] && [[ -z "\${TMUX}" ]] && tmux new-session -A -s 'main'
 EOF
 
