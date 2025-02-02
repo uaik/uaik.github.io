@@ -147,12 +147,16 @@ _zshrc() {
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
   cat > "${home}/.zshrc" <<EOF
 . '${zshrc}'
-export GPG_TTY=\$( tty )
+export GPG_TTY="\$( tty )"
+[[ -d '/home/common/apps' ]] && PATH="/home/common/apps:\${PATH}"
 [[ -d "\${HOME}/bin" ]] && PATH="\${HOME}/bin:\${PATH}"
 [[ -d "\${HOME}/.local/bin" ]] && PATH="\${HOME}/.local/bin:\${PATH}"
-EXT_CMN='/home/common'; [[ -d "${EXT_CMN}/apps" ]] && PATH="${EXT_CMN}/apps:\${PATH}"
+EOF
+  if [[ "${user}" != 'root' ]]; then
+    cat >> "${home}/.zshrc" <<EOF
 [[ -n "\${PS1}" ]] && [[ -z "\${TMUX}" ]] && tmux new-session -A -s 'main'
 EOF
+  fi
 
   # Setting file owner.
   chown "${user}":"${user}" "${home}/.zshrc"
