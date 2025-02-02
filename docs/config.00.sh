@@ -134,25 +134,17 @@ _home() {
 
 _zshrc() {
   local user; user="${1}"
-  local uri; uri='https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   local home; home="$( _home "${user}" )"
-  local zshrc; zshrc='/etc/zsh/zshrc.grml'
+  local grml; grml='/etc/zsh/zshrc.grml'
 
   # Downloading 'grml' config.
-  if [[ ! -f "${zshrc}" || $( find "${zshrc}" -mmin '+60' ) ]]; then
-    mkdir -p '/etc/zsh' && curl -fsSLo "${zshrc}" "${uri}"
+  if [[ ! -f "${grml}" || $( find "${grml}" -mmin '+60' ) ]]; then
+    mkdir -p '/etc/zsh' && curl -fsSLo "${grml}" 'https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
   fi
 
-  # Installing 'grml' config.
+  # Downloading 'zsh' config.
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
-  cat > "${home}/.zshrc" <<EOF
-. '${zshrc}'
-export GPG_TTY="\$( tty )"
-[[ -d '/home/common/apps' ]] && PATH="/home/common/apps:\${PATH}"
-[[ -d "\${HOME}/bin" ]] && PATH="\${HOME}/bin:\${PATH}"
-[[ -d "\${HOME}/.local/bin" ]] && PATH="\${HOME}/.local/bin:\${PATH}"
-(( EUID != 0 )) && { [[ -n "\${PS1}" ]] && [[ -z "\${TMUX}" ]] && tmux new-session -A -s 'main'; }
-EOF
+  curl -fsSLo "${home}/.zshrc" 'https://uaik.github.io/config/zsh/zshrc'
 
   # Setting file owner.
   chown "${user}":"${user}" "${home}/.zshrc"
