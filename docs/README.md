@@ -38,11 +38,7 @@ curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
 ```sh
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;sysctl;vim;nft;tmux'
-```
-
-```sh
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'systemd'
+curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
 ```
 
 #### Apache HTTPD / Nginx / PHP
