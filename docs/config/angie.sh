@@ -70,6 +70,7 @@ debian() {
       'real_ip.conf'
       'real_ip.cf.conf'
       'ssl.conf'
+      'zstd.conf'
     )
 
     for i in "${f[@]}"; do
