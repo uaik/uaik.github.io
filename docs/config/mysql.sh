@@ -50,7 +50,7 @@ debian() {
 
   config() {
     local d; d='/etc/mysql/mysql.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('mysqld.cnf')
+    local f; f=('mysqld.local.cnf' 'mysqldump.cnf')
 
     for i in "${f[@]}"; do
       [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
