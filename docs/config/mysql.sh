@@ -21,7 +21,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts'; }
+  run() { repo '8.4-lts' && install && config && service; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/mysql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
@@ -45,7 +45,7 @@ debian() {
   install() {
     local p; p=('mysql-server')
 
-    apt update && apt install --yes "${p[@]}"
+    apt update && apt install "${p[@]}"
   }
 
   config() {
