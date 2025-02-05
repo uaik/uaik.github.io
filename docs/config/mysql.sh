@@ -21,7 +21,7 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo '8.4-lts' && install && config && service; }
+  run() { repo '8.4-lts' && install; }
 
   repo() {
     local sig; sig='/etc/apt/keyrings/mysql.gpg'; [[ ! -d "${sig%/*}" ]] && exit 1
