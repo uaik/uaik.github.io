@@ -50,7 +50,7 @@ rem # --------------------------------------------------------------------------
 
 if exist "%wim%\install.wim" (
   Dism /Get-ImageInfo /ImageFile:"%wim%\install.wim"
-  set /p "idx=Enter ID: "
+  set /p "idx=Enter INDEX: "
 
   for %%i in (%idx%) do (
     echo: && echo Mounting a Windows image...
