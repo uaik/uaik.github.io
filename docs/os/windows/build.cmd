@@ -84,6 +84,9 @@ if exist "%wim%\install.wim" (
     echo: && echo Reduce the Size of the Component Store...
     Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Cleanup-Image /StartComponentCleanup /ResetBase
 
+    echo: && echo Repairing a Windows Image...
+    Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Cleanup-Image /RestoreHealth
+
     echo: && echo Saving Windows image...
     Dism /Unmount-Image /MountDir:"%mnt%" /Commit
   )
