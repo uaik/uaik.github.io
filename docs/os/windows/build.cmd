@@ -1,5 +1,6 @@
 @echo off
 
+set "idx=%*"
 set "cap=%~dp0cap"
 set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
@@ -48,9 +49,6 @@ rem # INSTALL.WIM
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 if exist "%wim%\install.wim" (
-  Dism /Get-ImageInfo /ImageFile:"%wim%\install.wim"
-  set /p "idx=Enter INDEX: "
-
   for %%i in (%idx%) do (
     echo: && echo Mounting a Windows image...
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%" && Dism /Get-MountedImageInfo
