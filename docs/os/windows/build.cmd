@@ -39,9 +39,6 @@ if exist "%wim%\boot.wim" (
     echo: && echo Saving Windows image...
     Dism /Unmount-Image /MountDir:"%mnt%" /Commit
   )
-) else (
-  echo: && echo BOOT.WIM not found!
-  exit /b 1
 )
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
