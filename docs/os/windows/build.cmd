@@ -1,6 +1,5 @@
 @echo off
 
-rem # set "idx=%*"
 set "cap=%~dp0cap"
 set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
