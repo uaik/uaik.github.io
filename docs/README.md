@@ -1,52 +1,55 @@
-Universal automated installation kit.
+Набор для автоматической установки и настройки ОС.
 
-## Installation
+## Linux
 
-An unattended installation is performed by specifying a command in installation menu of OS distribution.
+- RHEL / Fedora:
 
-### RHEL / Fedora
-
-```
+```ini
 inst.ks=https://uaik.github.io/os/[os.type.id.ini]
 ```
 
-### Debian / Ubuntu
+- Debian / Ubuntu:
 
-```
+```ini
 url=https://uaik.github.io/os/[os]/[config.ini]
 ```
 
-## Users / Passwords
+### Пользователи
 
-- User: `root`  
-  Password: `cDFy mu2a ML`
-- User: `u0000`  
-  Password: `7Jxs 6PKV Ak`
+- `root:cDFymu2aML`
+- `u0000:7Jxs6PKVAk`
 
-**Passwords typed without spaces! Change passwords after installation!**
+### Конфигурация
 
-## First steps
-
-1. Change `root` password.
-2. Add new users.
-3. Lock default user `u0000`.
-
-### Download & run configuration script
+- Настройка системы:
 
 ```sh
 curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
+- Установка и настройка сервисов:
+
 ```sh
 curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
 ```
 
-#### Apache HTTPD / Nginx / PHP
+## MS Windows
 
-```sh
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'httpd;nginx;php'
-```
+### Пользователи
 
-## Scripts
+- `Administrator`
+  - Пароль: `cDFymu2aML`
+  - Группа: `Administrators`
+- `u0000`
+  - Пароль: `7Jxs6PKVAk`
+  - Группа: `Administrators`
+- `u0001`
+  - Пароль: `7Jxs6PKVAk`
+  - Группа: `Users`
+- `u0002`
+  - Пароль: `7Jxs6PKVAk`
+  - Группа: `Users`
+
+## Скрипты
 
 - [OS](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
