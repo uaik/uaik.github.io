@@ -1,6 +1,10 @@
-Набор для автоматической установки и настройки ОС.
+Набор сценариев для автоматической установки и настройки ОС.
 
 ## Linux
+
+[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os) для автоматической установки Linux.
+
+### Установка
 
 - RHEL / Fedora:
 
@@ -39,6 +43,8 @@ curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux
 
 ## MS Windows
 
+[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os/windows) для интеграции в дистрибутив MS Windows.
+
 ### Пользователи
 
 - Administrator
@@ -57,7 +63,3 @@ curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux
   - Логин: `u0002`
   - Пароль: `7Jxs6PKVAk`
   - Группа: `Users`
-
-## Скрипты
-
-- [OS](https://github.com/uaik/uaik.github.io/tree/main/docs/os)
