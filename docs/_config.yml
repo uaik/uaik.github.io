@@ -1,6 +1,5 @@
 title: 'Universal AIK'
 description: 'Universal Automated Installation Kit (UAIK).'
-remote_theme: 'pages-themes/minimal@v0.2.0'
 
 defaults:
   - scope:
@@ -13,7 +12,6 @@ webmaster_verifications:
   yandex: ''
 
 plugins:
-  - jekyll-remote-theme
   - jekyll-seo-tag
   - jekyll-sitemap
   - jemoji
