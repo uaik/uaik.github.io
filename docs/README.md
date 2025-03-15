@@ -16,20 +16,24 @@ url=https://uaik.github.io/os/[os]/[config.ini]
 
 ### Пользователи
 
-- `root:cDFymu2aML`
-- `u0000:7Jxs6PKVAk`
+- ROOT
+  - Логин: `root`
+  - Пароль: `cDFymu2aML`
+- USER-0000
+  - Логин: `u0000`
+  - Пароль: `7Jxs6PKVAk`
 
 ### Конфигурация
 
 - Настройка системы:
 
-```sh
+```bash
 curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
 - Установка и настройка сервисов:
 
-```sh
+```bash
 curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
 ```
 
@@ -37,16 +41,20 @@ curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux
 
 ### Пользователи
 
-- `Administrator`
+- Administrator
+  - Логин: `Administrator`
   - Пароль: `cDFymu2aML`
   - Группа: `Administrators`
-- `u0000`
+- USER-0000
+  - Логин: `u0000`
   - Пароль: `7Jxs6PKVAk`
   - Группа: `Administrators`
-- `u0001`
+- USER-0001
+  - Логин: `u0001`
   - Пароль: `7Jxs6PKVAk`
   - Группа: `Users`
-- `u0002`
+- USER-0002
+  - Логин: `u0002`
   - Пароль: `7Jxs6PKVAk`
   - Группа: `Users`
 
