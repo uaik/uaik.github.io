@@ -28,7 +28,7 @@
       <RunSynchronous>
         <RunSynchronousCommand>
           <Order>1</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.cmd cmd.exe /k %i:\diskpart.cmd"</Path>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do ( if exist %i:\diskpart.cmd cmd.exe /k %i:\diskpart.cmd )"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
