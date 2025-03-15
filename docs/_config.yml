@@ -1,15 +1,16 @@
-title: "Universal AIK"
-description: "Universal Automated Installation Kit (UAIK)."
+title: 'Universal AIK'
+description: 'Universal Automated Installation Kit (UAIK).'
+theme: 'minimal'
 
 defaults:
   - scope:
-      path: ""
+      path: ''
     values:
-      image: ""
+      image: ''
 
 webmaster_verifications:
-  google: ""
-  yandex: ""
+  google: ''
+  yandex: ''
 
 plugins:
   - jekyll-seo-tag
