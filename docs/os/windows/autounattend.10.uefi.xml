@@ -48,6 +48,10 @@
     <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <Path>sfc.exe /scannow</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
           <Order>10</Order>
           <Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
         </RunSynchronousCommand>
