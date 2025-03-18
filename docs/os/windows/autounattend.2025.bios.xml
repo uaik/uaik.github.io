@@ -35,19 +35,19 @@
       <UseConfigurationSet>false</UseConfigurationSet>
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
-          <Order>10</Order>
+          <Order>1</Order>
           <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassTPMCheck" /t "REG_DWORD" /d 1 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
-          <Order>11</Order>
+          <Order>2</Order>
           <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassSecureBootCheck" /t "REG_DWORD" /d 1 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
-          <Order>12</Order>
+          <Order>3</Order>
           <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassRAMCheck" /t "REG_DWORD" /d 1 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand>
-          <Order>20</Order>
+          <Order>4</Order>
           <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\diskpart.cmd cmd.exe /k %i:\diskpart.cmd"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
@@ -61,43 +61,7 @@
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
           <Order>1</Order>
-          <Path>sfc.exe /scannow</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>10</Order>
-          <Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>11</Order>
-          <Path>reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t "REG_DWORD" /d 0 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>12</Order>
-          <Path>reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "SeparateProcess" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>13</Order>
-          <Path>reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>19</Order>
-          <Path>reg.exe unload "HKU\DefaultUser"</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>20</Order>
-          <Path>reg.exe add "HKLM\SYSTEM\Setup\MoSetup" /v "AllowUpgradesWithUnsupportedTPMOrCPU" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>21</Order>
-          <Path>reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v "BypassNRO" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>30</Order>
-          <Path>netsh.exe advfirewall firewall set rule group="@FirewallAPI.dll,-28752" new enable=Yes</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>31</Order>
-          <Path>reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v "fDenyTSConnections" /t "REG_DWORD" /d 0 /f</Path>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L N M O P Q R S T U V W X Y Z) do if exist %i:\config.cmd cmd.exe /k %i:\config.cmd 11"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
@@ -152,7 +116,7 @@
         <ProtectYourPC>3</ProtectYourPC>
         <HideEULAPage>true</HideEULAPage>
         <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-        <HideOnlineAccountScreens>false</HideOnlineAccountScreens>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
       </OOBE>
     </component>
   </settings>
