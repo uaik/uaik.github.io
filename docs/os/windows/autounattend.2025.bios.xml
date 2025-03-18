@@ -69,10 +69,14 @@
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>20</Order>
-          <Path>netsh.exe advfirewall firewall set rule group="@FirewallAPI.dll,-28752" new enable=Yes</Path>
+          <Path>net.exe accounts /maxpwage:UNLIMITED</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>21</Order>
+          <Path>netsh.exe advfirewall firewall set rule group="@FirewallAPI.dll,-28752" new enable=Yes</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
+          <Order>22</Order>
           <Path>reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v "fDenyTSConnections" /t "REG_DWORD" /d 0 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
