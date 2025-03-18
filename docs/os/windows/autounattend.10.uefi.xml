@@ -65,10 +65,14 @@
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>22</Order>
-          <Path>reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t "REG_DWORD" /d 1 /f</Path>
+          <Path>reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "SeparateProcess" /t "REG_DWORD" /d 1 /f</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>23</Order>
+          <Path>reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t "REG_DWORD" /d 1 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
+          <Order>29</Order>
           <Path>reg.exe unload "HKU\DefaultUser"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
