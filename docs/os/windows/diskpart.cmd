@@ -20,5 +20,5 @@ if "%1" == "efi" (
 )
 echo CREATE PARTITION PRIMARY >> "X:\diskpart.txt"
 echo FORMAT QUICK FS=NTFS LABEL="OS" >> "X:\diskpart.txt"
-diskpart /s "X:\diskpart.txt" >> "X:\diskpart.log" || ( type "X:\diskpart.log" & echo DiskPart encountered an error. & pause & exit /b 1 )
+diskpart /s "X:\diskpart.txt" >> "X:\diskpart.log" || ( type "X:\diskpart.log" & echo DiskPart encountered an error! & pause & exit /b 1 )
 exit
