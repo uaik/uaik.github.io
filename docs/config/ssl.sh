@@ -48,7 +48,7 @@ debian() {
           -addext 'nsComment = OpenSSL Self-Signed Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
-          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
+          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, IP:::1, ${ip%,}" \
         && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/_ssc/${f}.key" \
           -in "${d}/_ssc/${f}.csr" \
