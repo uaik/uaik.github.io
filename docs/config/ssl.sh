@@ -45,7 +45,7 @@ debian() {
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server' \
-          -addext 'nsComment = OpenSSL Self-Signed Certificate' \
+          -addext 'nsComment = OpenSSL Server Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${ip%,}" \
@@ -80,10 +80,10 @@ debian() {
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = client, email' \
-          -addext 'nsComment = OpenSSL Generated Client Certificate' \
+          -addext 'nsComment = OpenSSL Client Certificate' \
           -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = clientAuth, emailProtection' \
-          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
+          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${ip%,}" \
         && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
           -key "${d}/_ssc/${f}.key" \
           -in "${d}/_ssc/${f}.csr" \
