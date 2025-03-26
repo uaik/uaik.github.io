@@ -45,7 +45,7 @@ debian() {
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server' \
-          -addext 'nsComment = OpenSSL Generated Server Certificate' \
+          -addext 'nsComment = OpenSSL Self-Signed Certificate' \
           -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, IP:127.0.0.1, ${ip%,}" \
