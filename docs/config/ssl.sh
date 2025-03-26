@@ -20,10 +20,10 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { server_auth && client_auth; dhparam; }
+  run() { server_auth && client_auth; dhparam; _chmod; }
 
   server_auth() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
+    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
     local f; f='auth.server'
     local days; days='3650'
     local country; country='RU'
@@ -58,7 +58,7 @@ debian() {
   }
 
   client_auth() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
+    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
     local f; f='auth.client'
     local days; days='3650'
     local country; country='RU'
@@ -93,10 +93,16 @@ debian() {
   }
 
   dhparam() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}/private" && ! -d "${d}/certs" ]] && exit 1
+    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     [[ ! -f "${d}/_ssc/dhparam.pem" ]] && openssl dhparam -out "${d}/_ssc/dhparam.pem" 4096
+  }
+
+  _chmod() {
+    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
+
+    [[ -d "${d}/_ssc" ]] && find "${d}/_ssc" -type f -print0 | xargs -0 chmod 644
   }
 
   run
