@@ -46,7 +46,7 @@ debian() {
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server, client' \
           -addext 'nsComment = OpenSSL Self-Signed Certificate' \
-          -addext 'keyUsage = critical, digitalSignature, keyEncipherment' \
+          -addext 'keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment' \
           -addext 'extendedKeyUsage = serverAuth, clientAuth' \
           -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${ip%,}" \
         && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
