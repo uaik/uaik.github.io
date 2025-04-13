@@ -27,21 +27,21 @@ url=https://uaik.github.io/os/[os]/[config.ini]
   - Логин: `u0000`
   - Пароль: `7Jxs6PKVAk`
 
-### Конфигурация OS
-
-- Настройка системы:
+### Настройка системы
 
 ```bash
 curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
-- Установка и настройка сервисов (OS):
+#### Настройка сервисов
+
+- OS:
 
 ```bash
 curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
 ```
 
-- Установка и настройка сервисов (Proxmox):
+- Proxmox:
 
 ```bash
 curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;tmux'
