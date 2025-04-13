@@ -33,7 +33,7 @@ url=https://uaik.github.io/os/[os]/[config.ini]
 curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 ```
 
-#### Настройка сервисов
+### Настройка сервисов
 
 - OS:
 
