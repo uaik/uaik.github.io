@@ -139,7 +139,7 @@ _zshrc() {
 
   # Downloading 'grml' config.
   if [[ ! -f "${grml}" || $( find "${grml}" -mmin '+60' ) ]]; then
-    mkdir -p '/etc/zsh' && curl -fsSLo "${grml}" 'https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc'
+    mkdir -p '/etc/zsh' && curl -fsSLo "${grml}" 'https://uaik.github.io/config/zsh/zshrc.grml'
   fi
 
   # Downloading 'zsh' config.
