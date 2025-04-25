@@ -1,0 +1,7 @@
+X-Repolib-Name: Debian Backports
+Enabled: yes
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites: bookworm-backports
+Components: main contrib non-free
+Architectures: amd64

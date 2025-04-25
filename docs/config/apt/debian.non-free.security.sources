@@ -1,0 +1,7 @@
+X-Repolib-Name: Debian Security Non-Free
+Enabled: yes
+Types: deb deb-src
+URIs: http://deb.debian.org/debian-security
+Suites: bookworm-security
+Components: contrib non-free
+Architectures: amd64
