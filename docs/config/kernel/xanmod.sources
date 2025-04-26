@@ -1,0 +1,8 @@
+X-Repolib-Name: Kernel (XanMod)
+Enabled: yes
+Types: deb
+URIs: http://deb.xanmod.org
+Suites: releases
+Components: main
+Architectures: <#_arch_#>
+Signed-By: /etc/apt/keyrings/kernel.xanmod.gpg

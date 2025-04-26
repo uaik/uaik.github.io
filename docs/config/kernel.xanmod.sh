@@ -28,16 +28,9 @@ debian() {
     local key; key='https://dl.xanmod.org/archive.key'
 
     curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
-      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/kernel/xanmod.sources' \
       && sed -i \
-        -e "s|<#_name_#>|Kernel (XanMod)|g" \
-        -e "s|<#_enabled_#>|yes|g" \
-        -e "s|<#_types_#>|deb|g" \
-        -e "s|<#_uri_#>|http://deb.xanmod.org|g" \
-        -e "s|<#_suites_#>|releases|g" \
-        -e "s|<#_components_#>|main|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${sig}|g" \
         "${src}"
   }
 

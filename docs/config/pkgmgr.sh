@@ -21,24 +21,30 @@ run() {
 # -------------------------------------------------------------------------------------------------------------------- #
 
 debian() {
-  run() { repo && config && update; }
+  run() { orig && repo && config && update; }
+
+  orig() {
+    local d; d='/etc/apt'; [[ ! -d "${d}" ]] && exit 1
+    local f; f=('sources.list')
+
+    for i in "${f[@]}"; do
+      [[ -f "${d}/${i}" && ! -f "${d}/${i}.orig" ]] && mv "${d}/${i}" "${d}/${i}.orig"
+    done
+  }
 
   repo() {
     local d; d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=(
-      'debian.backports.sources'
-      'debian.non-free.sources'
-      'debian.non-free.security.sources'
-    )
+    local f; f=('debian.sources')
 
     for i in "${f[@]}"; do
-      [[ ! -f "${d}/${i}" ]] && curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/apt/${i}"
+      [[ ! -f "${d}/${i}" ]] && curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/apt/${i}" \
+        && sed -i -e "s|<#_suites_#>|${OS_CODENAME}|g" "${d}/${i}"
     done
   }
 
   config() {
     local d; d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=( '00InstallSuggests' '99proxy' )
+    local f; f=('00InstallSuggests' '99proxy')
 
     for i in "${f[@]}"; do
       [[ ! -f "${d}/${i}" ]] && curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/apt/${i}"

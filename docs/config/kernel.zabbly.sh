@@ -29,16 +29,10 @@ debian() {
     local key; key='https://pkgs.zabbly.com/key.asc'
 
     curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
-      && curl -fsSLo "${src}" 'https://uaik.github.io/config/apt/deb.sources.tpl' \
+      && curl -fsSLo "${src}" 'https://uaik.github.io/config/kernel/zabbly.sources' \
       && sed -i \
-        -e "s|<#_name_#>|Kernel (Zabbly)|g" \
-        -e "s|<#_enabled_#>|yes|g" \
-        -e "s|<#_types_#>|deb deb-src|g" \
-        -e "s|<#_uri_#>|https://pkgs.zabbly.com/kernel/stable|g" \
         -e "s|<#_suites_#>|${OS_CODENAME}|g" \
-        -e "s|<#_components_#>|main zfs|g" \
         -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        -e "s|<#_sig_#>|${sig}|g" \
         "${src}"
   }
 
