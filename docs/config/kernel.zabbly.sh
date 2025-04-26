@@ -30,10 +30,7 @@ debian() {
 
     curl -fsSL "${key}" | gpg --dearmor -o "${sig}" \
       && curl -fsSLo "${src}" 'https://uaik.github.io/config/kernel/zabbly.sources' \
-      && sed -i \
-        -e "s|<#_suites_#>|${OS_CODENAME}|g" \
-        -e "s|<#_arch_#>|$( dpkg --print-architecture )|g" \
-        "${src}"
+      && sed -i -e "s|<#_suites_#>|${OS_CODENAME}|g" "${src}"
   }
 
   update() { apt update; }

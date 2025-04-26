@@ -4,5 +4,4 @@ Types: deb deb-src
 URIs: https://pkgs.zabbly.com/kernel/stable
 Suites: <#_suites_#>
 Components: main zfs
-Architectures: <#_arch_#>
 Signed-By: /etc/apt/keyrings/kernel.zabbly.gpg
