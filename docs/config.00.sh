@@ -144,10 +144,7 @@ _zshrc() {
 
   # Downloading 'zsh' config.
   [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
-  curl -fsSLo "${home}/.zshrc" 'https://uaik.github.io/config/zsh/zshrc'
-
-  # Setting file owner.
-  chown "${user}":"${user}" "${home}/.zshrc"
+  curl -fsSLo "${home}/.zshrc" 'https://uaik.github.io/config/zsh/zshrc' && chown "${user}":"${user}" "${home}/.zshrc"
 }
 
 # -------------------------------------------------------------------------------------------------------------------- #
