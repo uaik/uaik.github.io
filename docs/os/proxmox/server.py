@@ -1,3 +1,6 @@
+# Serving a Static Answer File via Python.
+# proxmox-fetch-answer http http://192.168.1.2:8000/answer >/run/automatic-installer-answers && exit
+
 import logging
 from aiohttp import web
 

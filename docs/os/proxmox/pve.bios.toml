@@ -1,9 +1,9 @@
 [global]
 keyboard = "en-us"
 country = "ru"
-fqdn = "pve-auto.ihub.bz"
+fqdn = "pve-auto.pve-domain.com"
 mailto = "root@localhost"
-timezone = "Etc/UTC"
+timezone = "UTC"
 root-password = "cDFymu2aML"
 reboot-mode = "power-off"
 
@@ -13,4 +13,4 @@ source = "from-dhcp"
 [disk-setup]
 filesystem = "xfs"
 # disk-list = ["sda"]
-filter.ID_MODEL = "Crucial*"
+filter.ID_MODEL = "CT250MX500*"
