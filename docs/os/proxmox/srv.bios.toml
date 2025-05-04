@@ -1,0 +1,16 @@
+[global]
+keyboard = "en-us"
+country = "ru"
+fqdn = "pve-auto.ihub.bz"
+mailto = "root@localhost"
+timezone = "Etc/UTC"
+root-password = "cDFymu2aML"
+reboot-mode = "power-off"
+
+[network]
+source = "from-dhcp"
+
+[disk-setup]
+filesystem = "xfs"
+# disk-list = ["sda"]
+filter.ID_MODEL = "Crucial*"
