@@ -44,7 +44,7 @@ debian() {
 
   config() {
     local d; d='/etc/apt/apt.conf.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('00InstallSuggests' '99proxy')
+    local f; f=('00InstallRecommends' '00InstallSuggests' '99proxy')
 
     for i in "${f[@]}"; do
       [[ ! -f "${d}/${i}" ]] && curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/apt/${i}"
