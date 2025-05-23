@@ -1,10 +1,9 @@
-#!/usr/bin/env -S bash -eu
-#
-# Configuration script.
-#
+#!/usr/bin/env -S bash -euo pipefail
+# -------------------------------------------------------------------------------------------------------------------- #
+# CONFIGURATION SCRIPT
+# -------------------------------------------------------------------------------------------------------------------- #
 # @package    Bash
 # @author     Kai Kimera <mail@kai.kim>
-# @copyright  2023 Library Online
 # @license    MIT
 # @version    0.1.0
 # @link       https://lib.onl/ru/2020/06/59781965-afe7-5dd5-9798-d1c5ba6cdafd/
@@ -12,31 +11,42 @@
 
 (( EUID != 0 )) && { echo >&2 'This script should be run as root!'; exit 1; }
 
-# OS.
+# Variables.
 OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# INITIALIZATION
+# -----------------------------------------------------< SCRIPT >----------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
 
-run() { pkg && dirs && root && u000X && u0002; }
+function _home() {
+  local user; user="${1}"
+  local home; home="$( awk -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )"
+  echo "${home}"
+}
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# PACKAGES
-# -------------------------------------------------------------------------------------------------------------------- #
+function _zshrc() {
+  local user; user="${1}"
+  local home; home="$( _home "${user}" )"
+  local grml; grml='/etc/zsh/zshrc.grml'
 
-pkg() {
+  # Downloading 'grml' config.
+  if [[ ! -f "${grml}" || $( find "${grml}" -mmin '+60' ) ]]; then
+    mkdir -p '/etc/zsh' && curl -fsSLo "${grml}" 'https://uaik.github.io/config/zsh/zshrc.grml'
+  fi
+
+  # Downloading 'zsh' config.
+  [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
+  curl -fsSLo "${home}/.zshrc" 'https://uaik.github.io/config/zsh/zshrc' && chown "${user}":"${user}" "${home}/.zshrc"
+}
+
+function pkg() {
   case "${OS_ID}" in
     'debian') apt update && apt install --yes zsh ;;
     *) echo 'OS is not supported!' && exit 1 ;;
   esac
 }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# DIRECTORIES
-# -------------------------------------------------------------------------------------------------------------------- #
-
-dirs() {
+function dirs() {
   local d; d='/home/common'
   local d_apps; d_apps="${d}/apps"
   local d_docs; d_docs="${d}/docs"
@@ -45,11 +55,7 @@ dirs() {
   [[ ! -d "${d_docs}" ]] && mkdir -p "${d_docs}"
 }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# USER / ROOT
-# -------------------------------------------------------------------------------------------------------------------- #
-
-root() {
+function root() {
   local user; user='root'
   local password
 
@@ -66,11 +72,7 @@ root() {
   _zshrc "${user}"
 }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# USER / [0000 | 0001]
-# -------------------------------------------------------------------------------------------------------------------- #
-
-u000X() {
+function u000X() {
   local user; user=('u0000' 'u0001')
 
   for i in "${user[@]}"; do
@@ -97,11 +99,7 @@ u000X() {
   done
 }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# USER / 0002
-# -------------------------------------------------------------------------------------------------------------------- #
-
-u0002() {
+function u0002() {
   local user; user='u0002'
   local password
 
@@ -122,33 +120,4 @@ u0002() {
   _zshrc "${user}"
 }
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------------< COMMON FUNCTIONS >------------------------------------------------ #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-_home() {
-  local user; user="${1}"
-  local home; home="$( awk -F ':' -v u="${user}" '{ if ($1==u) print $6 }' '/etc/passwd' )"
-  echo "${home}"
-}
-
-_zshrc() {
-  local user; user="${1}"
-  local home; home="$( _home "${user}" )"
-  local grml; grml='/etc/zsh/zshrc.grml'
-
-  # Downloading 'grml' config.
-  if [[ ! -f "${grml}" || $( find "${grml}" -mmin '+60' ) ]]; then
-    mkdir -p '/etc/zsh' && curl -fsSLo "${grml}" 'https://uaik.github.io/config/zsh/zshrc.grml'
-  fi
-
-  # Downloading 'zsh' config.
-  [[ -f "${home}/.zshrc" && ! -f "${home}/.zshrc.orig" ]] && { mv "${home}/.zshrc" "${home}/.zshrc.orig"; }
-  curl -fsSLo "${home}/.zshrc" 'https://uaik.github.io/config/zsh/zshrc' && chown "${user}":"${user}" "${home}/.zshrc"
-}
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# -------------------------------------------------< RUNNING SCRIPT >------------------------------------------------- #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-run && exit 0 || exit 1
+function main() { pkg && dirs && root && u000X && u0002; }; main "$@"
