@@ -9,13 +9,27 @@
 - RHEL / Fedora:
 
 ```ini
-inst.ks=https://uaik.github.io/os/[os.type.id.ini]
+inst.ks=https://uaik.github.io/os/[os]/[config.ini]
 ```
 
 - Debian / Ubuntu:
 
 ```ini
 url=https://uaik.github.io/os/[os]/[config.ini]
+```
+
+#### Примеры
+
+- Пример установки сценария `srv.bios.vm.ini` для ОС **AlmaLinux**:
+
+```ini
+inst.ks=https://uaik.github.io/os/alma/srv.bios.vm.ini
+```
+
+- Пример установки сценария `srv.bios.vm.lvm.xfs.ini` для ОС **Debian**:
+
+```ini
+url=https://uaik.github.io/os/debian/srv.bios.vm.lvm.xfs.ini
 ```
 
 ### Пользователи
