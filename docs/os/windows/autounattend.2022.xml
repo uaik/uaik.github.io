@@ -28,27 +28,15 @@
       </ImageInstall>
       <UserData>
         <ProductKey>
-          <Key>TVRH6-WHNXV-R9WG3-9XRFY-MY832</Key>
+          <Key>VDYBN-27WPP-V4HQT-9VMD4-VMK7H</Key>
         </ProductKey>
         <AcceptEula>true</AcceptEula>
       </UserData>
       <UseConfigurationSet>false</UseConfigurationSet>
       <RunSynchronous>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>1</Order>
-          <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassTPMCheck" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>2</Order>
-          <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassSecureBootCheck" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>3</Order>
-          <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassRAMCheck" /t "REG_DWORD" /d 1 /f</Path>
-        </RunSynchronousCommand>
         <RunSynchronousCommand>
-          <Order>4</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\diskpart.cmd cmd.exe /k %i:\diskpart.cmd efi"</Path>
+          <Order>1</Order>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\diskpart.cmd cmd.exe /k %i:\diskpart.cmd"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
@@ -61,7 +49,7 @@
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
           <Order>1</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\config.cmd cmd.exe /k %i:\config.cmd 11"</Path>
+          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\config.cmd cmd.exe /k %i:\config.cmd"</Path>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>2</Order>
