@@ -29,8 +29,8 @@ if "%bootType%" == "UEFI" (
   echo FORMAT QUICK FS=NTFS LABEL="WINRE" >> "X:\diskpart.txt"
   echo SET ID=27 >> "X:\diskpart.txt"
   rem PARTITION: DUMMY
-  echo CREATE PARTITION PRIMARY SIZE=100
-  echo SET ID=17 OVERRIDE
+  echo CREATE PARTITION PRIMARY SIZE=100 >> "X:\diskpart.txt"
+  echo SET ID=17 OVERRIDE >> "X:\diskpart.txt"
 )
 rem PARTITION: OS
 echo CREATE PARTITION PRIMARY >> "X:\diskpart.txt"
