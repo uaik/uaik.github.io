@@ -78,34 +78,34 @@
         </AdministratorPassword>
         <LocalAccounts>
           <LocalAccount wcm:action="add">
-            <Password>
-              <Value>7Jxs6PKVAk</Value>
-              <PlainText>true</PlainText>
-            </Password>
-            <Description>USER-0000</Description>
-            <DisplayName>USER-0000</DisplayName>
-            <Group>Administrators</Group>
             <Name>u0000</Name>
-          </LocalAccount>
-          <LocalAccount wcm:action="add">
+            <DisplayName>USER-0000</DisplayName>
+            <Description>USER-0000</Description>
+            <Group>Administrators</Group>
             <Password>
               <Value>7Jxs6PKVAk</Value>
               <PlainText>true</PlainText>
             </Password>
-            <Description>USER-0001</Description>
-            <DisplayName>USER-0001</DisplayName>
-            <Group>Users</Group>
+          </LocalAccount>
+          <LocalAccount wcm:action="add">
             <Name>u0001</Name>
-          </LocalAccount>
-          <LocalAccount wcm:action="add">
+            <DisplayName>USER-0001</DisplayName>
+            <Description>USER-0001</Description>
+            <Group>Users</Group>
             <Password>
               <Value>7Jxs6PKVAk</Value>
               <PlainText>true</PlainText>
             </Password>
-            <Description>USER-0002</Description>
-            <DisplayName>USER-0002</DisplayName>
-            <Group>Users</Group>
+          </LocalAccount>
+          <LocalAccount wcm:action="add">
             <Name>u0002</Name>
+            <DisplayName>USER-0002</DisplayName>
+            <Description>USER-0002</Description>
+            <Group>Users</Group>
+            <Password>
+              <Value>7Jxs6PKVAk</Value>
+              <PlainText>true</PlainText>
+            </Password>
           </LocalAccount>
         </LocalAccounts>
       </UserAccounts>
