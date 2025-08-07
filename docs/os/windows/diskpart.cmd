@@ -1,9 +1,12 @@
 @echo off
+
 wpeutil UpdateBootInfo & reg query "HKLM\System\CurrentControlSet\Control" /v "PEFirmwareType" | find "0x2" > nul
+
 if "%ErrorLevel%" EQU 0 (
   set "bootType=UEFI"
   set "partitionTable=GPT"
 )
+
 >> "X:\diskpart.txt" (
   echo SELECT DISK=0
   echo CLEAN
@@ -29,5 +32,7 @@ if "%ErrorLevel%" EQU 0 (
   echo CREATE PARTITION PRIMARY
   echo FORMAT QUICK FS=NTFS LABEL="OS"
 )
+
 diskpart /s "X:\diskpart.txt" || ( echo DiskPart encountered an error! & pause & exit /b 1 )
+
 exit
