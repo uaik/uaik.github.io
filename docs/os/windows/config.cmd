@@ -19,4 +19,5 @@ rem ---
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t "REG_DWORD" /d 1 /f
 rem ---
 if exist "C:\Windows.old" rmdir /s /q "C:\Windows.old"
+rem ---
 exit
