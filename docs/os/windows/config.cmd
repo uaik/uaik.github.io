@@ -16,7 +16,7 @@ reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v "fDenyTSConne
 rem ---
 reg add "HKLM\Software\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "REG_DWORD" /d 1 /f
 rem ---
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t "REG_DWORD" /d 1 /f
+rem reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t "REG_DWORD" /d 1 /f
 rem ---
 if exist "C:\Windows.old" rmdir /s /q "C:\Windows.old"
 rem ---
