@@ -8,8 +8,7 @@ if "%ErrorLevel%" EQU 0 (
 )
 
 >> "X:\diskpart.txt" (
-  echo select disk=0
-  echo clean
+  echo select disk=0 & echo clean
   if "%bootType%" == "UEFI" (
     echo convert gpt
     echo create partition efi size=512 & echo format quick fs=fat32 label="SYSTEM"
