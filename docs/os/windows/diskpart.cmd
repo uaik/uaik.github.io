@@ -8,29 +8,29 @@ if "%ErrorLevel%" EQU 0 (
 )
 
 >> "X:\diskpart.txt" (
-  echo SELECT DISK=0
-  echo CLEAN
+  echo select disk=0
+  echo clean
   if "%bootType%" == "UEFI" (
-    echo CONVERT GPT
-    echo CREATE PARTITION EFI SIZE=512
-    echo FORMAT QUICK FS=FAT32 LABEL="SYSTEM"
-    echo CREATE PARTITION MSR SIZE=128
-    echo CREATE PARTITION PRIMARY SIZE=1024
-    echo FORMAT QUICK FS=NTFS LABEL="RECOVERY"
-    echo SET ID="de94bba4-06d1-4d40-a16a-bfd50179d6ac"
-    echo GPT ATTRIBUTES=0x8000000000000001
+    echo convert gpt
+    echo create partition efi size=512
+    echo format quick fs=fat32 label="SYSTEM"
+    echo create partition msr size=128
+    echo create partition primary size=1024
+    echo format quick fs=ntfs label="RECOVERY"
+    echo set id="de94bba4-06d1-4d40-a16a-bfd50179d6ac"
+    echo gpt attributes=0x8000000000000001
   ) else (
-    echo CREATE PARTITION PRIMARY SIZE=512
-    echo FORMAT QUICK FS=NTFS LABEL="SYSTEM"
-    echo ACTIVE
-    echo CREATE PARTITION PRIMARY SIZE=1024
-    echo FORMAT QUICK FS=NTFS LABEL="RECOVERY"
-    echo SET ID=27
-    echo CREATE PARTITION PRIMARY SIZE=100
-    echo SET ID=17 OVERRIDE
+    echo create partition primary size=512
+    echo format quick fs=ntfs label="SYSTEM"
+    echo active
+    echo create partition primary size=1024
+    echo format quick fs=ntfs label="RECOVERY"
+    echo set id=27
+    echo create partition primary size=100
+    echo set id=17 override
   )
-  echo CREATE PARTITION PRIMARY
-  echo FORMAT QUICK FS=NTFS LABEL="OS"
+  echo create partition primary
+  echo format quick fs=ntfs label="OS"
 )
 
 diskpart /s "X:\diskpart.txt" || ( echo DiskPart encountered an error! & pause & exit /b 1 )
