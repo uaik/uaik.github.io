@@ -17,7 +17,6 @@ if "%1" == "specialize" (
   reg load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"
   reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t "REG_DWORD" /d 0 /f
   reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "SeparateProcess" /t "REG_DWORD" /d 1 /f
-  reg add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t "REG_DWORD" /d 1 /f
   reg unload "HKU\DefaultUser"
   rem ---
   netsh advfirewall firewall set rule group="@FirewallAPI.dll,-28752" new enable=Yes
