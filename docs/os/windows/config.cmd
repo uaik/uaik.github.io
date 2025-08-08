@@ -23,8 +23,6 @@ if "%1" == "specialize" (
   netsh advfirewall firewall set rule group="@FirewallAPI.dll,-28752" new enable=Yes
   reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v "fDenyTSConnections" /t "REG_DWORD" /d 0 /f
   rem ---
-  reg add "HKLM\Software\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "REG_DWORD" /d 1 /f
-  rem ---
   rem reg add "HKLM\System\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t "REG_DWORD" /d 1 /f
   rem ---
   if exist "C:\Windows.old" rmdir /s /q "C:\Windows.old"
