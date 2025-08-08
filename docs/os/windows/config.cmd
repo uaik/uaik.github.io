@@ -27,10 +27,6 @@ if "%1" == "specialize" (
   rem ---
   rem reg add "HKLM\System\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t "REG_DWORD" /d 1 /f
   rem ---
-  reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t "REG_DWORD" /d 3 /f
-  reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Device Metadata" /v "PreventDeviceMetadataFromNetwork" /t "REG_DWORD" /d 1 /f
-  reg add "HKLM\Software\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" /v "ExcludeWUDrivers" /t "REG_DWORD" /d 1 /f
-  rem ---
   if exist "C:\Windows.old" rmdir /s /q "C:\Windows.old"
 )
 
