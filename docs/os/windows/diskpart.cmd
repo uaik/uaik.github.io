@@ -2,7 +2,7 @@
 
 wpeutil UpdateBootInfo && reg query "HKLM\System\CurrentControlSet\Control" /v "PEFirmwareType" | find "0x2" > nul
 
-if "%ErrorLevel%" equ 0 (
+if %ErrorLevel% equ 0 (
   set "bootType=UEFI"
   set "partitionTable=GPT"
 ) else (
