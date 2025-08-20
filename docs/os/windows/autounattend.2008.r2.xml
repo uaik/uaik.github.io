@@ -21,13 +21,13 @@
           </InstallFrom>
           <InstallTo>
             <DiskID>0</DiskID>
-            <PartitionID>3</PartitionID>
+            <PartitionID>4</PartitionID>
           </InstallTo>
         </OSImage>
       </ImageInstall>
       <UserData>
         <ProductKey>
-          <Key>M7XTQ-FN8P6-TTKYV-9D4CC-J462D</Key>
+          <Key>YC6KT-GKW9T-YTKYR-T4X34-R7VHC</Key>
         </ProductKey>
         <AcceptEula>true</AcceptEula>
       </UserData>
@@ -49,10 +49,6 @@
         <RunSynchronousCommand wcm:action="add">
           <Order>1</Order>
           <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\config.cmd cmd.exe /k %i:\config.cmd"</Path>
-        </RunSynchronousCommand>
-        <RunSynchronousCommand wcm:action="add">
-          <Order>2</Order>
-          <Path>cmd.exe /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do if exist %i:\config.ext.cmd cmd.exe /k %i:\config.ext.cmd"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
