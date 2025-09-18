@@ -2,7 +2,7 @@
 
 set "dsk=%1"
 set "ver=%2"
-set "drv=pvpanic vioinput viomem viorng vioscsi vioserial viostor"
+set "drv=fwcfg pvpanic vioinput viomem viorng vioscsi vioserial viostor"
 
 for %%i in (%drv%) do (
   if not exist "%~dp0drv\%%i" md "%~dp0drv\%%i"
