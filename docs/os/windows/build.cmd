@@ -60,15 +60,24 @@ if exist "%wim%\install.wim" (
         echo: && echo Integrating Windows Client Language Packs...
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab"
       )
+      if exist "%pkg%\Microsoft-Windows-Client-Language-Pack_x64_zh-cn.cab" (
+        echo: && echo Integrating Windows Client Language Packs...
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_zh-cn.cab"
+      )
       if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab" (
         echo: && echo Integrating Windows Server Language Packs...
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab"
+      )
+      if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_zh-cn.cab" (
+        echo: && echo Integrating Windows Server Language Packs...
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_zh-cn.cab"
       )
     )
 
     if exist "%cap%" (
       echo: && echo Integrating Windows capabilities...
       Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%cap%"
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~zh-cn~0.0.1.0 /CapabilityName:Language.Handwriting~~~zh-cn~0.0.1.0 /CapabilityName:Language.OCR~~~zh-cn~0.0.1.0 /CapabilityName:Language.Speech~~~zh-cn~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~zh-cn~0.0.1.0 /CapabilityName:Language.Fonts.Hans~~~und-HANS~0.0.1.0 /Source:"%cap%"
     )
 
     if exist "%upd%" (
