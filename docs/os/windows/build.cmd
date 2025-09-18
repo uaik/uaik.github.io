@@ -8,6 +8,8 @@ set "pkg=%~dp0pkg"
 set "tmp=%~dp0tmp"
 set "upd=%~dp0upd"
 set "wim=%~dp0wim"
+set "lang=ru-ru zh-cn"
+set "font=Ethi~~~und-ETHI Arab~~~und-ARAB Syrc~~~und-SYRC Beng~~~und-BENG Beng~~~und-BENG Beng~~~und-BENG Cher~~~und-CHER Arab~~~und-ARAB Gujr~~~und-GUJR Hebr~~~und-HEBR Deva~~~und-DEVA Jpan~~~und-JPAN Khmr~~~und-KHMR Knda~~~und-KNDA Deva~~~und-DEVA Kore~~~und-KORE Arab~~~und-ARAB Laoo~~~und-LAOO Mlym~~~und-MLYM Deva~~~und-DEVA Deva~~~und-DEVA Orya~~~und-ORYA Arab~~~und-ARAB Guru~~~und-GURU Arab~~~und-ARAB Arab~~~und-ARAB Sinh~~~und-SINH Syrc~~~und-SYRC Taml~~~und-TAML Telu~~~und-TELU Thai~~~und-THAI Ethi~~~und-ETHI Arab~~~und-ARAB Arab~~~und-ARAB Hans~~~und-HANS Hant~~~und-HANT"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
 rem # STRUCTURE
@@ -56,28 +58,18 @@ if exist "%wim%\install.wim" (
     )
 
     if exist "%pkg%" (
-      if exist "%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab" (
-        echo: && echo Integrating Windows Client Language Packs (ru-RU)...
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_ru-ru.cab"
-      )
-      if exist "%pkg%\Microsoft-Windows-Client-Language-Pack_x64_zh-cn.cab" (
-        echo: && echo Integrating Windows Client Language Packs (zh-CN)...
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Client-Language-Pack_x64_zh-cn.cab"
-      )
-      if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab" (
-        echo: && echo Integrating Windows Server Language Packs (ru-RU)...
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_ru-ru.cab"
-      )
-      if exist "%pkg%\Microsoft-Windows-Server-Language-Pack_x64_zh-cn.cab" (
-        echo: && echo Integrating Windows Server Language Packs (zh-CN)...
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\Microsoft-Windows-Server-Language-Pack_x64_zh-cn.cab"
-      )
+      echo: && echo Integrating Windows Language Packs...
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%"
     )
 
     if exist "%cap%" (
       echo: && echo Integrating Windows capabilities...
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~ru-ru~0.0.1.0 /CapabilityName:Language.Handwriting~~~ru-ru~0.0.1.0 /CapabilityName:Language.OCR~~~ru-ru~0.0.1.0 /CapabilityName:Language.Speech~~~ru-ru~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~ru-ru~0.0.1.0 /Source:"%cap%"
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~zh-cn~0.0.1.0 /CapabilityName:Language.Handwriting~~~zh-cn~0.0.1.0 /CapabilityName:Language.OCR~~~zh-cn~0.0.1.0 /CapabilityName:Language.Speech~~~zh-cn~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~zh-cn~0.0.1.0 /CapabilityName:Language.Fonts.Hans~~~und-HANS~0.0.1.0 /Source:"%cap%"
+      for %%l in (%lang%) do (
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~%%l~0.0.1.0 /CapabilityName:Language.Handwriting~~~%%l~0.0.1.0 /CapabilityName:Language.OCR~~~%%l~0.0.1.0 /CapabilityName:Language.Speech~~~%%l~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~%%l~0.0.1.0 /Source:"%cap%"
+      )
+      for %%f in (%font%) do (
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Fonts.%%f~0.0.1.0 /Source:"%cap%"
+      )
     )
 
     if exist "%upd%" (
