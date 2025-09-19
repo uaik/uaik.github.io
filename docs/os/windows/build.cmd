@@ -9,7 +9,7 @@ set "tmp=%~dp0tmp"
 set "upd=%~dp0upd"
 set "wim=%~dp0wim"
 set "lang=ru-ru zh-cn"
-set "font=Ethi~~~und-ETHI Arab~~~und-ARAB Syrc~~~und-SYRC Beng~~~und-BENG Beng~~~und-BENG Beng~~~und-BENG Cher~~~und-CHER Arab~~~und-ARAB Gujr~~~und-GUJR Hebr~~~und-HEBR Deva~~~und-DEVA Jpan~~~und-JPAN Khmr~~~und-KHMR Knda~~~und-KNDA Deva~~~und-DEVA Kore~~~und-KORE Arab~~~und-ARAB Laoo~~~und-LAOO Mlym~~~und-MLYM Deva~~~und-DEVA Deva~~~und-DEVA Orya~~~und-ORYA Arab~~~und-ARAB Guru~~~und-GURU Arab~~~und-ARAB Arab~~~und-ARAB Sinh~~~und-SINH Syrc~~~und-SYRC Taml~~~und-TAML Telu~~~und-TELU Thai~~~und-THAI Ethi~~~und-ETHI Arab~~~und-ARAB Arab~~~und-ARAB Hans~~~und-HANS Hant~~~und-HANT"
+set "font=Arab~~~und-ARAB~0.0.1.0 Beng~~~und-BENG~0.0.1.0 Cans~~~und-CANS~0.0.1.0 Cher~~~und-CHER~0.0.1.0 Deva~~~und-DEVA~0.0.1.0 Ethi~~~und-ETHI~0.0.1.0 Gujr~~~und-GUJR~0.0.1.0 Guru~~~und-GURU~0.0.1.0 Hans~~~und-HANS~0.0.1.0 Hant~~~und-HANT~0.0.1.0 Hebr~~~und-HEBR~0.0.1.0 Jpan~~~und-JPAN~0.0.1.0 Khmr~~~und-KHMR~0.0.1.0 Knda~~~und-KNDA~0.0.1.0 Kore~~~und-KORE~0.0.1.0 Laoo~~~und-LAOO~0.0.1.0 Mlym~~~und-MLYM~0.0.1.0 Orya~~~und-ORYA~0.0.1.0 PanEuropeanSupplementalFonts~~~~0.0.1.0 Sinh~~~und-SINH~0.0.1.0 Syrc~~~und-SYRC~0.0.1.0 Taml~~~und-TAML~0.0.1.0 Telu~~~und-TELU~0.0.1.0 Thai~~~und-THAI~0.0.1.0"
 
 rem # ---------------------------------------------------------------------------------------------------------------- #
 rem # STRUCTURE
@@ -68,7 +68,7 @@ if exist "%wim%\install.wim" (
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~%%l~0.0.1.0 /CapabilityName:Language.Handwriting~~~%%l~0.0.1.0 /CapabilityName:Language.OCR~~~%%l~0.0.1.0 /CapabilityName:Language.Speech~~~%%l~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~%%l~0.0.1.0 /Source:"%cap%"
       )
       for %%f in (%font%) do (
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Fonts.%%f~0.0.1.0 /Source:"%cap%"
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Fonts.%%f /Source:"%cap%"
       )
     )
 
