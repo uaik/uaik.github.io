@@ -30,15 +30,15 @@ rem # --------------------------------------------------------------------------
 
 if exist "%wim%\boot.wim" (
   for %%i in (2) do (
-    echo: && echo Mounting a Windows image...
+    echo: && echo --- MOUNTING A WINDOWS IMAGE
     Dism /Mount-Image /ImageFile:"%wim%\boot.wim" /Index:%%i /MountDir:"%mnt%"
 
     if exist "%drv%" (
-      echo: && echo Integrating Windows Drivers...
+      echo: && echo --- INTEGRATING DRIVERS
       Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%" /Recurse
     )
 
-    echo: && echo Saving Windows image...
+    echo: && echo --- SAVING WINDOWS IMAGE
     Dism /Unmount-Image /MountDir:"%mnt%" /Commit
   )
 )
@@ -49,41 +49,43 @@ rem # --------------------------------------------------------------------------
 
 if exist "%wim%\install.wim" (
   for %%i in (%idx%) do (
-    echo: && echo Mounting a Windows image...
+    echo: && echo --- MOUNTING A WINDOWS IMAGE
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%" && Dism /Get-MountedImageInfo
 
     if exist "%drv%" (
-      echo: && echo Integrating Windows Drivers...
+      echo: && echo --- INTEGRATING DRIVERS
       Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%" /Recurse
     )
 
     if exist "%pkg%" (
-      echo: && echo Integrating Windows Language Packs...
+      echo: && echo --- INTEGRATING PACKAGES
       Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%"
     )
 
     if exist "%cap%" (
-      echo: && echo Integrating Windows capabilities...
+      echo: && echo --- INTEGRATING CAPABILITIES
       for %%l in (%lang%) do (
+        echo: && echo Installing capability "%%l"...
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Basic~~~%%l~0.0.1.0 /CapabilityName:Language.Handwriting~~~%%l~0.0.1.0 /CapabilityName:Language.OCR~~~%%l~0.0.1.0 /CapabilityName:Language.Speech~~~%%l~0.0.1.0 /CapabilityName:Language.TextToSpeech~~~%%l~0.0.1.0 /Source:"%cap%"
       )
       for %%f in (%font%) do (
+        echo: && echo Installing font "%%f"...
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Capability /CapabilityName:Language.Fonts.%%f /Source:"%cap%"
       )
     )
 
     if exist "%upd%" (
-      echo: && echo Integrating Windows Updates...
+      echo: && echo --- INTEGRATING UPDATES
       Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%"
     )
 
-    echo: && echo Reduce the Size of the Component Store...
+    echo: && echo --- REDUCE THE SIZE OF THE COMPONENT STORE
     Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Cleanup-Image /StartComponentCleanup /ResetBase
 
-    echo: && echo Repairing a Windows Image...
+    echo: && echo --- REPAIRING A WINDOWS IMAGE
     Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Cleanup-Image /RestoreHealth
 
-    echo: && echo Saving Windows image...
+    echo: && echo --- SAVING WINDOWS IMAGE
     Dism /Unmount-Image /MountDir:"%mnt%" /Commit
   )
 ) else (
