@@ -87,6 +87,9 @@ if exist "%wim%\install.wim" (
 
     echo: && echo --- SAVING WINDOWS IMAGE
     Dism /Unmount-Image /MountDir:"%mnt%" /Commit
+
+    echo: && echo --- EXPORTING WINDOWS IMAGE
+    Dism /Export-Image /SourceImageFile:"%wim%\install.wim" /DestinationImageFile:"%wim%\install.new.wim" /Compress:max /CheckIntegrity
   )
 ) else (
   echo: && echo INSTALL.WIM not found!
