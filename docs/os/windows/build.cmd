@@ -33,9 +33,9 @@ if exist "%wim%\boot.wim" (
     echo: && echo --- MOUNTING A WINDOWS IMAGE
     Dism /Mount-Image /ImageFile:"%wim%\boot.wim" /Index:%%i /MountDir:"%mnt%"
 
-    if exist "%drv%" (
+    if exist "%drv%\boot" (
       echo: && echo --- INTEGRATING DRIVERS
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%" /Recurse
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%\boot" /Recurse
     )
 
     echo: && echo --- SAVING WINDOWS IMAGE
@@ -52,9 +52,9 @@ if exist "%wim%\install.wim" (
     echo: && echo --- MOUNTING A WINDOWS IMAGE
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%" && Dism /Get-MountedImageInfo
 
-    if exist "%drv%" (
+    if exist "%drv%\install" (
       echo: && echo --- INTEGRATING DRIVERS
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%" /Recurse
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Driver /Driver:"%drv%\install" /Recurse
     )
 
     if exist "%pkg%" (
