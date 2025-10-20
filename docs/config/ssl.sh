@@ -20,10 +20,8 @@ function debian() {
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      openssl ecparam -genkey -name 'prime256v1' | openssl ec -out "${d}/_ssc/${f}.key" \
-        && openssl req -new -sha256 \
-          -key "${d}/_ssc/${f}.key" \
-          -out "${d}/_ssc/${f}.csr" \
+      openssl ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
+        && openssl req -new -sha256 -key "${d}/_ssc/${f}.key" -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = server, client' \
@@ -55,10 +53,8 @@ function debian() {
 
     [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      openssl ecparam -genkey -name 'prime256v1' | openssl ec -out "${d}/_ssc/${f}.key" \
-        && openssl req -new -sha256 \
-          -key "${d}/_ssc/${f}.key" \
-          -out "${d}/_ssc/${f}.csr" \
+      openssl ecparam -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
+        && openssl req -new -sha256 -key "${d}/_ssc/${f}.key" -out "${d}/_ssc/${f}.csr" \
           -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
           -addext 'basicConstraints = critical, CA:FALSE' \
           -addext 'nsCertType = client, email' \
