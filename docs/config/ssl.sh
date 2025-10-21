@@ -2,83 +2,71 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 
 OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
+DAYS='3650'
+COUNTRY='SC'
+STATE='Victoria'
+CITY='Victoria'
+ORG='LocalHost'
+OU='IT Department'
+CN='localhost'
+DOMAIN=$( hostname -d ); [[ -z "${DOMAIN}" ]] && DOMAIN='localdomain' || DOMAIN="${DOMAIN}"
+EMAIL="postmaster@${DOMAIN}"
+IFS=' ' read -ra HOST <<< "$( hostname -I )" && printf -v IP 'IP:%s,' "${HOST[@]}"
+
+function _key() {
+  openssl ecparam -noout -genkey -name 'prime256v1' -out "${1}"
+}
+
+function _csr() {
+  openssl req -new -sha256 -key "${1}" -out "${2}" \
+    -subj "/C=${COUNTRY}/ST=${STATE}/L=${CITY}/O=${ORG}/OU=${OU}/CN=${CN}/emailAddress=${EMAIL}" \
+    -addext 'basicConstraints = critical, CA:FALSE' \
+    -addext "nsCertType = ${3}" \
+    -addext 'nsComment = OpenSSL Self-Signed Certificate' \
+    -addext 'keyUsage = critical, digitalSignature, nonRepudiation, keyEncipherment' \
+    -addext "extendedKeyUsage = ${4}" \
+    -addext "subjectAltName = DNS:${CN}, DNS:*.${CN}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${IP%,}"
+}
+
+function _crt() {
+  openssl x509 -req -sha256 -days "${DAYS}" -copy_extensions 'copyall' -key "${1}" -in "${2}" -out "${3}"
+}
+
+function _info() {
+  openssl x509 -in "${1}" -text -noout
+}
 
 function debian() {
-  function server_auth() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
-    local f; f='auth.server'
-    local days; days='3650'
-    local country; country='SC'
-    local state; state='Victoria'
-    local city; city='Victoria'
-    local org; org='LocalHost'
-    local ou; ou='IT Department'
-    local cn; cn='localhost'
-    local domain; domain=$( hostname -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
-    local email; email="postmaster@${domain}"
-    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v ip 'IP:%s,' "${host[@]}"
+  local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1; [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
 
-    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
+  function _chmod() {
+    [[ -d "${d}/_ssc" ]] && find "${d}/_ssc" -type f -print0 | xargs -0 chmod 644
+  }
+
+  function server_auth() {
+    local f; f='auth.server'
+
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      openssl ecparam -noout -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
-        && openssl req -new -sha256 -key "${d}/_ssc/${f}.key" -out "${d}/_ssc/${f}.csr" \
-          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
-          -addext 'basicConstraints = critical, CA:FALSE' \
-          -addext 'nsCertType = server, client' \
-          -addext 'nsComment = OpenSSL Self-Signed Certificate' \
-          -addext 'keyUsage = critical, digitalSignature, nonRepudiation, keyEncipherment' \
-          -addext 'extendedKeyUsage = serverAuth, clientAuth' \
-          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${ip%,}" \
-        && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/_ssc/${f}.key" \
-          -in "${d}/_ssc/${f}.csr" \
-          -out "${d}/_ssc/${f}.crt" \
-        && openssl x509 -in "${d}/_ssc/${f}.crt" -text -noout
+      _key "${d}/_ssc/${f}.key" \
+        && _csr "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" 'server, client' 'serverAuth, clientAuth' \
+        && _crt "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" "${d}/_ssc/${f}.crt" \
+        && _info "${d}/_ssc/${f}.crt"
     fi
   }
 
   function client_auth() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
     local f; f='auth.client'
-    local days; days='3650'
-    local country; country='SC'
-    local state; state='Victoria'
-    local city; city='Victoria'
-    local org; org='LocalHost'
-    local ou; ou='IT Department'
-    local cn; cn='localhost'
-    local domain; domain=$( hostname -d ); [[ -z "${domain}" ]] && domain='localdomain' || domain="${domain}"
-    local email; email="postmaster@${domain}"
-    local host; IFS=' ' read -ra host <<< "$( hostname -I )" && printf -v ip 'IP:%s,' "${host[@]}"
 
-    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      openssl ecparam -noout -genkey -name 'prime256v1' -out "${d}/_ssc/${f}.key" \
-        && openssl req -new -sha256 -key "${d}/_ssc/${f}.key" -out "${d}/_ssc/${f}.csr" \
-          -subj "/C=${country}/ST=${state}/L=${city}/O=${org}/OU=${ou}/CN=${cn}/emailAddress=${email}" \
-          -addext 'basicConstraints = critical, CA:FALSE' \
-          -addext 'nsCertType = client, email' \
-          -addext 'nsComment = OpenSSL Self-Signed Certificate' \
-          -addext 'keyUsage = critical, digitalSignature, nonRepudiation, keyEncipherment' \
-          -addext 'extendedKeyUsage = clientAuth, emailProtection' \
-          -addext "subjectAltName = DNS:${cn}, DNS:*.${cn}, DNS:*.localdomain, DNS:*.local, IP:127.0.0.1, ${ip%,}" \
-        && openssl x509 -req -sha256 -days ${days} -copy_extensions 'copyall' \
-          -key "${d}/_ssc/${f}.key" \
-          -in "${d}/_ssc/${f}.csr" \
-          -out "${d}/_ssc/${f}.crt" \
-        && openssl x509 -in "${d}/_ssc/${f}.crt" -text -noout
+      _key "${d}/_ssc/${f}.key" \
+        && _csr "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" 'client, email' 'clientAuth, emailProtection' \
+        && _crt "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" "${d}/_ssc/${f}.crt" \
+        && _info "${d}/_ssc/${f}.crt"
     fi
   }
 
   function dhparam() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
-    [[ ! -d "${d}/_ssc" ]] && mkdir "${d}/_ssc"
     [[ ! -f "${d}/_ssc/dhparam.pem" ]] && openssl dhparam -out "${d}/_ssc/dhparam.pem" 4096
-  }
-
-  function _chmod() {
-    local d; d='/etc/ssl'; [[ ! -d "${d}" ]] && exit 1
-    [[ -d "${d}/_ssc" ]] && find "${d}/_ssc" -type f -print0 | xargs -0 chmod 644
   }
 
   function main() {
