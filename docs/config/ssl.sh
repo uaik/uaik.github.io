@@ -14,11 +14,15 @@ EMAIL="postmaster@${DOMAIN}"
 IFS=' ' read -ra HOST <<< "$( hostname -I )" && printf -v IP 'IP:%s,' "${HOST[@]}"
 
 function _key() {
-  openssl ecparam -noout -genkey -name 'prime256v1' -out "${1}"
+  case "${1}" in
+    'ecc') openssl ecparam -noout -genkey -name 'prime256v1' -out "${2}.key" ;;
+    'rsa') openssl genrsa -out "${2}.key" 2048 ;;
+    *) echo "'TYPE' does not exist!"; exit 1 ;;
+  esac
 }
 
 function _csr() {
-  openssl req -new -sha256 -key "${1}" -out "${2}" \
+  openssl req -new -sha256 -key "${1}.key" -out "${2}.csr" \
     -subj "/C=${COUNTRY}/ST=${STATE}/L=${CITY}/O=${ORG}/OU=${OU}/CN=${CN}/emailAddress=${EMAIL}" \
     -addext 'basicConstraints = critical, CA:FALSE' \
     -addext "nsCertType = ${3}" \
@@ -29,11 +33,12 @@ function _csr() {
 }
 
 function _crt() {
-  openssl x509 -req -sha256 -days "${DAYS}" -copy_extensions 'copyall' -key "${1}" -in "${2}" -out "${3}"
+  openssl x509 -req -sha256 -days "${DAYS}" -copy_extensions 'copyall' \
+    -key "${1}.key" -in "${2}.csr" -out "${3}.crt"
 }
 
 function _info() {
-  openssl x509 -in "${1}" -text -noout
+  openssl x509 -in "${1}.crt" -text -noout
 }
 
 function debian() {
@@ -45,24 +50,30 @@ function debian() {
 
   function server_auth() {
     local f; f='auth.server'
+    local t; t=('ecc' 'rsa')
 
-    if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      _key "${d}/_ssc/${f}.key" \
-        && _csr "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" 'server, client' 'serverAuth, clientAuth' \
-        && _crt "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" "${d}/_ssc/${f}.crt" \
-        && _info "${d}/_ssc/${f}.crt"
-    fi
+    for i in "${t[@]}"; do
+      if [[ ! -f "${d}/_ssc/${f}.${i}.key" || ! -f "${d}/_ssc/${f}.${i}.crt" ]]; then
+        _key "${i}" "${d}/_ssc/${f}.${i}" \
+          && _csr "${d}/_ssc/${f}.${i}" "${d}/_ssc/${f}" 'server, client' 'serverAuth, clientAuth' \
+          && _crt "${d}/_ssc/${f}.${i}" "${d}/_ssc/${f}" "${d}/_ssc/${f}.${i}" \
+          && _info "${d}/_ssc/${f}.${i}"
+      fi
+    done
   }
 
   function client_auth() {
     local f; f='auth.client'
+    local t; t=('ecc' 'rsa')
 
-    if [[ ! -f "${d}/_ssc/${f}.key" || ! -f "${d}/_ssc/${f}.crt" ]]; then
-      _key "${d}/_ssc/${f}.key" \
-        && _csr "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" 'client, email' 'clientAuth, emailProtection' \
-        && _crt "${d}/_ssc/${f}.key" "${d}/_ssc/${f}.csr" "${d}/_ssc/${f}.crt" \
-        && _info "${d}/_ssc/${f}.crt"
-    fi
+    for i in "${t[@]}"; do
+      if [[ ! -f "${d}/_ssc/${f}.${i}.key" || ! -f "${d}/_ssc/${f}.${i}.crt" ]]; then
+        _key "${i}" "${d}/_ssc/${f}.${i}" \
+          && _csr "${d}/_ssc/${f}.${i}" "${d}/_ssc/${f}" 'client, email' 'clientAuth, emailProtection' \
+          && _crt "${d}/_ssc/${f}.${i}" "${d}/_ssc/${f}" "${d}/_ssc/${f}.${i}" \
+          && _info "${d}/_ssc/${f}.${i}"
+      fi
+    done
   }
 
   function dhparam() {
