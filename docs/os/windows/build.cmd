@@ -16,7 +16,7 @@ rem # STRUCTURE
 rem # ---------------------------------------------------------------------------------------------------------------- #
 
 if "%1" == "struct" (
-  for %%i in ("%drv%" "%mnt%" "%pkg%" "%tmp%" "%wim%") do (
+  for %%i in ("%drv%\boot" "%drv%\install" "%mnt%" "%pkg%" "%tmp%" "%wim%") do (
     if not exist "%%i" md "%%i"
   )
 
