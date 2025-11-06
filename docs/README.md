@@ -2,20 +2,20 @@
 
 ## Linux
 
-[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os) для автоматической установки Linux.
+[Сценарии](https://github.com/uaik/uaik.ru/tree/main/docs/os) для автоматической установки Linux.
 
 ### Установка
 
 - RHEL / Fedora:
 
 ```ini
-inst.ks=https://uaik.github.io/os/[os]/[config.ini]
+inst.ks=https://uaik.ru/os/[os]/[config.ini]
 ```
 
 - Debian / Ubuntu:
 
 ```ini
-url=https://uaik.github.io/os/[os]/[config.ini]
+url=https://uaik.ru/os/[os]/[config.ini]
 ```
 
 #### Примеры
@@ -23,13 +23,13 @@ url=https://uaik.github.io/os/[os]/[config.ini]
 - Пример установки сценария `srv.bios.vm.ini` для ОС **AlmaLinux**:
 
 ```ini
-inst.ks=https://uaik.github.io/os/alma/srv.bios.vm.ini
+inst.ks=https://uaik.ru/os/alma/srv.bios.vm.ini
 ```
 
 - Пример установки сценария `srv.bios.vm.lvm.xfs.ini` для ОС **Debian**:
 
 ```ini
-url=https://uaik.github.io/os/debian/srv.bios.vm.lvm.xfs.ini
+url=https://uaik.ru/os/debian/srv.bios.vm.lvm.xfs.ini
 ```
 
 ### Пользователи
@@ -44,7 +44,7 @@ url=https://uaik.github.io/os/debian/srv.bios.vm.lvm.xfs.ini
 ### Настройка системы
 
 ```bash
-curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
+curl -sL 'https://uaik.ru/config.00.sh' | bash -s
 ```
 
 ### Настройка сервисов
@@ -52,18 +52,18 @@ curl -sL 'https://uaik.github.io/config.00.sh' | bash -s
 - OS:
 
 ```bash
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
+curl -sL 'https://uaik.ru/config.01.sh' | bash -s -- 'pkgmgr;ssh;nft;tmux;sysctl;systemd'
 ```
 
 - Proxmox:
 
 ```bash
-curl -sL 'https://uaik.github.io/config.01.sh' | bash -s -- 'pkgmgr;ssh;tmux'
+curl -sL 'https://uaik.ru/config.01.sh' | bash -s -- 'pkgmgr;ssh;tmux'
 ```
 
 ## MS Windows
 
-[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os/windows) для интеграции в дистрибутив MS Windows.
+[Сценарии](https://github.com/uaik/uaik.ru/tree/main/docs/os/windows) для интеграции в дистрибутив MS Windows.
 
 ### Пользователи
 
