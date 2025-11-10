@@ -2,7 +2,7 @@
 
 ## Linux
 
-[Сценарии](https://github.com/uaik/uaik.ru/tree/main/docs/os) для автоматической установки Linux.
+[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os) для автоматической установки Linux.
 
 ### Установка
 
@@ -63,7 +63,7 @@ curl -sL 'https://uaik.ru/config.01.sh' | bash -s -- 'pkgmgr;ssh;tmux'
 
 ## MS Windows
 
-[Сценарии](https://github.com/uaik/uaik.ru/tree/main/docs/os/windows) для интеграции в дистрибутив MS Windows.
+[Сценарии](https://github.com/uaik/uaik.github.io/tree/main/docs/os/windows) для интеграции в дистрибутив MS Windows.
 
 ### Пользователи
 
