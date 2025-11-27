@@ -76,12 +76,7 @@ if exist "%wim%\install.wim" (
 
     if exist "%upd%" (
       echo: && echo --- INTEGRATING UPDATES
-      if exist "%upd%\0" (
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%\0"
-      )
-      if exist "%upd%\1" (
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%\1"
-      )
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%"
     )
 
     echo: && echo --- REDUCE THE SIZE OF THE COMPONENT STORE
