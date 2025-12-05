@@ -23,10 +23,6 @@ function resolved() {
 
   apt update && apt install --yes "${p[@]}" \
     && systemctl enable "${s[@]/%/.service}"
-
-  for i in "${f[@]}"; do
-    curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/systemd/resolved.${i}"
-  done
 }
 
 function timesyncd() {
