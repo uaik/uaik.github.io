@@ -81,7 +81,7 @@ function u000X() {
 
       # Creating user.
       echo "--- [${i^^}] Adding user..."
-      useradd -m -p "$( openssl passwd -6 ${password} )" -c "${i^^}" "${i}"
+      useradd -m -p "$( openssl passwd -6 ${password} )" -G sudo -c "${i^^}" "${i}"
 
       # Saving password.
       local home; home="$( _home "${i}" )"
@@ -105,7 +105,7 @@ function u0002() {
 
   # Creating user.
   echo "--- [${user^^}] Adding user..."
-  useradd -m -c "${user^^}" "${user}"
+  useradd -m -G sudo -c "${user^^}" "${user}"
 
   # Changing password.
   echo "--- [${user^^}] Changing password..."
