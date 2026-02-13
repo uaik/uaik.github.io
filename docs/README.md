@@ -20,16 +20,16 @@ url=https://uaik.ru/os/[os]/[config.ini]
 
 #### Примеры
 
-- Пример установки сценария `srv.bios.vm.ini` для ОС **AlmaLinux**:
+- Пример установки сценария `vm/sda.xfs.ini` для ОС **AlmaLinux**:
 
 ```ini
-inst.ks=https://uaik.ru/os/alma/srv.bios.vm.ini
+inst.ks=https://uaik.ru/os/alma/vm/sda.xfs.ini
 ```
 
-- Пример установки сценария `srv.bios.vm.lvm.xfs.ini` для ОС **Debian**:
+- Пример установки сценария `vm/sda.xfs.ini` для ОС **Debian**:
 
 ```ini
-url=https://uaik.ru/os/debian/srv.bios.vm.lvm.xfs.ini
+url=https://uaik.ru/os/debian/vm/sda.xfs.ini
 ```
 
 ### Пользователи
