@@ -2,11 +2,12 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 
 OS_ID="$( . '/etc/os-release' && echo "${ID}" )"; readonly OS_ID
+OS_CODENAME="$( . '/etc/os-release' && echo "${VERSION_CODENAME}" )"; readonly OS_CODENAME
 
 function debian() {
   function install() {
     local p; p=('tmux')
-    apt update && apt install --yes -t 'stable-backports' "${p[@]}"
+    apt update && apt install --yes -t "${OS_CODENAME}-backports" "${p[@]}"
   }
 
   function main() {
