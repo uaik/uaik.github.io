@@ -15,7 +15,7 @@ function debian() {
 
   function repo() {
     local d; d='/etc/apt/sources.list.d'; [[ ! -d "${d}" ]] && exit 1
-    local f; f=('debian.sources'); [[ -x "$( command -v 'pveversion' )" ]] && f+=('proxmox.sources')
+    local f; f=('debian.sources')
     for i in "${f[@]}"; do
       [[ ! -f "${d}/${i}" ]] && curl -fsSLo "${d}/${i}" "https://uaik.github.io/config/apt/${i}" \
         && sed -i -e "s|<#_suites_#>|${OS_CODENAME}|g" "${d}/${i}"
