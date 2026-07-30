@@ -28,6 +28,7 @@
       <UserData>
         <ProductKey>
           <Key>TVRH6-WHNXV-R9WG3-9XRFY-MY832</Key>
+          <WillShowUI>OnError</WillShowUI>
         </ProductKey>
         <AcceptEula>true</AcceptEula>
       </UserData>
