@@ -1,5 +1,6 @@
 @echo off
 
+set "idx=%*"
 set "mnt=%~dp0mnt"
 set "tmp=%~dp0tmp"
 set "wim=%~dp0wim"
