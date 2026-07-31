@@ -1,8 +1,37 @@
 @echo off
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Load DefaultUser.
+:: ---------------------------------------------------------------------------------------------------------------------
+
 reg load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Always show file extensions.
+:: ---------------------------------------------------------------------------------------------------------------------
+
 reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t "REG_DWORD" /d "0" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Launch folder windows in a separate process.
+:: ---------------------------------------------------------------------------------------------------------------------
+
 reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "SeparateProcess" /t "REG_DWORD" /d "1" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Left-align the taskbar in Windows 11.
+:: ---------------------------------------------------------------------------------------------------------------------
+
 reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarAl" /t "REG_DWORD" /d "0" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Do not show Bing results when searching in the Start menu or the search box.
+:: ---------------------------------------------------------------------------------------------------------------------
+
 reg add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t "REG_DWORD" /d "1" /f
-reg unload "HKU\DefaultUser"
-exit
+
+:: ---------------------------------------------------------------------------------------------------------------------
+:: Unload DefaultUser and exit.
+:: ---------------------------------------------------------------------------------------------------------------------
+
+reg unload "HKU\DefaultUser" && exit
