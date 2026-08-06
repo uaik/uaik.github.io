@@ -29,7 +29,7 @@ reg add "HKLM\Software\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "
 :: Disable Sticky keys altogether.
 :: ---------------------------------------------------------------------------------------------------------------------
 
-reg add "HKU\.DEFAULT\Control Panel\Accessibility\StickyKeys" /v "Flags" /t "REG_SZ" /d "506" /f
+reg add "HKU\.DEFAULT\Control Panel\Accessibility\StickyKeys" /v "Flags" /t "REG_SZ" /d "10" /f
 
 :: ---------------------------------------------------------------------------------------------------------------------
 :: Tools.
