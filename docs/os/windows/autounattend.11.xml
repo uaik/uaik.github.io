@@ -57,7 +57,7 @@
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
           <Order>2</Order>
-          <Path>cmd /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (if exist %i:\auto.default.user.cmd cmd /k %i:\auto.default.user.cmd)"</Path>
+          <Path>cmd /q /c "for %i in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (if exist %i:\auto.default_user.cmd cmd /k %i:\auto.default_user.cmd)"</Path>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
