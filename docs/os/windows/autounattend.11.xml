@@ -114,13 +114,6 @@
         <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
         <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
       </OOBE>
-      <FirstLogonCommands>
-        <SynchronousCommand wcm:action="add">
-          <Order>1</Order>
-          <Description>Disable Content Delivery Manager</Description>
-          <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "ContentDeliveryAllowed" /t "REG_DWORD" /d "0" /f</CommandLine>
-        </SynchronousCommand>
-      </FirstLogonCommands>
     </component>
   </settings>
 </unattend>
