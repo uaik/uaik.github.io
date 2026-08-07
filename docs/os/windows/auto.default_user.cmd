@@ -53,6 +53,15 @@ reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\ContentDelive
 reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-353698Enabled" /t "REG_DWORD" /d "0" /f
 
 :: ---------------------------------------------------------------------------------------------------------------------
+:: Disable SmartScreen in Windows and Edge.
+:: ---------------------------------------------------------------------------------------------------------------------
+
+reg add "HKU\DefaultUser\Software\Microsoft\Edge\SmartScreenEnabled" /ve /t "REG_DWORD" /d "0" /f
+reg add "HKU\DefaultUser\Software\Microsoft\Edge\SmartScreenPuaEnabled" /ve /t "REG_DWORD" /d "0" /f
+reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\AppHost" /v "EnableWebContentEvaluation" /t "REG_DWORD" /d "0" /f
+reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\AppHost" /v "PreventOverride" /t "REG_DWORD" /d "0" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
 :: Unload DefaultUser and exit.
 :: ---------------------------------------------------------------------------------------------------------------------
 

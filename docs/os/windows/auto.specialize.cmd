@@ -32,6 +32,17 @@ reg add "HKLM\Software\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "
 reg add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t "REG_DWORD" /d "1" /f
 
 :: ---------------------------------------------------------------------------------------------------------------------
+:: Disable SmartScreen in Windows and Edge.
+:: ---------------------------------------------------------------------------------------------------------------------
+
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer" /v "SmartScreenEnabled" /t "REG_SZ" /d "Off" /f
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WTDS\Components" /v "ServiceEnabled" /t "REG_DWORD" /d "0" /f
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WTDS\Components" /v "NotifyMalicious" /t "REG_DWORD" /d "0" /f
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WTDS\Components" /v "NotifyPasswordReuse" /t "REG_DWORD" /d "0" /f
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\WTDS\Components" /v "NotifyUnsafeApp" /t "REG_DWORD" /d "0" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /t "REG_DWORD" /d "1" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
 :: Tools.
 :: ---------------------------------------------------------------------------------------------------------------------
 
