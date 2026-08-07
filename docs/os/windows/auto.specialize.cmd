@@ -26,6 +26,12 @@ reg add "HKLM\Software\Policies\Microsoft\Dsh" /v "AllowNewsAndInterests" /t "RE
 reg add "HKLM\Software\Policies\Microsoft\Edge" /v "HideFirstRunExperience" /t "REG_DWORD" /d "1" /f
 
 :: ---------------------------------------------------------------------------------------------------------------------
+:: Disable app suggestions.
+:: ---------------------------------------------------------------------------------------------------------------------
+
+reg add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t "REG_DWORD" /d "1" /f
+
+:: ---------------------------------------------------------------------------------------------------------------------
 :: Tools.
 :: ---------------------------------------------------------------------------------------------------------------------
 
