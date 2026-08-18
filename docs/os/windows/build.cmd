@@ -60,7 +60,7 @@ if exist "%wim%\install.wim" (
 
     if exist "%pkg%" (
       echo: && echo --- INTEGRATING PACKAGES
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%\%msu%"
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%pkg%"
     )
 
     if exist "%cap%" (
@@ -77,7 +77,7 @@ if exist "%wim%\install.wim" (
 
     if exist "%upd%" (
       echo: && echo --- INTEGRATING UPDATES
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%"
+      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd%\%msu%"
     )
 
     echo: && echo --- REDUCE THE SIZE OF THE COMPONENT STORE
