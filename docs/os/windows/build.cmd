@@ -6,14 +6,13 @@ set "drv=%~dp0drv"
 set "mnt=%~dp0mnt"
 set "pkg=%~dp0pkg"
 set "tmp=%~dp0tmp"
+set "upd0=%~dp0upd.0"
+set "upd1=%~dp0upd.1"
 set "wim=%~dp0wim"
 set "lang=ru-ru zh-cn"
 set "font=Arab~~~und-ARAB~0.0.1.0 Beng~~~und-BENG~0.0.1.0 Cans~~~und-CANS~0.0.1.0 Cher~~~und-CHER~0.0.1.0 Deva~~~und-DEVA~0.0.1.0 Ethi~~~und-ETHI~0.0.1.0 Gujr~~~und-GUJR~0.0.1.0 Guru~~~und-GURU~0.0.1.0 Hans~~~und-HANS~0.0.1.0 Hant~~~und-HANT~0.0.1.0 Hebr~~~und-HEBR~0.0.1.0 Jpan~~~und-JPAN~0.0.1.0 Khmr~~~und-KHMR~0.0.1.0 Knda~~~und-KNDA~0.0.1.0 Kore~~~und-KORE~0.0.1.0 Laoo~~~und-LAOO~0.0.1.0 Mlym~~~und-MLYM~0.0.1.0 Orya~~~und-ORYA~0.0.1.0 PanEuropeanSupplementalFonts~~~~0.0.1.0 Sinh~~~und-SINH~0.0.1.0 Syrc~~~und-SYRC~0.0.1.0 Taml~~~und-TAML~0.0.1.0 Telu~~~und-TELU~0.0.1.0 Thai~~~und-THAI~0.0.1.0"
 
-set "upd0=%~dp0upd.0"
-set "msu0=kb5043080"
-set "msu1=kb5121003"
-set "upd1=%~dp0upd.1"
+set "msu=windows11.0-kb5121003-x64_dc58f03fef04b4c611e0db0ab3fadfb301194113.msu"
 
 :: ---------------------------------------------------------------------------------------------------------------------
 :: STRUCTURE
@@ -79,13 +78,9 @@ if exist "%wim%\install.wim" (
     )
 
     if exist "%upd0%" (
-      if exist "%upd0%\%msu0%" (
-        echo: && echo --- INTEGRATING CHECKPOINT CUMULATIVE UPDATES
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu0%"
-      )
-      if exist "%upd0%\%msu1%" (
-        echo: && echo --- INTEGRATING TARGET CUMULATIVE UPDATE
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu1%"
+      if exist "%upd0%\%msu%" (
+        echo: && echo --- INTEGRATING CUMULATIVE UPDATE
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu%"
       )
     )
 
