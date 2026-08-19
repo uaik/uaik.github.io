@@ -84,7 +84,7 @@ if exist "%wim%\install.wim" (
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu0%"
       )
       if exist "%upd0%\%msu1%" (
-        echo: && echo --- INTEGRATING CUMULATIVE UPDATE
+        echo: && echo --- INTEGRATING TARGET CUMULATIVE UPDATE
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu1%"
       )
     )
