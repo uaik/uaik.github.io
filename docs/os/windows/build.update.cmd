@@ -3,12 +3,11 @@
 set "idx=%*"
 set "mnt=%~dp0mnt"
 set "tmp=%~dp0tmp"
+set "upd0=%~dp0upd.0"
+set "upd1=%~dp0upd.1"
 set "wim=%~dp0wim"
 
-set "upd0=%~dp0upd.0"
-set "msu0=kb5043080"
-set "msu1=kb5121003"
-set "upd1=%~dp0upd.1"
+set "msu=windows11.0-kb5121003-x64_dc58f03fef04b4c611e0db0ab3fadfb301194113.msu"
 
 :: ---------------------------------------------------------------------------------------------------------------------
 :: INSTALL.WIM
@@ -20,13 +19,9 @@ if exist "%wim%\install.wim" (
     Dism /Mount-Image /ImageFile:"%wim%\install.wim" /Index:%%i /MountDir:"%mnt%" && Dism /Get-MountedImageInfo
 
     if exist "%upd0%" (
-      if exist "%upd0%\%msu0%" (
-        echo: && echo --- INTEGRATING CHECKPOINT CUMULATIVE UPDATES
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu0%"
-      )
-      if exist "%upd0%\%msu1%" (
-        echo: && echo --- INTEGRATING TARGET CUMULATIVE UPDATE
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu1%"
+      if exist "%upd0%\%msu%" (
+        echo: && echo --- INTEGRATING CUMULATIVE UPDATE
+        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu%"
       )
     )
 
