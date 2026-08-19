@@ -83,7 +83,7 @@ if exist "%wim%\install.wim" (
         echo: && echo --- INTEGRATING CHECKPOINT CUMULATIVE UPDATES
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu0%"
       )
-      if exist "%upd0%\%msu1% (
+      if exist "%upd0%\%msu1%" (
         echo: && echo --- INTEGRATING CUMULATIVE UPDATE
         Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu1%"
       )
