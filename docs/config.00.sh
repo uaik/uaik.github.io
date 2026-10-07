@@ -60,12 +60,12 @@ function root() {
   local password
 
   # Changing password.
-  echo "--- [${user^^}] Changing password."
+  echo "--- [${user^^}] CHANGING PASSWORD"
   read -rp 'Password: ' password </dev/tty
   echo "${user}:${password}" | chpasswd
 
   # Changing shell.
-  echo "--- [${user^^}] Changing shell."
+  echo "--- [${user^^}] CHANGING SHELL"
   chsh -s '/bin/zsh' "${user}"
 
   # Installing 'zsh' config.
@@ -80,7 +80,7 @@ function u000X() {
       local password; password="$( < /dev/urandom tr -dc A-Za-z0-9 | head -c8 )"
 
       # Creating user.
-      echo "--- [${i^^}] Adding user..."
+      echo "--- [${i^^}] ADDING USER"
       useradd -m -p "$( openssl passwd -6 ${password} )" -G sudo -c "${i^^}" "${i}"
 
       # Saving password.
@@ -90,11 +90,11 @@ function u000X() {
     fi
 
     # Changing shell.
-    echo "--- [${i^^}] Changing shell..."
+    echo "--- [${i^^}] CHANGING SHELL"
     chsh -s '/bin/zsh' "${i}"
 
     # Locking user.
-    echo "--- [${i^^}] Locking user..."
+    echo "--- [${i^^}] LOCKING USER"
     usermod -L "${i}"
   done
 }
@@ -104,16 +104,16 @@ function u0002() {
   local password
 
   # Creating user.
-  echo "--- [${user^^}] Adding user..."
+  echo "--- [${user^^}] ADDING USER"
   useradd -m -G sudo -c "${user^^}" "${user}"
 
   # Changing password.
-  echo "--- [${user^^}] Changing password..."
+  echo "--- [${user^^}] CHANGING PASSWORD"
   read -rp 'Password: ' password </dev/tty
   echo "${user}:${password}" | chpasswd
 
   # Changing shell.
-  echo "--- [${user^^}] Changing shell..."
+  echo "--- [${user^^}] CHANGING SHELL"
   chsh -s '/bin/zsh' "${user}"
 
   # Installing 'zsh' config.

@@ -28,7 +28,7 @@ function config() {
 
   for i in "${c[@]}"; do
     if local s; s="$( curl -fsL "https://uaik.github.io/config/${i}.sh" )"; then
-      _title "--- [${i^^}] Installing a configuration..."; bash -s <<< "${s}"
+      _title "--- [${i^^}] INSTALLING A CONFIGURATION"; bash -s <<< "${s}"
     else
       _err "Configuration '${i^^}' not found!"
     fi
