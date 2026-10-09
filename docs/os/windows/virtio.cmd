@@ -6,9 +6,9 @@ set "drv=vioscsi viostor"
 
 for %%i in (%drv%) do (
   if not exist "%~dp0drv\boot\virtio\%%i" md "%~dp0drv\boot\virtio\%%i"
-  robocopy "%dsk%:\%%i\%ver%\amd64" "%~dp0drv\boot\virtio\%%i" /e /is /it /im
+  robocopy "%dsk%:\%%i\%ver%\amd64" "%~dp0drv\boot\virtio\%%i" /mir
   if not exist "%~dp0drv\install\virtio\%%i" md "%~dp0drv\install\virtio\%%i"
-  robocopy "%dsk%:\%%i\%ver%\amd64" "%~dp0drv\install\virtio\%%i" /e /is /it /im
+  robocopy "%dsk%:\%%i\%ver%\amd64" "%~dp0drv\install\virtio\%%i" /mir
 )
 
 exit /b 0
