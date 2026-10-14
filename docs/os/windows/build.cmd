@@ -77,18 +77,6 @@ if exist "%wim%\install.wim" (
       )
     )
 
-    if exist "%upd0%" (
-      if exist "%upd0%\%msu%" (
-        echo: && echo --- INTEGRATING CUMULATIVE UPDATE
-        Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd0%\%msu%"
-      )
-    )
-
-    if exist "%upd1%" (
-      echo: && echo --- INTEGRATING OTHER UPDATES
-      Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Add-Package /PackagePath:"%upd1%"
-    )
-
     echo: && echo --- REDUCE THE SIZE OF THE COMPONENT STORE
     Dism /Image:"%mnt%" /ScratchDir:"%tmp%" /Cleanup-Image /StartComponentCleanup /ResetBase
 
